@@ -3,36 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="EthSec financials are shared privately with prospective funders.">
+<meta name="description" content="EthSec financials: a $10M two-year non-profit budget, the use of funds, scenarios, runway, and the team plan. Base-scenario planning figures.">
 <title>EthSec | Financials</title>
 <style>
 :root{
-  --bg:#fbfaf7;
-  --bg2:#f3f1ea;
-  --ink:#122038;
-  --ink2:#3b4860;
-  --muted:#657089;
-  --accent:#9a7b2e;
-  --accent-ink:#7a6020;
-  --line:#dcd8cb;
+  --bg:#eef1f5;
+  --bg2:#e7ecf2;
+  --ink:#0d1620;
+  --ink2:#2b3744;
+  --muted:#5a6778;
+  --accent:#0d7a8a;
+  --accent-ink:#0a6170;
+  --line:#d4dbe4;
   --card:#ffffff;
-  --btn-bg:#122038;
-  --btn-ink:#fbfaf7;
+  --btn-bg:#0a6170;
+  --btn-ink:#ffffff;
+  --good:#1d7a4f;
   --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
 }
 [data-theme="dark"]{
-  --bg:#0c1627;
-  --bg2:#101c31;
-  --ink:#eae6d9;
-  --ink2:#c3c6cf;
-  --muted:#8e98ad;
-  --accent:#c4a24a;
-  --accent-ink:#d4b565;
-  --line:#25344f;
-  --card:#12203a;
-  --btn-bg:#c4a24a;
-  --btn-ink:#0c1627;
+  --bg:#090d12;
+  --bg2:#0d141c;
+  --ink:#e9eff6;
+  --ink2:#c3cdd9;
+  --muted:#8a97a8;
+  --accent:#46c7d6;
+  --accent-ink:#7fdce8;
+  --line:#1f2b37;
+  --card:#111923;
+  --btn-bg:#46c7d6;
+  --btn-ink:#090d12;
+  --good:#5bc08c;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:84px}
@@ -193,21 +195,148 @@ footer .mark{font-size:17px}
     </div>
   </div>
 </nav>
-<main>
-<section>
-  <div class="wrap narrow">
-    <p class="eyebrow">Financials</p>
-    <h2>Shared privately with prospective funders.</h2>
+
+<!-- EthSec financials. Kept separate from the technical and scoping pages by design; linked, not merged.
+     Figures from the 24-month cash-flow model (Base scenario), 2026-10. Compensation and the expanded
+     hiring plan are planning estimates. Prepared for prospective funders. No donor,
+     partner, or team names here by design. Self-contained, works offline. -->
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow">Financials &middot; kept separate from the technology and scope pages</p>
+    <h1>The ask, the use of funds, and the team plan.</h1>
+    <p class="lede">A non-profit, two-year plan. Figures are from the 24-month cash-flow model, base scenario. Compensation and the expanded hiring section are planning estimates.</p>
+    <div class="notice">
+      <p class="eyebrow">Prepared for prospective funders</p>
+      <p>Base-scenario planning figures from the 24-month cash-flow model.</p>
+    </div>
+  </div>
+</header>
+
+<!-- AT A GLANCE -->
+<section id="glance">
+  <div class="wrap">
+    <p class="eyebrow">The ask at a glance</p>
+    <h2>A $10M two-year budget, most of it compute.</h2>
     <hr class="rule">
-    <p>The financial model, the team and compensation plan, and the for-profit option are shared directly with prospective funders rather than posted on a public page. To request them, get in touch through EthSec.</p>
-    <p style="margin-top:26px"><a href="index.html">Back to the overview</a></p>
+    <div class="stats">
+      <div class="stat"><b>$10.0M</b><span>Two-year budget, raised as donations to a non-profit, received up front</span></div>
+      <div class="stat"><b>$6.6M</b><span>Net cash required over 24 months (base), after credits and recycled bounties</span></div>
+      <div class="stat"><b>$3.4M</b><span>Cash buffer at month 24, about 12 months of extra runway</span></div>
+      <div class="stat"><b>~$5M/yr</b><span>Gross compute run-rate, mostly frontier tokens, offset by donated credits</span></div>
+    </div>
+    <p class="lead">The raise covers the full 24-month net cash need in the base and low cases, with the remainder as buffer if donated credits or bounty income arrive late or light. Bug bounties are held conservative so the budget never depends on them; upside is recycled into compute and headcount.</p>
   </div>
 </section>
-</main>
+
+<!-- USE OF FUNDS -->
+<section class="alt" id="funds">
+  <div class="wrap">
+    <p class="eyebrow">Use of funds &middot; 24 months &middot; base</p>
+    <h2>Where the money goes, and what offsets it.</h2>
+    <hr class="rule">
+    <p class="lead">Gross cost over two years is about $13.4M. Compute (tokens, hardware, benchmarking) is the majority; talent is the next line. Donated model credits and bounty winnings recycled as compute credits bring the net cash required down to $6.6M.</p>
+    <div class="bars">
+      <div class="bar"><span class="lab">Compute (tokens, hardware, benchmarking)</span><div class="track"><div class="fill" style="width:60%"></div></div><span class="val">$8.01M &middot; 60%</span></div>
+      <div class="bar"><span class="lab">Talent (team + hires)</span><div class="track"><div class="fill two" style="width:35%"></div></div><span class="val">$4.71M &middot; 35%</span></div>
+      <div class="bar"><span class="lab">Overhead + formation</span><div class="track"><div class="fill three" style="width:5%"></div></div><span class="val">$0.68M &middot; 5%</span></div>
+    </div>
+    <p class="lead fine" style="margin-top:20px">Compute is one class on purpose. Frontier tokens, owned hardware, and benchmarking are held together and reallocated on measured capability, not a fixed ratio. Hardware against tokens, Apple-silicon memory boxes against GPU racks, and hosted frontier models leapfrogging one another all move fast, so the split inside this class stays deliberately nimble. Donated model credits and bounty winnings recycled as compute credits offset it.</p>
+    <div class="tblwrap">
+      <table>
+        <tr><th>From gross to net cash (24 months, base)</th><th class="num">Amount</th></tr>
+        <tr><td>Gross cost (incl. in-kind compute)</td><td class="num">$13.39M</td></tr>
+        <tr><td>Less: donated compute credits (in-kind)</td><td class="num">-$3.50M</td></tr>
+        <tr><td>Less: bounty income recycled as compute credits</td><td class="num">-$3.29M</td></tr>
+        <tr class="total"><td>Net cash required</td><td class="num">$6.60M</td></tr>
+        <tr><td>Capital raised</td><td class="num">$10.00M</td></tr>
+        <tr class="total"><td>Cash buffer at month 24</td><td class="num">$3.40M</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIOS -->
+<section id="scenarios">
+  <div class="wrap">
+    <p class="eyebrow">Scenarios</p>
+    <h2>Low, base, and a stress case, against the same $10M.</h2>
+    <hr class="rule">
+    <p class="lead">Net cash required over 24 months under three sets of assumptions. The biggest swing is the size and timing of donated compute credits. The $10M covers the low and base cases with buffer; the high case runs tight unless hiring or token spend is paced.</p>
+    <div class="bars">
+      <div class="bar"><span class="lab">Low</span><div class="track"><div class="fill soft" style="width:57%"></div></div><span class="val">$5.71M net</span></div>
+      <div class="bar"><span class="lab">Base</span><div class="track"><div class="fill" style="width:66%"></div></div><span class="val">$6.60M net</span></div>
+      <div class="bar"><span class="lab">High (stress)</span><div class="track"><div class="fill two" style="width:84%"></div></div><span class="val">$8.41M net</span></div>
+    </div>
+    <p class="lead fine" style="margin-top:20px">Buffer against the $10M raise: about $4.3M (low), $3.4M (base), $1.6M (high). Bars are net cash required as a share of the raise.</p>
+  </div>
+</section>
+
+<!-- TEAM + HIRING -->
+<section class="alt" id="team">
+  <div class="wrap">
+    <p class="eyebrow">Team and compensation</p>
+    <h2>A small senior core, a planned bench.</h2>
+    <hr class="rule">
+    <div class="cols2">
+      <div class="card"><h3>In the base model today</h3><p>The founder and a senior researcher, both from month one, on senior contracts at the level this talent commands on the top contest platforms. The model also funds one additional researcher from bounty income by month 24.</p></div>
+      <div class="card"><h3>Why so senior</h3><p>Throughput scales with compute, not headcount. A few elite researchers at the end of the funnel verify and file what the models surface; the pipeline does the bulk read-and-triage. The spend per high or critical finding, not the salary line, is the number to watch.</p></div>
+    </div>
+    <div class="card proposed">
+      <span class="tagp">Proposed &middot; layered on the base model</span>
+      <h3>Expanded hiring plan</h3>
+      <p>On top of the two-senior core, the plan adds a small analyst bench to handle bug-filing operations and reporting throughput, at much lower cost per head, and a third senior researcher once bounty income and donations are flowing, so that hire is funded by results rather than by the raise.</p>
+      <p>Funding path: the base case already carries about a $3.4M buffer and a mechanism that applies half of bounty income to extra hires. A phased expansion fits inside that, with the analysts and the third researcher coming on as donated credits and bounty income land, and the third researcher specifically when a second anchor commitment or a steady bounty run-rate supports it. Pulling hires forward trims the roughly 12 months of post-raise runway accordingly. These are planning estimates.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOR-PROFIT PATH -->
+<section id="for-profit">
+  <div class="wrap narrow">
+    <p class="eyebrow">Structure</p>
+    <h2>A for-profit path, optional.</h2>
+    <hr class="rule">
+    <p>The structure can support a for-profit subsidiary wholly owned by the non-profit, with the non-profit's intellectual property licensed to it for commercial use. Any surplus returns to the non-profit and its mission. This is an option under review, subject to legal and governance sign-off, not a commitment.</p>
+  </div>
+</section>
+
+<!-- BURN + COMPUTE -->
+<section class="alt" id="burn">
+  <div class="wrap">
+    <p class="eyebrow">Burn, runway, and the compute thesis</p>
+    <h2>The shape of the spend.</h2>
+    <hr class="rule">
+    <ul class="clean">
+      <li><b>Peak monthly net burn is about $0.62M</b>, in month two, driven by the one-time hardware buy. Year-two average net burn settles near $275K a month.</li>
+      <li><b>Compute (tokens, hardware, benchmarking) is the largest and most flexible line.</b> Frontier tokens run about $3.5M in year one and $4.5M in year two (base), scaling with review volume; in-kind credits cover roughly 45% of gross token spend.</li>
+      <li><b>Hardware is a small one-time buy</b>, about $225K for a GPU server and a 512GB workstation, validated on rented cloud GPUs first. Owned rigs carry the high-volume reading at near-zero marginal cost.</li>
+      <li><b>Donated credits are the biggest swing factor.</b> Their size and timing move the net cash required more than any other input, which is why securing them early is a first-order goal.</li>
+      <li><b>Bounties trend the effort toward self-funding.</b> Winnings recycle into compute and headcount and never choose what to hunt; direction is set by criticality.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- NOTES -->
+<section id="notes">
+  <div class="wrap">
+    <p class="eyebrow">Assumptions and notes</p>
+    <h2>Reading the numbers.</h2>
+    <hr class="rule">
+    <ul class="clean">
+      <li>Figures are the base scenario of a 24-month cash-flow model. Low and high scenarios vary the token run-rate, credit size and timing, and bounty income.</li>
+      <li>Researchers are modeled as contractors. Employer payroll tax, benefits, and platform fees are either off or folded into overhead.</li>
+      <li>Bounty income is treated as compute credits against token spend rather than cash to the organization, so the budget does not lean on it.</li>
+      <li>Capital is assumed received up front from an anchor donor. The model also supports phased receipts.</li>
+      <li>These financials are kept on their own page by design. The technology and scope live on the <a href="technical.html">Technology</a> page and in the <a href="index.html">overview</a>.</li>
+    </ul>
+  </div>
+</section>
+
 <footer>
   <div class="wrap fin">
     <div><a class="mark" href="#top">ETH<span>SEC</span></a> &nbsp; ethsecurity.org</div>
-    <div>Internal, for discussion, 2026</div>
+    <div>Securing the Ethereum ecosystem.</div>
   </div>
 </footer>
 

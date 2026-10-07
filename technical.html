@@ -7,33 +7,34 @@
 <title>EthSec | Technology and roadmap</title>
 <style>
 :root{
-  --bg:#fbfaf7;
-  --bg2:#f3f1ea;
-  --ink:#122038;
-  --ink2:#3b4860;
-  --muted:#657089;
-  --accent:#9a7b2e;
-  --accent-ink:#7a6020;
-  --line:#dcd8cb;
+  --bg:#eef1f5;
+  --bg2:#e7ecf2;
+  --ink:#0d1620;
+  --ink2:#2b3744;
+  --muted:#5a6778;
+  --accent:#0d7a8a;
+  --accent-ink:#0a6170;
+  --line:#d4dbe4;
   --card:#ffffff;
-  --btn-bg:#122038;
-  --btn-ink:#fbfaf7;
+  --btn-bg:#0a6170;
+  --btn-ink:#ffffff;
+  --good:#1d7a4f;
   --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
 [data-theme="dark"]{
-  --bg:#0c1627;
-  --bg2:#101c31;
-  --ink:#eae6d9;
-  --ink2:#c3c6cf;
-  --muted:#8e98ad;
-  --accent:#c4a24a;
-  --accent-ink:#d4b565;
-  --line:#25344f;
-  --card:#12203a;
-  --btn-bg:#c4a24a;
-  --btn-ink:#0c1627;
+  --bg:#090d12;
+  --bg2:#0d141c;
+  --ink:#e9eff6;
+  --ink2:#c3cdd9;
+  --muted:#8a97a8;
+  --accent:#46c7d6;
+  --accent-ink:#7fdce8;
+  --line:#1f2b37;
+  --card:#111923;
+  --btn-bg:#46c7d6;
+  --btn-ink:#090d12;
+  --good:#5bc08c;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:84px}
@@ -269,18 +270,67 @@ img,svg,pre,table{max-width:100%}
 
 <header class="hero sub" id="top">
   <div class="wrap">
-    <div class="wm">ETHSEC · ARGUS · DISPATCHER</div>
-    <h1>Technology and roadmap.</h1>
-    <p class="lede">The whole thing on one page: the architecture, and every build step from the spine that exists today to the full fleet.</p>
-    <p class="sublede">Argus is el-bigote plus dobby plus this dispatcher: it takes an impact-ranked unit of work, pins it to the best-ROI lane, runs it sandboxed, and harvests findings, across many accounts at once, credential-blind.</p>
+    <div class="wm">ETHSEC · ARGUS</div>
+    <h1>How Argus works.</h1>
+    <p class="lede">Argus is EthSec's engine: a continuous-scanning platform that finds and helps fix vulnerabilities in critical Ethereum code. This page explains how it is built, for engineers seeing it for the first time.</p>
+    <p class="sublede">Three layers run as one loop: el-bigote carries the methodology and knowledge, dobby runs open models on owned hardware for the high-volume reading, and a dispatcher runs each unit of work in an isolated sandbox across many compute lanes at once.</p>
     <p class="meta">Overview · 2026-10-07 · Step 1 built · 31 tests</p>
   </div>
 </header>
 
-<section id="arch">
+<section id="overview">
   <div class="wrap">
-    <p class="eyebrow">Architecture</p>
-    <h2>Lanes feed a control plane that runs sandboxed units</h2>
+    <p class="eyebrow">What Argus is</p>
+    <h2>One platform, three layers</h2>
+    <hr class="rule">
+    <p style="max-width:46em">Argus is EthSec's engine: a continuous-scanning, model-agnostic platform that finds and helps fix vulnerabilities in critical Ethereum code. It is built from three layers that run as one loop. If you are new to the system, start here.</p>
+    <div class="cols3">
+      <div class="card"><div class="k">Layer one</div><h3>el-bigote</h3><p>Orchestration, methodology, and knowledge: the find-to-file loop, a large library of analysis lenses, and about 131 tools that turn a target into ranked, validated findings.</p></div>
+      <div class="card"><div class="k">Layer two</div><h3>dobby</h3><p>The local-model workhorse. Open models on owned hardware do the high-volume reading; frontier models take the hardest reasoning. Breadth at near-zero marginal cost.</p></div>
+      <div class="card"><div class="k">Layer three</div><h3>Dispatcher</h3><p>The compute and isolation layer. It runs each unit of work in a hardened sandbox, across many compute lanes at once, and never holds a credential centrally.</p></div>
+    </div>
+    <p style="max-width:46em;margin-top:28px">Together they form one continuous loop: inventory the code that matters, generate candidate issues at scale, validate them hard, disclose the real ones through the owner's channel, verify the fix, and begin again.</p>
+  </div>
+</section>
+
+<section class="alt" id="elbigote">
+  <div class="wrap">
+    <p class="eyebrow">Layer one</p>
+    <h2>el-bigote: orchestration, methodology, and knowledge</h2>
+    <hr class="rule">
+    <p style="max-width:46em">el-bigote is the security-review framework at the center of Argus. It holds the methodology, the knowledge base, and about 131 tools, and runs a single loop from a first lead to a filed report. A few mechanisms do most of the work.</p>
+    <p style="max-width:46em"><b>Lead generation at scale.</b> Many diverse analysis lenses run over a target. A knowledge-base router loads only the vulnerability-class knowledge relevant to a given piece of code, so each pass is focused on what that code can actually get wrong rather than a generic checklist.</p>
+    <p style="max-width:46em"><b>A validation gauntlet.</b> Every candidate is attacked before it is believed: ensemble refutation, where k independent reviewers try to kill it; reachability analysis; differential testing; and fuzzing. An impact class is promoted only when a deterministic oracle fires on the exploit and stays silent on a matched control, so a claim rests on a test, not an opinion.</p>
+    <p style="max-width:46em"><b>Compounding memory.</b> A refuted-memory store records every dead end and is consulted before every hunt, so the system never re-derives a mechanism it has already ruled out. Each pass over the ecosystem gets cheaper and deeper than the last.</p>
+    <p style="max-width:46em"><b>Choosing the next move.</b> Work is ranked by a coverage-times-expected-value model, so effort follows risk and unreviewed surface instead of habit, and coverage is tracked against the exact version of each target.</p>
+    <div class="result">
+      <p class="eyebrow">The rule</p>
+      <p>A model's verdict is only a lead, never a confirmation. A senior researcher verifies and files. Nothing ships on a model's say-so.</p>
+    </div>
+  </div>
+</section>
+
+<section id="dobby">
+  <div class="wrap">
+    <p class="eyebrow">Layer two &middot; the local tier</p>
+    <h2>dobby: the local-model workhorse</h2>
+    <hr class="rule">
+    <p style="max-width:46em">dobby runs the high-volume reading on open models on owned hardware, so breadth costs almost nothing at the margin. It uses a hybrid design: a frontier model orchestrates, planning the work and verifying the high-severity claims against real source, while a local open model does the bulk reading and triage.</p>
+    <p style="max-width:46em"><b>No authority, typed output.</b> The local model never executes tools. It reads text and returns structured, schema-validated JSON: a typed envelope carrying the result with a confidence score and its provenance. The orchestrator reviews that compact JSON and spot-checks only the top claims against the source.</p>
+    <p style="max-width:46em"><b>Precomputed context, cached.</b> The local model reads precomputed, deterministic context first, the call graphs, reachability, and taint flows produced by el-bigote's analysis tools, instead of raw code sprawl. That context is rendered deterministically so the inference engine reuses its KV cache and the expensive prefill is paid once across many calls.</p>
+    <p style="max-width:46em"><b>Measured, not assumed.</b> A model-comparison harness scores every model against deterministic gold labels and real confirmed findings, because standalone vulnerability-detection skill is close to random. Models are routed on measured recall and cost, not a public leaderboard.</p>
+    <p style="max-width:46em"><b>Specialized, in progress.</b> The open models are being fine-tuned with lightweight LoRA adapters on EthSec's own Ethereum-security corpus: past engagements and confirmed findings, the refuted-memory of dead ends, the lens and knowledge-base library, and the ecosystem's real Go, Solidity, and Rust code. Progress is measured on a two-sided benchmark that scores both recall (real bugs caught) and the false-affirm rate (confident wrong calls), because skill on C and C++ test sets does not read across to Cosmos-SDK Go or DeFi Solidity. The compute budget shifts toward owned hardware as the open models prove out.</p>
+    <div class="result">
+      <p class="eyebrow">The rule</p>
+      <p>A local model is a lead generator, not an oracle. Its output is untrusted data that the orchestrator and the deterministic tooling verify; it never has the authority to act, and a senior researcher verifies and files.</p>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="arch">
+  <div class="wrap">
+    <p class="eyebrow">Layer three</p>
+    <h2>The compute and isolation layer</h2>
     <hr class="rule">
     <p class="note">Read top to bottom as one unit of work. Compute lanes supply capacity; the control plane assigns a unit to a lane and a sandbox; each sandbox runs <code>wf-run</code> against one target with exactly one credential; findings are harvested through dedup and attribution. The services on the lower rail wrap every unit. Status tags mark what is built, in progress, or planned.</p>
 
@@ -289,8 +339,8 @@ img,svg,pre,table{max-width:100%}
       <div class="lanes-row">
         <div class="lane"><b>local_rig</b>dobby on owned rigs. Breadth, near-zero margin.</div>
         <div class="lane"><b>donated_lot</b>granted provider credits, used first.</div>
-        <div class="lane"><b>sub_window</b>a researcher's own Max account, owner node.</div>
-        <div class="lane"><b>org_seat</b>Team/Enterprise self-hosted env or routines.</div>
+        <div class="lane"><b>hosted</b>hosted model access on an owner node.</div>
+        <div class="lane"><b>org_env</b>team or enterprise environment.</div>
         <div class="lane"><b>metered_key</b>provider API behind an injection proxy.</div>
       </div>
       <div class="conn"></div>
@@ -321,20 +371,6 @@ img,svg,pre,table{max-width:100%}
   </div>
 </section>
 
-<section class="alt" id="local">
-  <div class="wrap">
-    <p class="eyebrow">Local models · in progress</p>
-    <h2>The local tier, specialized</h2>
-    <hr class="rule">
-    <p class="local-p">The local tier is specialized, not generic. dobby's open models are being fine-tuned with lightweight LoRA adapters on EthSec's own Ethereum-security corpus: past engagements and confirmed findings, the refuted-memory of dead ends that keeps the model from re-deriving them, the lens and knowledge-base library, and the ecosystem's real Go, Solidity, and Rust code.</p>
-    <p class="local-p">Progress is measured on an Ethereum-specific, two-sided benchmark that scores both recall (real bugs caught) and the false-affirm rate (confident wrong calls), rather than a generic leaderboard, because skill on C and C++ test sets does not read across to Cosmos-SDK Go or DeFi Solidity.</p>
-    <p class="local-p">The payoff is a local reader that keeps improving and compounding on owned rigs at near-zero marginal cost, with the compute budget shifting toward hardware as the open models prove out.</p>
-    <div class="result">
-      <p>It stays a lead generator, never an oracle: nothing ships on the model's say-so, and a senior researcher verifies and files.</p>
-    </div>
-  </div>
-</section>
-
 <section id="road">
   <div class="wrap">
     <p class="eyebrow">All steps</p>
@@ -357,7 +393,7 @@ img,svg,pre,table{max-width:100%}
         <ul class="bul">
         <li><b>Lanes registry</b> with a no-secrets guard: metadata only, refuses any token value or secret-named field; a credential never lives here.</li>
         <li><b>Impact-first scheduler</b>: the queue is ranked by <code>impact_priority</code> (highs and crits coverage of the Argus scope); a bounty is a flag, never the ranker.</li>
-        <li><b>Best-ROI lane pick</b>: local rig, then donated credits, then a Max window, then an org seat, then metered API; cyber-use and opt-in gates; one active unit per account.</li>
+        <li><b>Best-ROI lane pick</b>: local rig, then donated credits, then hosted model access, then a team environment, then metered API; cyber-use and opt-in gates; one active unit per account.</li>
         <li><b>Hardened launch builder</b>: generates the <code>docker run</code> and <code>wf-run</code> commands; refuses forbidden mounts; never puts a key in the argv. The security contract is asserted on the argv, so it holds without Docker.</li>
         <li><b>Usage gate, locks, contained harvester</b>: per-lane window gate from in-band signals, per-account concurrency locks, and a harvester that copies out into the engagement tree and never files.</li>
         </ul>
@@ -431,7 +467,7 @@ img,svg,pre,table{max-width:100%}
     <hr class="rule">
     <div class="result">
       <p class="eyebrow">Standing posture</p>
-      <p>EthSec is a non-profit, lab-partnered, with donated tokens, so cost and provider ToS are not constraints. The goal is highs and crits found and fixed across the whole Argus scope, filed where a bounty exists. What binds is security and quality: protecting the embargoed findings, dedup, the false-positive bar, and bounded-loss when the operator is offline.</p>
+      <p>EthSec is a non-profit lab working in partnership with major model providers, so the binding constraints are security and quality, not budget: protecting embargoed findings, deduplication, the false-positive bar, and bounded loss when the operator is offline. The goal is highs and criticals found and fixed across the whole Argus scope, filed where a bounty exists.</p>
     </div>
     <p class="note" style="margin-top:30px">Gate to scale past the two-account pilot: the verified-TP rate per unit, the duplicate-collision rate across researchers, the false-positive rate reaching a human, the re-auth cadence per account, and the kill-drill time-to-silence. Steps 3 through 6 enter only as those numbers hold. Nothing scales on the plan alone.</p>
     <div class="btns row">
@@ -444,7 +480,7 @@ img,svg,pre,table{max-width:100%}
 <footer>
   <div class="wrap fin">
     <div><a class="mark" href="#top">ETH<span>SEC</span></a> &nbsp; ethsecurity.org</div>
-    <div>Internal, for discussion, 2026</div>
+    <div>Securing the Ethereum ecosystem.</div>
   </div>
 </footer>
 
