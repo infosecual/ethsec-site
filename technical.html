@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="EthSec's technology and roadmap: the Argus architecture, the specialized local model tier, the six build steps from the credential-blind spine to the full fleet, and the gate that earns every scale-up.">
-<title>EthSec | Technology and roadmap</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="description" content="How Argus works, for engineers: the three-layer architecture, a deep look at el-bigote and dobby, the compute and isolation layer, the build roadmap, and the gate that earns every scale-up.">
+<title>EthSec | Technology</title>
 <style>
 :root{
   --bg:#eef1f5;
@@ -21,8 +22,27 @@
   --good:#1d7a4f;
   --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,Consolas,monospace;
+  color-scheme:light;
 }
-[data-theme="dark"]{
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#090d12;
+    --bg2:#0d141c;
+    --ink:#e9eff6;
+    --ink2:#c3cdd9;
+    --muted:#8a97a8;
+    --accent:#46c7d6;
+    --accent-ink:#7fdce8;
+    --line:#1f2b37;
+    --card:#111923;
+    --btn-bg:#46c7d6;
+    --btn-ink:#090d12;
+    --good:#5bc08c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
   --bg:#090d12;
   --bg2:#0d141c;
   --ink:#e9eff6;
@@ -35,131 +55,81 @@
   --btn-bg:#46c7d6;
   --btn-ink:#090d12;
   --good:#5bc08c;
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:84px}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth;scroll-padding-top:124px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
 a{color:var(--accent-ink);text-decoration-thickness:1px;text-underline-offset:3px}
 a:hover{color:var(--ink)}
 .wrap{max-width:1040px;margin:0 auto;padding:0 28px}
 .narrow{max-width:720px}
+[hidden]{display:none!important}
 
-/* nav */
-nav{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}
-.navin{display:flex;align-items:center;justify-content:space-between;gap:20px;height:68px}
-.mark{font-family:var(--serif);font-size:22px;letter-spacing:.14em;font-weight:600;color:var(--ink);text-decoration:none}
+/* nav (identical on every page) */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--bg)}
+nav{background:var(--bg);border-bottom:1px solid var(--line)}
+.navin{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.mark{font-family:var(--serif);font-size:22px;letter-spacing:.14em;font-weight:600;color:var(--ink);text-decoration:none;white-space:nowrap}
 .mark span{color:var(--accent)}
-.links{display:flex;align-items:center;gap:22px;flex-wrap:wrap;justify-content:flex-end}
-.links a{font-size:14px;color:var(--ink2);text-decoration:none;letter-spacing:.02em}
-.links a:hover{color:var(--accent-ink)}
-.links a.prom{border:1px solid var(--ink);color:var(--ink);padding:6px 14px;border-radius:2px;font-weight:600}
-.links a.prom:hover{background:var(--ink);color:var(--bg)}
-.links a.prom.solid{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
-.links a.prom.solid:hover{opacity:.88;color:var(--btn-ink)}
-#tg{background:none;border:1px solid var(--line);color:var(--muted);font:inherit;font-size:12px;padding:5px 10px;border-radius:2px;cursor:pointer;letter-spacing:.06em;text-transform:uppercase}
-#tg:hover{color:var(--ink);border-color:var(--ink)}
+.links{display:flex;align-items:center;gap:8px}
+.links a{font-size:14px;color:var(--ink2);text-decoration:none;letter-spacing:.02em;border:1px solid var(--line);padding:8px 16px;border-radius:2px;white-space:nowrap;line-height:1}
+.links a:hover{color:var(--ink);border-color:var(--ink)}
+.links a[aria-current="page"]{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+.links a[aria-current="page"]:hover{color:var(--btn-ink);opacity:.9}
+@media (max-width:600px){
+  .navin{flex-direction:column;align-items:stretch;gap:12px;padding:12px 0;min-height:0}
+  .mark{align-self:flex-start}
+  .links{width:100%;gap:8px}
+  .links a{flex:1 1 0;min-width:0;text-align:center;justify-content:center;display:flex;align-items:center;padding:11px 6px;font-size:13px;min-height:44px}
+}
+
+/* sub-nav: the technology sections as tabs */
+.subnav{background:var(--bg);border-bottom:1px solid var(--line)}
+.subnav .wrap{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-top:12px;padding-bottom:12px;scrollbar-width:none}
+.subnav .wrap::-webkit-scrollbar{display:none}
+.subnav button{flex:0 0 auto;background:none;border:1px solid var(--line);color:var(--ink2);font:inherit;font-size:13px;letter-spacing:.03em;padding:8px 15px;border-radius:999px;cursor:pointer;white-space:nowrap;line-height:1.2}
+.subnav button:hover{border-color:var(--ink);color:var(--ink)}
+.subnav button[aria-current="true"]{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
 
 /* type */
-h1,h2,h3{font-family:var(--serif);font-weight:500;color:var(--ink);line-height:1.2;margin:0}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:500;color:var(--ink);line-height:1.2;margin:0}
 .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin:0 0 18px}
 h2{font-size:clamp(28px,4vw,40px);margin-bottom:22px}
 h3{font-size:21px;margin-bottom:10px}
 p{margin:0 0 18px;color:var(--ink2)}
-section{padding:96px 0;border-top:1px solid var(--line)}
-section.alt{background:var(--bg2)}
 .rule{width:48px;height:2px;background:var(--accent);margin:0 0 26px;border:0}
 
-/* hero */
-.hero{padding:132px 0 112px;border-top:0}
-.hero h1{font-size:clamp(44px,8vw,84px);letter-spacing:-.01em;margin-bottom:28px;max-width:14ch}
-.hero .wm{font-family:var(--serif);letter-spacing:.3em;font-size:15px;color:var(--accent-ink);margin-bottom:34px;font-weight:600}
-.lede{font-size:clamp(18px,2.2vw,22px);line-height:1.6;color:var(--ink2);max-width:46em;margin-bottom:40px}
-.btns{display:flex;gap:14px;flex-wrap:wrap}
-.btn{display:inline-block;padding:14px 28px;font-size:15px;font-weight:600;letter-spacing:.03em;text-decoration:none;border-radius:2px;border:1px solid var(--btn-bg)}
-.btn.p{background:var(--btn-bg);color:var(--btn-ink)}
-.btn.p:hover{opacity:.88;color:var(--btn-ink)}
-.btn.s{background:transparent;color:var(--ink);border-color:var(--ink)}
-.btn.s:hover{background:var(--ink);color:var(--bg)}
-.charter{margin-top:48px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+/* tab sections */
+.tab{padding:46px 0 76px;border-top:0}
+.wm{font-family:var(--serif);letter-spacing:.3em;font-size:14px;color:var(--accent-ink);margin:0 0 20px;font-weight:600}
+.pagetitle{font-family:var(--serif);font-weight:500;font-size:clamp(34px,5.5vw,56px);line-height:1.1;letter-spacing:-.01em;color:var(--ink);margin:0 0 20px;max-width:16ch;text-wrap:balance}
+.lede{font-size:clamp(18px,2.2vw,22px);line-height:1.6;color:var(--ink2);max-width:46em;margin-bottom:20px}
+.sublede{font-size:17px;max-width:46em;margin-bottom:0}
+.meta{margin-top:30px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.note{max-width:46em}
+code{font-family:var(--mono);font-size:.86em;background:var(--bg2);border:1px solid var(--line);padding:1px 6px;overflow-wrap:anywhere}
 
-/* grids */
+/* three-layer cards */
 .cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
-.card{background:var(--card);border:1px solid var(--line);padding:30px 28px;border-top:2px solid var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);padding:30px 28px;border-top:2px solid var(--accent);min-width:0}
 .card p{margin:0;font-size:15.5px}
 .card .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin-bottom:12px}
 
-/* steps */
-.steps{list-style:none;margin:44px 0 0;padding:0;counter-reset:s}
-.steps li{counter-increment:s;display:grid;grid-template-columns:72px 1fr;gap:8px 20px;padding:26px 0;border-top:1px solid var(--line)}
-.steps li:last-child{border-bottom:1px solid var(--line)}
-.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--serif);font-size:34px;color:var(--accent);line-height:1}
-.steps h3{margin:0 0 6px;font-size:20px}
-.steps p{margin:0;font-size:16px}
-.loopnote{margin-top:30px;font-size:16px}
-
-/* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:44px 0 48px;border:1px solid var(--line);background:var(--card)}
-.stat{padding:28px 24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-.stat:nth-child(4n){border-right:0}
-.stat:nth-last-child(-n+4){border-bottom:0}
-.stat b{display:block;font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.1;color:var(--ink)}
-.stat span{display:block;margin-top:8px;font-size:13.5px;line-height:1.45;color:var(--muted)}
-.result{border-left:3px solid var(--accent);padding:6px 0 6px 26px;max-width:760px}
+/* result callout */
+.result{border-left:3px solid var(--accent);padding:6px 0 6px 26px;max-width:760px;margin-top:34px}
 .result .eyebrow{margin-bottom:10px}
-.result p{font-family:var(--serif);font-size:20px;line-height:1.6;color:var(--ink)}
+.result p{font-family:var(--serif);font-size:20px;line-height:1.6;color:var(--ink);margin:0}
 
-/* priorities */
-.pri{list-style:none;margin:36px 0 0;padding:0;display:grid;gap:0}
-.pri li{display:grid;grid-template-columns:44px 1fr;gap:6px 16px;padding:22px 0;border-top:1px solid var(--line)}
-.pri li:last-child{border-bottom:1px solid var(--line)}
-.pri .n{font-family:var(--serif);color:var(--accent);font-size:24px;line-height:1.3}
-.pri h3{font-size:19px;margin-bottom:4px}
-.pri p{margin:0;font-size:15.5px}
+/* buttons */
+.btns{display:flex;gap:14px;flex-wrap:wrap}
+.btns.row{margin-top:34px}
+.btn{display:inline-block;padding:14px 28px;font-size:15px;font-weight:600;letter-spacing:.03em;text-decoration:none;border-radius:2px;border:1px solid var(--btn-bg)}
+.btn.s{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn.s:hover{background:var(--ink);color:var(--bg)}
 
-/* team */
-.disc{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:36px 0}
-.disc div{border-top:2px solid var(--accent);padding-top:16px}
-.disc h3{font-size:18px}
-.disc p{font-size:15px;margin:0}
-.person{font-family:var(--serif);font-size:26px;color:var(--ink);margin-bottom:6px}
-
-/* ask */
-.ask{background:var(--card);border:1px solid var(--line);padding:40px 38px;margin-top:34px}
-.ask .big{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:28px}
-.ask .big b{display:block;font-family:var(--serif);font-weight:500;font-size:38px;color:var(--ink);line-height:1.1}
-.ask .big span{font-size:13.5px;color:var(--muted);display:block;margin-top:6px;line-height:1.45}
-.fine{font-size:14.5px;color:var(--muted)}
-
-.closing{font-family:var(--serif);font-size:clamp(26px,4vw,38px);line-height:1.3;color:var(--ink);max-width:22em;margin:0}
-footer{border-top:1px solid var(--line);padding:40px 0 56px;font-size:13.5px;color:var(--muted)}
-.fin{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:baseline}
-footer .mark{font-size:17px}
-
-@media (max-width:860px){
-  .cols3,.disc,.ask .big{grid-template-columns:1fr}
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .stat:nth-child(4n){border-right:1px solid var(--line)}
-  .stat:nth-child(2n){border-right:0}
-  .stat:nth-last-child(-n+4){border-bottom:1px solid var(--line)}
-  .stat:nth-last-child(-n+2){border-bottom:0}
-  .navin{height:auto;padding:12px 0;flex-direction:column;align-items:flex-start}
-  .links{justify-content:flex-start;gap:14px}
-  section{padding:68px 0}
-  .hero{padding:80px 0 72px}
-  .steps li{grid-template-columns:52px 1fr}
-}
-
-/* technology page components (Sentinel tokens only) */
-.hero.sub{padding:96px 0 80px}
-.hero.sub h1{font-size:clamp(38px,6vw,64px);max-width:18ch}
-.hero.sub .wm{margin-bottom:26px}
-.hero.sub .lede{margin-bottom:22px}
-.hero.sub .sublede{font-size:17px;max-width:46em;margin-bottom:0}
-.meta{margin-top:30px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-code{font-family:var(--mono);font-size:.86em;background:var(--bg2);border:1px solid var(--line);padding:1px 6px;overflow-wrap:anywhere}
-section.alt code{background:var(--card)}
-.note{max-width:46em}
-.archbox{margin-top:34px;background:var(--card);border:1px solid var(--line);padding:30px 28px}
+/* architecture box */
+.archbox{margin-top:8px;background:var(--card);border:1px solid var(--line);padding:30px 28px}
 .layerlabel{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 12px;line-height:1.5}
 .lanes-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
 .lane{border:1px solid var(--line);border-top:2px solid var(--accent);background:var(--bg);padding:14px 14px;font-size:14px;line-height:1.5;color:var(--ink2);min-width:0;overflow-wrap:anywhere}
@@ -182,7 +152,8 @@ section.alt code{background:var(--card)}
 .svc .m{font-size:14px;color:var(--ink2);margin-top:4px;line-height:1.5}
 .svc .st{font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-top:10px;font-weight:600;color:var(--muted)}
 .svc .st.now{color:var(--accent-ink)}
-.btns.row{margin-top:30px}
+
+/* roadmap */
 .road{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin:34px 0 0}
 .rchip{display:block;background:var(--card);border:1px solid var(--line);border-top:2px solid var(--line);padding:16px 14px;text-decoration:none;color:var(--ink);min-width:0;min-height:40px}
 .rchip:hover{color:var(--ink);border-color:var(--accent)}
@@ -192,13 +163,21 @@ section.alt code{background:var(--card)}
 .rchip.done,.rchip.now{border-top-color:var(--accent)}
 .rchip.done .s,.rchip.now .s{color:var(--accent-ink)}
 .road + .note{margin-top:26px}
+
+/* step detail list */
+.steps{list-style:none;margin:40px 0 0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:72px 1fr;gap:8px 20px;padding:26px 0;border-top:1px solid var(--line)}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--serif);font-size:34px;color:var(--accent);line-height:1}
+.steps li.s{scroll-margin-top:124px}
+.steps div{min-width:0}
+.steps h3{margin:0 0 6px;font-size:20px}
+.steps .why{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--muted);margin:0 0 8px}
 .hd{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;margin-bottom:6px}
 .hd h3{margin:0}
 .badge{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:3px 10px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
 .badge.done{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
 .badge.now{border-color:var(--accent);color:var(--accent-ink)}
-.steps .why{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--muted);margin:0 0 8px}
-.steps div{min-width:0}
 .bul{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
 .bul li{display:block;position:relative;padding:0 0 0 20px;border:0;font-size:15.5px;line-height:1.6;color:var(--ink2);counter-increment:none}
 .bul li:last-child{border:0}
@@ -207,93 +186,90 @@ section.alt code{background:var(--card)}
 .files{margin-top:14px;font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted);overflow-wrap:anywhere}
 .verif{margin-top:14px;border-left:3px solid var(--accent);padding:4px 0 4px 16px;font-size:15px;color:var(--ink2);line-height:1.6}
 .verif b{color:var(--ink);font-weight:600}
-.steps li.s{scroll-margin-top:84px}
-.local-p{max-width:46em}
+
+footer{border-top:1px solid var(--line);padding:40px 0 56px;font-size:13.5px;color:var(--muted)}
+.fin{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:baseline}
+footer .mark{font-size:17px}
+
+.cols3>*,.fin>*{min-width:0}
+html,body{overflow-x:clip;max-width:100%}
+img,svg,pre,table{max-width:100%}
+
 @media (max-width:860px){
+  .cols3{grid-template-columns:1fr}
   .lanes-row{grid-template-columns:repeat(2,minmax(0,1fr))}
   .units{grid-template-columns:1fr}
   .rail{grid-template-columns:repeat(2,minmax(0,1fr))}
   .road{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .links a{display:inline-flex;align-items:center;min-height:40px}
-  .links a.prom{padding:0 14px}
-  #tg{min-height:40px;padding:0 14px}
-  .hero.sub{padding:64px 0 56px}
 }
 @media (max-width:480px){
   .wrap{padding:0 18px}
   .lanes-row,.rail,.road,.units{grid-template-columns:1fr}
-  section{padding:52px 0}
+  .tab{padding:36px 0 56px}
   .archbox{padding:20px 16px}
   .steps li{grid-template-columns:40px minmax(0,1fr);gap:6px 12px}
   .steps li::before{font-size:26px}
-  .hero .wm{letter-spacing:.2em}
-  .links{gap:6px 12px}
-  .btn{padding:12px 20px}
   .result{padding-left:18px}
   .result p{font-size:18px}
   h2{margin-bottom:18px}
-  .stats,.ask .big{grid-template-columns:1fr}
-  .stat,.stat:nth-child(2n),.stat:nth-child(4n){border-right:0;border-bottom:1px solid var(--line)}
-  .stat:last-child{border-bottom:0}
-  .links a.prom{padding:0 10px}
-  .navin{gap:10px}
   .badge{white-space:normal}
-  .ask{padding:28px 20px}
+  .btn{padding:12px 20px}
 }
-html,body{overflow-x:clip;max-width:100%}
-img,svg,pre,table{max-width:100%}
 @media print{
-  nav,#tg,.btns{display:none}
+  .site-head,.subnav,.btns{display:none}
+  [hidden]{display:block!important}
   body{background:#fff;color:#000;font-size:11.5pt}
-  section{padding:28px 0;break-inside:avoid}
-  .hero{padding:20px 0}
-  .card,.ask,.stats,.archbox,.steps li{break-inside:avoid}
+  .tab{padding:24px 0;break-inside:avoid}
+  .card,.archbox,.steps li,.result{break-inside:avoid}
   a{color:#000;text-decoration:none}
-  :root,[data-theme="dark"]{--bg:#fff;--bg2:#fff;--ink:#000;--ink2:#222;--muted:#444;--card:#fff;--line:#bbb}
+  :root{--bg:#fff;--bg2:#fff;--ink:#000;--ink2:#222;--muted:#444;--card:#fff;--line:#bbb}
 }
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="wrap navin">
-    <a class="mark" href="index.html">ETH<span>SEC</span></a>
-    <div class="links">
-      <a href="index.html">Home</a>
-      <a href="scope.html">Scope</a>
-      <a class="prom" href="technical.html">Technology</a>
-      <a class="prom solid" href="finance.html">Financials</a>
-      <button id="tg" type="button" aria-label="Toggle light or dark">Dark</button>
+<div class="site-head">
+  <nav>
+    <div class="wrap navin">
+      <a class="mark" href="index.html">ETH<span>SEC</span></a>
+      <div class="links">
+        <a href="technical.html" aria-current="page">Technology</a>
+        <a href="scope.html">Scope</a>
+        <a href="finance.html">Financials</a>
+      </div>
+    </div>
+  </nav>
+  <div class="subnav">
+    <div class="wrap">
+      <button type="button" data-tab="overview" aria-current="true">Overview</button>
+      <button type="button" data-tab="elbigote">el-bigote</button>
+      <button type="button" data-tab="dobby">dobby</button>
+      <button type="button" data-tab="arch">Compute layer</button>
+      <button type="button" data-tab="road">Roadmap</button>
+      <button type="button" data-tab="gate">Safety gate</button>
     </div>
   </div>
-</nav>
+</div>
 
-<header class="hero sub" id="top">
-  <div class="wrap">
-    <div class="wm">ETHSEC · ARGUS</div>
-    <h1>How Argus works.</h1>
-    <p class="lede">Argus is EthSec's engine: a continuous-scanning platform that finds and helps fix vulnerabilities in critical Ethereum code. This page explains how it is built, for engineers seeing it for the first time.</p>
-    <p class="sublede">Three layers run as one loop: el-bigote carries the methodology and knowledge, dobby runs open models on owned hardware for the high-volume reading, and a dispatcher runs each unit of work in an isolated sandbox across many compute lanes at once.</p>
-    <p class="meta">Overview · 2026-10-07 · Step 1 built · 31 tests</p>
-  </div>
-</header>
+<main>
 
-<section id="overview">
+<section id="overview" class="tab">
   <div class="wrap">
-    <p class="eyebrow">What Argus is</p>
-    <h2>One platform, three layers</h2>
-    <hr class="rule">
-    <p style="max-width:46em">Argus is EthSec's engine: a continuous-scanning, model-agnostic platform that finds and helps fix vulnerabilities in critical Ethereum code. It is built from three layers that run as one loop. If you are new to the system, start here.</p>
+    <p class="wm">ETHSEC &middot; ARGUS</p>
+    <h1 class="pagetitle">How Argus works</h1>
+    <p class="lede">Argus is EthSec's engine: a continuous-scanning, model-agnostic platform that finds and helps fix vulnerabilities in critical Ethereum code. This page explains how it is built, for engineers seeing it for the first time.</p>
+    <p class="sublede">It runs as three layers in one loop. el-bigote carries the methodology and knowledge. dobby runs open models on owned hardware for the high-volume reading. A dispatcher runs each unit of work in an isolated sandbox across many compute lanes at once.</p>
     <div class="cols3">
       <div class="card"><div class="k">Layer one</div><h3>el-bigote</h3><p>Orchestration, methodology, and knowledge: the find-to-file loop, a large library of analysis lenses, and about 131 tools that turn a target into ranked, validated findings.</p></div>
       <div class="card"><div class="k">Layer two</div><h3>dobby</h3><p>The local-model workhorse. Open models on owned hardware do the high-volume reading; frontier models take the hardest reasoning. Breadth at near-zero marginal cost.</p></div>
       <div class="card"><div class="k">Layer three</div><h3>Dispatcher</h3><p>The compute and isolation layer. It runs each unit of work in a hardened sandbox, across many compute lanes at once, and never holds a credential centrally.</p></div>
     </div>
-    <p style="max-width:46em;margin-top:28px">Together they form one continuous loop: inventory the code that matters, generate candidate issues at scale, validate them hard, disclose the real ones through the owner's channel, verify the fix, and begin again.</p>
+    <p style="max-width:46em;margin-top:28px">Together they form one continuous loop: inventory the code that matters, generate candidate issues at scale, validate them hard, disclose the real ones through the owner's channel, verify the fix, and begin again. Use the tabs above to go deeper on each layer.</p>
+    <p class="meta">Reference implementation &middot; Step 1 built &middot; 31 tests passing</p>
   </div>
 </section>
 
-<section class="alt" id="elbigote">
+<section id="elbigote" class="tab" hidden>
   <div class="wrap">
     <p class="eyebrow">Layer one</p>
     <h2>el-bigote: orchestration, methodology, and knowledge</h2>
@@ -310,7 +286,7 @@ img,svg,pre,table{max-width:100%}
   </div>
 </section>
 
-<section id="dobby">
+<section id="dobby" class="tab" hidden>
   <div class="wrap">
     <p class="eyebrow">Layer two &middot; the local tier</p>
     <h2>dobby: the local-model workhorse</h2>
@@ -327,7 +303,7 @@ img,svg,pre,table{max-width:100%}
   </div>
 </section>
 
-<section class="alt" id="arch">
+<section id="arch" class="tab" hidden>
   <div class="wrap">
     <p class="eyebrow">Layer three</p>
     <h2>The compute and isolation layer</h2>
@@ -335,7 +311,7 @@ img,svg,pre,table{max-width:100%}
     <p class="note">Read top to bottom as one unit of work. Compute lanes supply capacity; the control plane assigns a unit to a lane and a sandbox; each sandbox runs <code>wf-run</code> against one target with exactly one credential; findings are harvested through dedup and attribution. The services on the lower rail wrap every unit. Status tags mark what is built, in progress, or planned.</p>
 
     <div class="archbox">
-      <p class="layerlabel">L0 · compute lanes (all first-class; routed by policy then impact then ROI)</p>
+      <p class="layerlabel">L0 &middot; compute lanes (all first-class; routed by policy then impact then ROI)</p>
       <div class="lanes-row">
         <div class="lane"><b>local_rig</b>dobby on owned rigs. Breadth, near-zero margin.</div>
         <div class="lane"><b>donated_lot</b>granted provider credits, used first.</div>
@@ -349,11 +325,11 @@ img,svg,pre,table{max-width:100%}
         <div class="d">Step 1 (built): impact-first scheduler, best-ROI lane pick, per-account locks, usage gate. Step 3: Temporal AccountLedger per account, UnitWorkflow per unit, SandboxProvider adapters.</div>
       </div>
       <div class="conn"></div>
-      <p class="layerlabel">L1 + L2 · one sandbox per unit, N concurrent (launch built; execute is step 2)</p>
+      <p class="layerlabel">L1 + L2 &middot; one sandbox per unit, N concurrent (launch built; execute is step 2)</p>
       <div class="units">
-        <div class="unit"><div class="cap">unit · account A</div><div class="box cred">credential, read-only, vendor binary only</div><div class="box run">wf-run + one target @commit</div><div class="box poc">PoC VM, no credential (step 6)</div><div class="edge">egress proxy: allowlist only</div></div>
-        <div class="unit"><div class="cap">unit · account B</div><div class="box cred">credential, read-only, vendor binary only</div><div class="box run">wf-run + one target @commit</div><div class="box poc">PoC VM, no credential (step 6)</div><div class="edge">egress proxy: allowlist only</div></div>
-        <div class="unit"><div class="cap">unit · account C</div><div class="box cred">credential, read-only, vendor binary only</div><div class="box run">wf-run + one target @commit</div><div class="box poc">PoC VM, no credential (step 6)</div><div class="edge">egress proxy: allowlist only</div></div>
+        <div class="unit"><div class="cap">unit &middot; account A</div><div class="box cred">credential, read-only, vendor binary only</div><div class="box run">wf-run + one target @commit</div><div class="box poc">PoC VM, no credential (step 6)</div><div class="edge">egress proxy: allowlist only</div></div>
+        <div class="unit"><div class="cap">unit &middot; account B</div><div class="box cred">credential, read-only, vendor binary only</div><div class="box run">wf-run + one target @commit</div><div class="box poc">PoC VM, no credential (step 6)</div><div class="edge">egress proxy: allowlist only</div></div>
+        <div class="unit"><div class="cap">unit &middot; account C</div><div class="box cred">credential, read-only, vendor binary only</div><div class="box run">wf-run + one target @commit</div><div class="box poc">PoC VM, no credential (step 6)</div><div class="edge">egress proxy: allowlist only</div></div>
       </div>
       <div class="conn"></div>
       <p class="layerlabel">cross-cutting services (wrap every unit)</p>
@@ -371,7 +347,7 @@ img,svg,pre,table{max-width:100%}
   </div>
 </section>
 
-<section id="road">
+<section id="road" class="tab" hidden>
   <div class="wrap">
     <p class="eyebrow">All steps</p>
     <h2>Six steps, spine first, fleet last</h2>
@@ -384,11 +360,11 @@ img,svg,pre,table{max-width:100%}
       <a class="rchip next" href="#s5"><div class="num">05</div><div class="s">Planned</div><h4>Capacity + telemetry</h4></a>
       <a class="rchip next" href="#s6"><div class="num">06</div><div class="s">Planned</div><h4>Trust hardening + scale-out</h4></a>
     </div>
-    <p class="note">Each step lands working, tested code before the next starts, and every scale-up is gated on a measured quality number, not on the plan (see The gate). The numbering condenses the DESIGN.md build plan into the slices I am delivering.</p>
+    <p class="note">Each step lands working, tested code before the next starts, and every scale-up is gated on a measured quality number, not on the plan (see the Safety gate tab). The numbering condenses the DESIGN.md build plan into the slices I am delivering.</p>
 
     <ol class="steps">
       <li class="s" id="s1"><div>
-        <div class="hd"><h3>Credential-blind spine</h3><span class="badge done">Built · 31 tests</span></div>
+        <div class="hd"><h3>Credential-blind spine</h3><span class="badge done">Built &middot; 31 tests</span></div>
         <p class="why">the part everything else sits on</p>
         <ul class="bul">
         <li><b>Lanes registry</b> with a no-secrets guard: metadata only, refuses any token value or secret-named field; a credential never lives here.</li>
@@ -397,7 +373,7 @@ img,svg,pre,table{max-width:100%}
         <li><b>Hardened launch builder</b>: generates the <code>docker run</code> and <code>wf-run</code> commands; refuses forbidden mounts; never puts a key in the argv. The security contract is asserted on the argv, so it holds without Docker.</li>
         <li><b>Usage gate, locks, contained harvester</b>: per-lane window gate from in-band signals, per-account concurrency locks, and a harvester that copies out into the engagement tree and never files.</li>
         </ul>
-        <div class="files">~/repos/la-barba/dispatch/ : dispatch.mjs · lib/{registry,unit,schedule,launch,usagegate,lock,harvest,egress,errors}.mjs · test/ (7 suites) · SPEC.md</div>
+        <div class="files">~/repos/la-barba/dispatch/ : dispatch.mjs &middot; lib/{registry,unit,schedule,launch,usagegate,lock,harvest,egress,errors}.mjs &middot; test/ (7 suites) &middot; SPEC.md</div>
         <div class="verif"><b>Verified:</b> <code>node --test dispatch/test/</code> 31 pass; <code>dispatch plan/run/accounts</code> demonstrated dry.</div>
       </div></li>
       <li class="s" id="s2"><div>
@@ -409,8 +385,8 @@ img,svg,pre,table{max-width:100%}
         <li><b>Two-account liveness test</b>: two isolated logins run concurrently on a trivial public target and must pass every row: concurrency, identity isolation, no token leak, no refresh-token collision, per-account window, kill-and-resume, clean reap.</li>
         <li><b>Minimal kill-switch</b> (stop-compute, stop-spill) and a dead-man lease so a lost control plane pauses rather than runs.</li>
         </ul>
-        <div class="files">adds lib/{sandbox,execute,identity,provision}.mjs · agent/Dockerfile · test/fake-docker + execute.test.mjs · LIVENESS.md</div>
-        <div class="verif"><b>Gate:</b> the liveness test passes green on two provisioned accounts. Full detail in argus-step2-execute.html.</div>
+        <div class="files">adds lib/{sandbox,execute,identity,provision}.mjs &middot; agent/Dockerfile &middot; test/fake-docker + execute.test.mjs &middot; LIVENESS.md</div>
+        <div class="verif"><b>Gate:</b> the liveness test passes green on two provisioned accounts.</div>
       </div></li>
       <li class="s" id="s3"><div>
         <div class="hd"><h3>Temporal control plane</h3><span class="badge next">Planned</span></div>
@@ -460,7 +436,7 @@ img,svg,pre,table{max-width:100%}
   </div>
 </section>
 
-<section class="alt" id="gate">
+<section id="gate" class="tab" hidden>
   <div class="wrap">
     <p class="eyebrow">The gate</p>
     <h2>Every scale-up is earned by a measured number</h2>
@@ -477,21 +453,41 @@ img,svg,pre,table{max-width:100%}
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="wrap fin">
-    <div><a class="mark" href="#top">ETH<span>SEC</span></a> &nbsp; ethsecurity.org</div>
+    <div><a class="mark" href="index.html">ETH<span>SEC</span></a> &nbsp; ethsecurity.org</div>
     <div>Securing the Ethereum ecosystem.</div>
   </div>
 </footer>
 
 <script>
 (function(){
-  var root=document.documentElement,b=document.getElementById('tg');
-  b.addEventListener('click',function(){
-    var d=root.getAttribute('data-theme')==='dark';
-    root.setAttribute('data-theme',d?'light':'dark');
-    b.textContent=d?'Dark':'Light';
+  var tabs=['overview','elbigote','dobby','arch','road','gate'];
+  var btns=document.querySelectorAll('.subnav button');
+  var secs={};
+  tabs.forEach(function(id){secs[id]=document.getElementById(id);});
+  function show(id){
+    if(tabs.indexOf(id)<0){id='overview';}
+    tabs.forEach(function(t){secs[t].hidden=(t!==id);});
+    btns.forEach(function(b){b.setAttribute('aria-current',b.getAttribute('data-tab')===id?'true':'false');});
+  }
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){
+      var id=b.getAttribute('data-tab');
+      show(id);
+      if(window.history&&history.replaceState){history.replaceState(null,'','#'+id);}
+      else{location.hash=id;}
+      window.scrollTo(0,0);
+    });
   });
+  window.addEventListener('hashchange',function(){
+    var h=location.hash.replace('#','');
+    if(tabs.indexOf(h)>=0){show(h);window.scrollTo(0,0);}
+  });
+  var init=location.hash.replace('#','');
+  show(tabs.indexOf(init)>=0?init:'overview');
 })();
 </script>
 </body>

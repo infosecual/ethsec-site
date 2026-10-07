@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <title>EthSec | Ethereum's defense factory</title>
 <meta name="description" content="EthSec is an independent, non-profit security lab that points flagship AI at Ethereum's most critical code. Defense-only charter, coordinated disclosure.">
 <style>
@@ -22,7 +23,24 @@
   --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
 }
-[data-theme="dark"]{
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#090d12;
+    --bg2:#0d141c;
+    --ink:#e9eff6;
+    --ink2:#c3cdd9;
+    --muted:#8a97a8;
+    --accent:#46c7d6;
+    --accent-ink:#7fdce8;
+    --line:#1f2b37;
+    --card:#111923;
+    --btn-bg:#46c7d6;
+    --btn-ink:#090d12;
+    --good:#5bc08c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
   --bg:#090d12;
   --bg2:#0d141c;
   --ink:#e9eff6;
@@ -35,6 +53,7 @@
   --btn-bg:#46c7d6;
   --btn-ink:#090d12;
   --good:#5bc08c;
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:84px}
@@ -44,20 +63,23 @@ a:hover{color:var(--ink)}
 .wrap{max-width:1040px;margin:0 auto;padding:0 28px}
 .narrow{max-width:720px}
 
-/* nav */
-nav{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}
-.navin{display:flex;align-items:center;justify-content:space-between;gap:20px;height:68px}
-.mark{font-family:var(--serif);font-size:22px;letter-spacing:.14em;font-weight:600;color:var(--ink);text-decoration:none}
+/* nav (identical on every page) */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--bg)}
+nav{background:var(--bg);border-bottom:1px solid var(--line)}
+.navin{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.mark{font-family:var(--serif);font-size:22px;letter-spacing:.14em;font-weight:600;color:var(--ink);text-decoration:none;white-space:nowrap}
 .mark span{color:var(--accent)}
-.links{display:flex;align-items:center;gap:22px;flex-wrap:wrap;justify-content:flex-end}
-.links a{font-size:14px;color:var(--ink2);text-decoration:none;letter-spacing:.02em}
-.links a:hover{color:var(--accent-ink)}
-.links a.prom{border:1px solid var(--ink);color:var(--ink);padding:6px 14px;border-radius:2px;font-weight:600}
-.links a.prom:hover{background:var(--ink);color:var(--bg)}
-.links a.prom.solid{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
-.links a.prom.solid:hover{opacity:.88;color:var(--btn-ink)}
-#tg{background:none;border:1px solid var(--line);color:var(--muted);font:inherit;font-size:12px;padding:5px 10px;border-radius:2px;cursor:pointer;letter-spacing:.06em;text-transform:uppercase}
-#tg:hover{color:var(--ink);border-color:var(--ink)}
+.links{display:flex;align-items:center;gap:8px}
+.links a{font-size:14px;color:var(--ink2);text-decoration:none;letter-spacing:.02em;border:1px solid var(--line);padding:8px 16px;border-radius:2px;white-space:nowrap;line-height:1}
+.links a:hover{color:var(--ink);border-color:var(--ink)}
+.links a[aria-current="page"]{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+.links a[aria-current="page"]:hover{color:var(--btn-ink);opacity:.9}
+@media (max-width:600px){
+  .navin{flex-direction:column;align-items:stretch;gap:12px;padding:12px 0;min-height:0}
+  .mark{align-self:flex-start}
+  .links{width:100%;gap:8px}
+  .links a{flex:1 1 0;min-width:0;text-align:center;justify-content:center;display:flex;align-items:center;padding:11px 6px;font-size:13px;min-height:44px}
+}
 
 /* type */
 h1,h2,h3{font-family:var(--serif);font-weight:500;color:var(--ink);line-height:1.2;margin:0}
@@ -147,9 +169,6 @@ img,svg,table{max-width:100%}
   .stat:nth-child(2n){border-right:0}
   .stat:nth-last-child(-n+4){border-bottom:1px solid var(--line)}
   .stat:nth-last-child(-n+2){border-bottom:0}
-  .navin{height:auto;padding:12px 0;flex-direction:column;align-items:flex-start}
-  .links{justify-content:flex-start;gap:6px 14px}
-  .links a,#tg{display:inline-flex;align-items:center;min-height:40px}
   section{padding:68px 0}
   .hero{padding:80px 0 72px}
   .steps li{grid-template-columns:52px 1fr}
@@ -170,7 +189,7 @@ img,svg,table{max-width:100%}
   .hero .wm{letter-spacing:.22em}
 }
 @media print{
-  nav,#tg,.btns{display:none}
+  nav,.btns{display:none}
   body{background:#fff;color:#000;font-size:11.5pt}
   section{padding:28px 0;break-inside:avoid}
   .hero{padding:20px 0}
@@ -182,16 +201,13 @@ img,svg,table{max-width:100%}
 </head>
 <body>
 
-<nav>
+<nav class="site-head">
   <div class="wrap navin">
-    <a class="mark" href="#top">ETH<span>SEC</span></a>
+    <a class="mark" href="index.html">ETH<span>SEC</span></a>
     <div class="links">
-      <a href="#how">How it works</a>
-      <a href="#where">Where we point</a>
+      <a href="technical.html">Technology</a>
       <a href="scope.html">Scope</a>
-      <a class="prom" href="technical.html">Technology</a>
-      <a class="prom solid" href="finance.html">Financials</a>
-      <button id="tg" type="button" aria-label="Toggle light or dark">Dark</button>
+      <a href="finance.html">Financials</a>
     </div>
   </div>
 </nav>
@@ -284,24 +300,7 @@ img,svg,table{max-width:100%}
   </div>
 </section>
 
-<section id="where">
-  <div class="wrap">
-    <p class="eyebrow">Where we point</p>
-    <h2>Breadth is the point.</h2>
-    <hr class="rule">
-    <p style="max-width:46em">Five priorities guide where the compute goes. EthSec is built to complement the Ethereum Foundation's Trillion Dollar Security initiative, not compete with it.</p>
-    <ol class="pri">
-      <li><span class="n">1</span><div><h3>The base layer</h3><p>Execution and consensus clients and the core protocol, where a flaw reaches everyone.</p></div></li>
-      <li><span class="n">2</span><div><h3>Underpriced and orphaned risk</h3><p>Code that no bounty prices and no one is assigned to read.</p></div></li>
-      <li><span class="n">3</span><div><h3>Novel recent launches</h3><p>New code, where bug density is highest.</p></div></li>
-      <li><span class="n">4</span><div><h3>Shared foundations</h3><p>Dependencies that many projects inherit, so one fix protects many.</p></div></li>
-      <li><span class="n">5</span><div><h3>Drift</h3><p>Code that has changed since its last audit.</p></div></li>
-    </ol>
-    <p class="pri-after">See the full scope: <a href="scope.html">14 domains and 411 targets, with current coverage</a>.</p>
-  </div>
-</section>
-
-<section class="alt" id="team">
+<section id="team">
   <div class="wrap">
     <p class="eyebrow">The team</p>
     <h2>Senior today, growing with the work.</h2>
@@ -351,15 +350,5 @@ img,svg,table{max-width:100%}
   </div>
 </footer>
 
-<script>
-(function(){
-  var root=document.documentElement,b=document.getElementById('tg');
-  b.addEventListener('click',function(){
-    var d=root.getAttribute('data-theme')==='dark';
-    root.setAttribute('data-theme',d?'light':'dark');
-    b.textContent=d?'Dark':'Light';
-  });
-})();
-</script>
 </body>
 </html>

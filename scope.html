@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta name="description" content="Argus scope: the proposed ecosystem scope of EthSec, with 14 domains, 411 targets, Phase 1 priorities, and the continuous review loop.">
 <title>EthSec | Argus scope</title>
 <style>
@@ -22,7 +23,24 @@
   --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
 }
-[data-theme="dark"]{
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#090d12;
+    --bg2:#0d141c;
+    --ink:#e9eff6;
+    --ink2:#c3cdd9;
+    --muted:#8a97a8;
+    --accent:#46c7d6;
+    --accent-ink:#7fdce8;
+    --line:#1f2b37;
+    --card:#111923;
+    --btn-bg:#46c7d6;
+    --btn-ink:#090d12;
+    --good:#5bc08c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
   --bg:#090d12;
   --bg2:#0d141c;
   --ink:#e9eff6;
@@ -35,6 +53,7 @@
   --btn-bg:#46c7d6;
   --btn-ink:#090d12;
   --good:#5bc08c;
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:84px}
@@ -46,20 +65,23 @@ a:hover{color:var(--ink)}
 .tnum{font-variant-numeric:tabular-nums}
 .muted{color:var(--muted)}
 
-/* nav */
-nav{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}
-.navin{display:flex;align-items:center;justify-content:space-between;gap:20px;height:68px}
-.mark{font-family:var(--serif);font-size:22px;letter-spacing:.14em;font-weight:600;color:var(--ink);text-decoration:none}
+/* nav (identical on every page) */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--bg)}
+nav{background:var(--bg);border-bottom:1px solid var(--line)}
+.navin{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.mark{font-family:var(--serif);font-size:22px;letter-spacing:.14em;font-weight:600;color:var(--ink);text-decoration:none;white-space:nowrap}
 .mark span{color:var(--accent)}
-.links{display:flex;align-items:center;gap:22px;flex-wrap:wrap;justify-content:flex-end}
-.links a{font-size:14px;color:var(--ink2);text-decoration:none;letter-spacing:.02em}
-.links a:hover{color:var(--accent-ink)}
-.links a.prom{border:1px solid var(--ink);color:var(--ink);padding:6px 14px;border-radius:2px;font-weight:600}
-.links a.prom:hover{background:var(--ink);color:var(--bg)}
-.links a.prom.solid{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
-.links a.prom.solid:hover{opacity:.88;color:var(--btn-ink)}
-#tg{background:none;border:1px solid var(--line);color:var(--muted);font:inherit;font-size:12px;padding:5px 10px;border-radius:2px;cursor:pointer;letter-spacing:.06em;text-transform:uppercase}
-#tg:hover{color:var(--ink);border-color:var(--ink)}
+.links{display:flex;align-items:center;gap:8px}
+.links a{font-size:14px;color:var(--ink2);text-decoration:none;letter-spacing:.02em;border:1px solid var(--line);padding:8px 16px;border-radius:2px;white-space:nowrap;line-height:1}
+.links a:hover{color:var(--ink);border-color:var(--ink)}
+.links a[aria-current="page"]{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+.links a[aria-current="page"]:hover{color:var(--btn-ink);opacity:.9}
+@media (max-width:600px){
+  .navin{flex-direction:column;align-items:stretch;gap:12px;padding:12px 0;min-height:0}
+  .mark{align-self:flex-start}
+  .links{width:100%;gap:8px}
+  .links a{flex:1 1 0;min-width:0;text-align:center;justify-content:center;display:flex;align-items:center;padding:11px 6px;font-size:13px;min-height:44px}
+}
 a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* type */
@@ -206,9 +228,6 @@ footer .caveat b{color:var(--ink2);font-weight:600}
   .stats{grid-template-columns:repeat(2,1fr)}
   .stat:nth-child(2n){border-right:0}
   .stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
-  .navin{height:auto;padding:12px 0;flex-direction:column;align-items:flex-start}
-  .links{justify-content:flex-start;gap:12px}
-  .links a,#tg{min-height:40px;display:inline-flex;align-items:center}
   section{padding:68px 0}
   .hero{padding:80px 0 72px}
   .radar{opacity:.2}
@@ -242,7 +261,7 @@ footer .caveat b{color:var(--ink2);font-weight:600}
   .stat{padding:22px 18px}
 }
 @media print{
-  nav,#tg,.radar{display:none}
+  nav,.radar{display:none}
   body{background:#fff;color:#000;font-size:11.5pt}
   section{padding:28px 0}
   .hero{padding:20px 0}
@@ -254,15 +273,13 @@ footer .caveat b{color:var(--ink2);font-weight:600}
 </head>
 <body>
 
-<nav>
+<nav class="site-head">
   <div class="wrap navin">
     <a class="mark" href="index.html">ETH<span>SEC</span></a>
     <div class="links">
-      <a href="index.html">Home</a>
-      <a href="scope.html">Scope</a>
-      <a class="prom" href="technical.html">Technology</a>
-      <a class="prom solid" href="finance.html">Financials</a>
-      <button id="tg" type="button" aria-label="Toggle light or dark">Dark</button>
+      <a href="technical.html">Technology</a>
+      <a href="scope.html" aria-current="page">Scope</a>
+      <a href="finance.html">Financials</a>
     </div>
   </div>
 </nav>
@@ -1015,15 +1032,5 @@ footer .caveat b{color:var(--ink2);font-weight:600}
   </div>
 </footer>
 
-<script>
-(function(){
-  var root=document.documentElement,b=document.getElementById('tg');
-  b.addEventListener('click',function(){
-    var d=root.getAttribute('data-theme')==='dark';
-    root.setAttribute('data-theme',d?'light':'dark');
-    b.textContent=d?'Dark':'Light';
-  });
-})();
-</script>
 </body>
 </html>
