@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EthSec | Ethereum's defense factory</title>
+<meta name="description" content="EthSec is an independent, non-profit security lab that points flagship AI at Ethereum's most critical code. Defense-only charter, coordinated disclosure.">
+<style>
+:root{
+  --bg:#fbfaf7;
+  --bg2:#f3f1ea;
+  --ink:#122038;
+  --ink2:#3b4860;
+  --muted:#657089;
+  --accent:#9a7b2e;
+  --accent-ink:#7a6020;
+  --line:#dcd8cb;
+  --card:#ffffff;
+  --btn-bg:#122038;
+  --btn-ink:#fbfaf7;
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#0c1627;
+  --bg2:#101c31;
+  --ink:#eae6d9;
+  --ink2:#c3c6cf;
+  --muted:#8e98ad;
+  --accent:#c4a24a;
+  --accent-ink:#d4b565;
+  --line:#25344f;
+  --card:#12203a;
+  --btn-bg:#c4a24a;
+  --btn-ink:#0c1627;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
+a{color:var(--accent-ink);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--ink)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 28px}
+.narrow{max-width:720px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}
+.navin{display:flex;align-items:center;justify-content:space-between;gap:20px;height:68px}
+.mark{font-family:var(--serif);font-size:22px;letter-spacing:.14em;font-weight:600;color:var(--ink);text-decoration:none}
+.mark span{color:var(--accent)}
+.links{display:flex;align-items:center;gap:22px;flex-wrap:wrap;justify-content:flex-end}
+.links a{font-size:14px;color:var(--ink2);text-decoration:none;letter-spacing:.02em}
+.links a:hover{color:var(--accent-ink)}
+.links a.prom{border:1px solid var(--ink);color:var(--ink);padding:6px 14px;border-radius:2px;font-weight:600}
+.links a.prom:hover{background:var(--ink);color:var(--bg)}
+.links a.prom.solid{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+.links a.prom.solid:hover{opacity:.88;color:var(--btn-ink)}
+#tg{background:none;border:1px solid var(--line);color:var(--muted);font:inherit;font-size:12px;padding:5px 10px;border-radius:2px;cursor:pointer;letter-spacing:.06em;text-transform:uppercase}
+#tg:hover{color:var(--ink);border-color:var(--ink)}
+
+/* type */
+h1,h2,h3{font-family:var(--serif);font-weight:500;color:var(--ink);line-height:1.2;margin:0}
+.eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin:0 0 18px}
+h2{font-size:clamp(28px,4vw,40px);margin-bottom:22px}
+h3{font-size:21px;margin-bottom:10px}
+p{margin:0 0 18px;color:var(--ink2)}
+section{padding:96px 0;border-top:1px solid var(--line)}
+section.alt{background:var(--bg2)}
+.rule{width:48px;height:2px;background:var(--accent);margin:0 0 26px;border:0}
+
+/* hero */
+.hero{padding:132px 0 112px;border-top:0}
+.hero h1{font-size:clamp(44px,8vw,84px);letter-spacing:-.01em;margin-bottom:28px;max-width:14ch}
+.hero .wm{font-family:var(--serif);letter-spacing:.3em;font-size:15px;color:var(--accent-ink);margin-bottom:34px;font-weight:600}
+.lede{font-size:clamp(18px,2.2vw,22px);line-height:1.6;color:var(--ink2);max-width:46em;margin-bottom:40px}
+.btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-block;padding:14px 28px;font-size:15px;font-weight:600;letter-spacing:.03em;text-decoration:none;border-radius:2px;border:1px solid var(--btn-bg)}
+.btn.p{background:var(--btn-bg);color:var(--btn-ink)}
+.btn.p:hover{opacity:.88;color:var(--btn-ink)}
+.btn.s{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn.s:hover{background:var(--ink);color:var(--bg)}
+.charter{margin-top:48px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+/* grids */
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.card{background:var(--card);border:1px solid var(--line);padding:30px 28px;border-top:2px solid var(--accent)}
+.card p{margin:0;font-size:15.5px}
+.card .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin-bottom:12px}
+
+/* steps */
+.steps{list-style:none;margin:44px 0 0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:72px 1fr;gap:8px 20px;padding:26px 0;border-top:1px solid var(--line)}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--serif);font-size:34px;color:var(--accent);line-height:1}
+.steps h3{margin:0 0 6px;font-size:20px}
+.steps p{margin:0;font-size:16px}
+.loopnote{margin-top:30px;font-size:16px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:44px 0 48px;border:1px solid var(--line);background:var(--card)}
+.stat{padding:28px 24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stat:nth-child(4n){border-right:0}
+.stat:nth-last-child(-n+4){border-bottom:0}
+.stat b{display:block;font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.1;color:var(--ink);overflow-wrap:anywhere}
+.stat span{display:block;margin-top:8px;font-size:13.5px;line-height:1.45;color:var(--muted)}
+.result{border-left:3px solid var(--accent);padding:6px 0 6px 26px;max-width:760px}
+.result .eyebrow{margin-bottom:10px}
+.result p{font-family:var(--serif);font-size:20px;line-height:1.6;color:var(--ink)}
+
+/* priorities */
+.pri{list-style:none;margin:36px 0 0;padding:0;display:grid;gap:0}
+.pri li{display:grid;grid-template-columns:44px 1fr;gap:6px 16px;padding:22px 0;border-top:1px solid var(--line)}
+.pri li:last-child{border-bottom:1px solid var(--line)}
+.pri .n{font-family:var(--serif);color:var(--accent);font-size:24px;line-height:1.3}
+.pri h3{font-size:19px;margin-bottom:4px}
+.pri p{margin:0;font-size:15.5px}
+.pri-after{margin:28px 0 0;max-width:46em}
+
+/* team */
+.disc{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:36px 0}
+.disc div{border-top:2px solid var(--accent);padding-top:16px}
+.disc h3{font-size:18px}
+.disc p{font-size:15px;margin:0}
+.person{font-family:var(--serif);font-size:26px;color:var(--ink);margin-bottom:6px}
+
+/* ask */
+.ask{background:var(--card);border:1px solid var(--line);padding:40px 38px;margin-top:34px}
+.ask .big{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:28px}
+.ask .big b{display:block;font-family:var(--serif);font-weight:500;font-size:38px;color:var(--ink);line-height:1.1}
+.ask .big span{font-size:13.5px;color:var(--muted);display:block;margin-top:6px;line-height:1.45}
+.fine{font-size:14.5px;color:var(--muted)}
+
+.closing{font-family:var(--serif);font-size:clamp(26px,4vw,38px);line-height:1.3;color:var(--ink);max-width:22em;margin:0}
+footer{border-top:1px solid var(--line);padding:40px 0 56px;font-size:13.5px;color:var(--muted)}
+.fin{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:baseline}
+footer .mark{font-size:17px}
+
+/* mobile safety: grid and flex children may shrink below their content width */
+.cols3>*,.disc>*,.ask .big>*,.steps li>*,.pri li>*,.fin>*,.stats>*{min-width:0}
+img,svg,table{max-width:100%}
+
+@media (max-width:860px){
+  .cols3,.disc,.ask .big{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(4n){border-right:1px solid var(--line)}
+  .stat:nth-child(2n){border-right:0}
+  .stat:nth-last-child(-n+4){border-bottom:1px solid var(--line)}
+  .stat:nth-last-child(-n+2){border-bottom:0}
+  .navin{height:auto;padding:12px 0;flex-direction:column;align-items:flex-start}
+  .links{justify-content:flex-start;gap:6px 14px}
+  .links a,#tg{display:inline-flex;align-items:center;min-height:40px}
+  section{padding:68px 0}
+  .hero{padding:80px 0 72px}
+  .steps li{grid-template-columns:52px 1fr}
+}
+@media (max-width:480px){
+  .wrap{padding:0 20px}
+  .stats{grid-template-columns:1fr}
+  .stat,.stat:nth-child(4n),.stat:nth-child(2n){border-right:0}
+  .stat,.stat:nth-last-child(-n+4),.stat:nth-last-child(-n+2){border-bottom:1px solid var(--line)}
+  .stat:last-child{border-bottom:0}
+  .stat{padding:22px 20px}
+  .card{padding:24px 20px}
+  .ask{padding:26px 20px}
+  .btn{display:flex;align-items:center;justify-content:center;min-height:48px;width:100%}
+  .result{padding-left:18px}
+  .result p{font-size:18px}
+  .charter{letter-spacing:.08em}
+  .hero .wm{letter-spacing:.22em}
+}
+@media print{
+  nav,#tg,.btns{display:none}
+  body{background:#fff;color:#000;font-size:11.5pt}
+  section{padding:28px 0;break-inside:avoid}
+  .hero{padding:20px 0}
+  .card,.ask,.stats{break-inside:avoid}
+  a{color:#000;text-decoration:none}
+  :root,[data-theme="dark"]{--bg:#fff;--bg2:#fff;--ink:#000;--ink2:#222;--muted:#444;--card:#fff;--line:#bbb}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap navin">
+    <a class="mark" href="#top">ETH<span>SEC</span></a>
+    <div class="links">
+      <a href="#how">How it works</a>
+      <a href="#where">Where we point</a>
+      <a href="scope.html">Scope</a>
+      <a class="prom" href="technical.html">Technology</a>
+      <a class="prom solid" href="finance.html">Financials</a>
+      <button id="tg" type="button" aria-label="Toggle light or dark">Dark</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="wm">ETHSEC</div>
+    <h1>Ethereum's defense factory.</h1>
+    <p class="lede">EthSec is an independent, non-profit security lab that points flagship AI at Ethereum's most critical code, funded or not, and turns money, compute, and expertise into found-and-fixed vulnerabilities.</p>
+    <div class="btns">
+      <a class="btn p" href="technical.html">Read the technology</a>
+      <a class="btn s" href="finance.html">Review the financials</a>
+    </div>
+    <p class="charter">Defense-only charter. Coordinated disclosure.</p>
+  </div>
+</header>
+
+<section id="why">
+  <div class="wrap narrow">
+    <p class="eyebrow">Why now</p>
+    <h2>The balance is shifting while we watch.</h2>
+    <hr class="rule">
+    <p>Large models are changing the offense-defense balance in real time, and attackers already use them. Defenders still hold a head start, but it is closing. They have direct access to their own code and to frontier models, and that advantage only lasts if it is used.</p>
+    <p>Frontier labs are beginning to open cyber-capable models to vetted teams for authorized defensive work. Token costs keep falling, so a serious budget now buys an enormous volume of review.</p>
+    <p>Crypto raises the stakes. The code is immutable, the attackers are anonymous, and a single bug can pay out all at once. Review capacity for the code Ethereum depends on should grow at the pace the threat does.</p>
+  </div>
+</section>
+
+<section class="alt" id="argus">
+  <div class="wrap">
+    <p class="eyebrow">What Argus is</p>
+    <h2>Two proven systems, unified.</h2>
+    <hr class="rule">
+    <p style="max-width:46em">Argus is the engine behind EthSec. It joins an orchestration and knowledge layer to a local-model workhorse, and runs them as one continuous-scanning, model-agnostic platform.</p>
+    <div class="cols3">
+      <div class="card">
+        <div class="k">Orchestration</div>
+        <h3>el-bigote</h3>
+        <p>The methodology and knowledge layer: 131 tools, 40+ engagements, and the full find-to-file loop, from first lead to filed report.</p>
+      </div>
+      <div class="card">
+        <div class="k">Workhorse</div>
+        <h3>dobby</h3>
+        <p>Runs open models on owned hardware for high-volume and access-restricted work, at near-zero marginal cost, and is being fine-tuned on EthSec's own Ethereum-security corpus so the local tier keeps improving.</p>
+      </div>
+      <div class="card">
+        <div class="k">Unified</div>
+        <h3>Argus</h3>
+        <p>One continuous-scanning, model-agnostic platform. Local models carry the volume; frontier models take the hardest reasoning.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <p class="eyebrow">How it works</p>
+    <h2>One continuous loop.</h2>
+    <hr class="rule">
+    <ol class="steps">
+      <li><div><h3>Inventory</h3><p>Map the code that matters, so effort follows risk instead of habit.</p></div></li>
+      <li><div><h3>Discover</h3><p>Generate issues with routed lead generation at scale, across many lenses and many models.</p></div></li>
+      <li><div><h3>Validate</h3><p>Decide which are real, using ensemble refutation, reachability analysis, differential testing, and fuzzing.</p></div></li>
+      <li><div><h3>Disclose</h3><p>Route each confirmed issue to its owner through coordinated disclosure.</p></div></li>
+      <li><div><h3>Verify the fix</h3><p>Confirm the fix closed the issue, then begin again.</p></div></li>
+    </ol>
+    <p class="loopnote">Argus picks the best model for each task from any provider and routes by measured recall and cost. It reviews each change as it lands. Senior researchers verify and file. Nothing ships on a model's say-so.</p>
+  </div>
+</section>
+
+<section class="alt" id="proof">
+  <div class="wrap">
+    <p class="eyebrow">Proof it runs</p>
+    <h2>A working reference implementation, not a plan.</h2>
+    <hr class="rule">
+    <div class="stats">
+      <div class="stat"><b>40+</b><span>engagements tracked</span></div>
+      <div class="stat"><b>14</b><span>ecosystem domains mapped, base layer through governance</span></div>
+      <div class="stat"><b>411</b><span>targets inventoried with current coverage state</span></div>
+      <div class="stat"><b>4</b><span>completed audits: Aztec, EigenLayer, Geth, and Monad</span></div>
+      <div class="stat"><b>80+</b><span>ecosystem targets scaffolded and ready to scan</span></div>
+      <div class="stat"><b>131</b><span>tools in the platform</span></div>
+      <div class="stat"><b>Growing</b><span>lens library and knowledge base</span></div>
+      <div class="stat"><b>Compounding</b><span>refuted-memory store, so each hunt is cheaper and deeper than the last</span></div>
+    </div>
+    <div class="result">
+      <p class="eyebrow">One concrete result</p>
+      <p>On a derivatives exchange module, the funnel rediscovered a confirmed High-severity bug and surfaced a novel divide-by-zero. The frontier model read about five functions instead of a 134-file module. Lead generation took roughly 115k local tokens and near-zero frontier spend.</p>
+    </div>
+  </div>
+</section>
+
+<section id="where">
+  <div class="wrap">
+    <p class="eyebrow">Where we point</p>
+    <h2>Breadth is the point.</h2>
+    <hr class="rule">
+    <p style="max-width:46em">Five priorities guide where the compute goes. EthSec is built to complement the Ethereum Foundation's Trillion Dollar Security initiative, not compete with it.</p>
+    <ol class="pri">
+      <li><span class="n">1</span><div><h3>The base layer</h3><p>Execution and consensus clients and the core protocol, where a flaw reaches everyone.</p></div></li>
+      <li><span class="n">2</span><div><h3>Underpriced and orphaned risk</h3><p>Code that no bounty prices and no one is assigned to read.</p></div></li>
+      <li><span class="n">3</span><div><h3>Novel recent launches</h3><p>New code, where bug density is highest.</p></div></li>
+      <li><span class="n">4</span><div><h3>Shared foundations</h3><p>Dependencies that many projects inherit, so one fix protects many.</p></div></li>
+      <li><span class="n">5</span><div><h3>Drift</h3><p>Code that has changed since its last audit.</p></div></li>
+    </ol>
+    <p class="pri-after">See the full scope: <a href="scope.html">14 domains and 411 targets, with current coverage</a>.</p>
+  </div>
+</section>
+
+<section class="alt" id="team">
+  <div class="wrap">
+    <p class="eyebrow">The team</p>
+    <h2>Senior today, growing with the work.</h2>
+    <hr class="rule">
+    <div class="person">David Theodore</div>
+    <p style="max-width:46em">Founder and lead. His career spans the three disciplines this work demands.</p>
+    <div class="disc">
+      <div><h3>Offense</h3><p>Offensive security for the US national security community (IC and DoD).</p></div>
+      <div><h3>Scale</h3><p>Security engineering at scale at Google.</p></div>
+      <div><h3>Protocol</h3><p>A founding member of the Ethereum Foundation's Protocol Security Team.</p></div>
+    </div>
+    <p style="max-width:46em">The team starts with two senior researchers, the founder and one hire, both from month one. A small analyst bench, much less expensive per head, handles bug-filing operations and reporting throughput. A third senior researcher is added once bounty income and donations are flowing, funded by results rather than by the raise.</p>
+  </div>
+</section>
+
+<section id="ask">
+  <div class="wrap">
+    <p class="eyebrow">The ask</p>
+    <h2>A two-year program, mostly compute.</h2>
+    <hr class="rule">
+    <p style="max-width:46em">EthSec is a non-profit with an initial two-year budget of about $10M in donations. Compute is the bulk of the cost, most of it frontier tokens. Donated model credits and bounty winnings recycled as compute credits offset it.</p>
+    <div class="ask">
+      <div class="big">
+        <div><b>~$10M</b><span>initial two-year budget, in donations</span></div>
+        <div><b>~$6.6M</b><span>net cash required over two years, base case</span></div>
+        <div><b>~1 year</b><span>of additional runway beyond that</span></div>
+      </div>
+      <p>Bug bounties make the effort trend toward self-funding. Winnings revolve back into compute and headcount, and they never choose what to hunt.</p>
+      <p>EthSec also acts as an allocation hub. It accepts money, model credits, or an auditor's lens, and multiplies each into far more found-and-fixed risk than the contributor could fund alone.</p>
+      <p>Compute is held as one class on purpose: frontier tokens, owned hardware, and benchmarking, reallocated on measured capability rather than a fixed ratio, because hardware against tokens and the frontier models themselves move fast.</p>
+      <p style="margin-bottom:26px"><a href="finance.html"><strong>See the full financial model on the Financials page</strong></a></p>
+      <p class="fine" style="margin:0">Finance detail is shared separately with prospective funders. A for-profit subsidiary wholly owned by the non-profit, licensing its IP for commercial use, is an option under review.</p>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <p class="closing">Defenders have a head start. EthSec is how it gets spent well.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap fin">
+    <div><a class="mark" href="#top">ETH<span>SEC</span></a> <span style="margin-left:12px">ethsecurity.org</span></div>
+    <div>Internal, for discussion, 2026</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement,b=document.getElementById('tg');
+  b.addEventListener('click',function(){
+    var d=root.getAttribute('data-theme')==='dark';
+    root.setAttribute('data-theme',d?'light':'dark');
+    b.textContent=d?'Dark':'Light';
+  });
+})();
+</script>
+</body>
+</html>
