@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>EthSec | Το εργοστάσιο άμυνας του Ethereum</title>
+<meta name="description" content="Το EthSec είναι ένα ανεξάρτητο, μη κερδοσκοπικό εργαστήριο ασφάλειας που στρέφει κορυφαία τεχνητή νοημοσύνη στον πιο κρίσιμο κώδικα του Ethereum. Καταστατικός χάρτης αποκλειστικά αμυντικού χαρακτήρα, συντονισμένη γνωστοποίηση.">
+<style>
+:root{
+  --bg:#eef1f5;
+  --bg2:#e7ecf2;
+  --ink:#0d1620;
+  --ink2:#2b3744;
+  --muted:#5a6778;
+  --accent:#0d7a8a;
+  --accent-ink:#0a6170;
+  --line:#d4dbe4;
+  --card:#ffffff;
+  --btn-bg:#0a6170;
+  --btn-ink:#ffffff;
+  --good:#1d7a4f;
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#090d12;
+    --bg2:#0d141c;
+    --ink:#e9eff6;
+    --ink2:#c3cdd9;
+    --muted:#8a97a8;
+    --accent:#46c7d6;
+    --accent-ink:#7fdce8;
+    --line:#1f2b37;
+    --card:#111923;
+    --btn-bg:#46c7d6;
+    --btn-ink:#090d12;
+    --good:#5bc08c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#090d12;
+  --bg2:#0d141c;
+  --ink:#e9eff6;
+  --ink2:#c3cdd9;
+  --muted:#8a97a8;
+  --accent:#46c7d6;
+  --accent-ink:#7fdce8;
+  --line:#1f2b37;
+  --card:#111923;
+  --btn-bg:#46c7d6;
+  --btn-ink:#090d12;
+  --good:#5bc08c;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
+a{color:var(--accent-ink);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--ink)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 28px}
+.narrow{max-width:720px}
+
+/* nav (identical on every page) */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--bg)}
+nav{background:var(--bg);border-bottom:1px solid var(--line)}
+.navin{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.mark{font-family:var(--serif);font-size:22px;letter-spacing:.14em;font-weight:600;color:var(--ink);text-decoration:none;white-space:nowrap}
+.mark span{color:var(--accent)}
+.links{display:flex;align-items:center;gap:8px}
+.links a{font-size:14px;color:var(--ink2);text-decoration:none;letter-spacing:.02em;border:1px solid var(--line);padding:8px 16px;border-radius:2px;white-space:nowrap;line-height:1}
+.links a:hover{color:var(--ink);border-color:var(--ink)}
+.links a[aria-current="page"]{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+.links a[aria-current="page"]:hover{color:var(--btn-ink);opacity:.9}
+@media (max-width:600px){
+  .navin{flex-direction:column;align-items:stretch;gap:12px;padding:12px 0;min-height:0}
+  .mark{align-self:flex-start}
+  .links{width:100%;gap:8px}
+  .links a{flex:1 1 0;min-width:0;text-align:center;justify-content:center;display:flex;align-items:center;padding:11px 6px;font-size:13px;min-height:44px}
+}
+
+/* type */
+h1,h2,h3{font-family:var(--serif);font-weight:500;color:var(--ink);line-height:1.2;margin:0}
+.eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin:0 0 18px}
+h2{font-size:clamp(28px,4vw,40px);margin-bottom:22px}
+h3{font-size:21px;margin-bottom:10px}
+p{margin:0 0 18px;color:var(--ink2)}
+section{padding:96px 0;border-top:1px solid var(--line)}
+section.alt{background:var(--bg2)}
+.rule{width:48px;height:2px;background:var(--accent);margin:0 0 26px;border:0}
+
+/* hero */
+.hero{padding:132px 0 112px;border-top:0}
+.hero h1{font-size:clamp(44px,8vw,84px);letter-spacing:-.01em;margin-bottom:28px;max-width:14ch}
+.hero .wm{font-family:var(--serif);letter-spacing:.3em;font-size:15px;color:var(--accent-ink);margin-bottom:34px;font-weight:600}
+.lede{font-size:clamp(18px,2.2vw,22px);line-height:1.6;color:var(--ink2);max-width:46em;margin-bottom:40px}
+.btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-block;padding:14px 28px;font-size:15px;font-weight:600;letter-spacing:.03em;text-decoration:none;border-radius:2px;border:1px solid var(--btn-bg)}
+.btn.p{background:var(--btn-bg);color:var(--btn-ink)}
+.btn.p:hover{opacity:.88;color:var(--btn-ink)}
+.btn.s{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn.s:hover{background:var(--ink);color:var(--bg)}
+.charter{margin-top:48px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+/* grids */
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.card{background:var(--card);border:1px solid var(--line);padding:30px 28px;border-top:2px solid var(--accent)}
+.card p{margin:0;font-size:15.5px}
+.card .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin-bottom:12px}
+
+/* steps */
+.steps{list-style:none;margin:44px 0 0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:72px 1fr;gap:8px 20px;padding:26px 0;border-top:1px solid var(--line)}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--serif);font-size:34px;color:var(--accent);line-height:1}
+.steps h3{margin:0 0 6px;font-size:20px}
+.steps p{margin:0;font-size:16px}
+.loopnote{margin-top:30px;font-size:16px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:44px 0 48px;border:1px solid var(--line);background:var(--card)}
+.stat{padding:28px 24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stat:nth-child(4n){border-right:0}
+.stat:nth-last-child(-n+4){border-bottom:0}
+.stat b{display:block;font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.1;color:var(--ink);overflow-wrap:anywhere}
+.stat span{display:block;margin-top:8px;font-size:13.5px;line-height:1.45;color:var(--muted)}
+.result{border-left:3px solid var(--accent);padding:6px 0 6px 26px;max-width:760px}
+.result .eyebrow{margin-bottom:10px}
+.result p{font-family:var(--serif);font-size:20px;line-height:1.6;color:var(--ink)}
+
+/* priorities */
+.pri{list-style:none;margin:36px 0 0;padding:0;display:grid;gap:0}
+.pri li{display:grid;grid-template-columns:44px 1fr;gap:6px 16px;padding:22px 0;border-top:1px solid var(--line)}
+.pri li:last-child{border-bottom:1px solid var(--line)}
+.pri .n{font-family:var(--serif);color:var(--accent);font-size:24px;line-height:1.3}
+.pri h3{font-size:19px;margin-bottom:4px}
+.pri p{margin:0;font-size:15.5px}
+.pri-after{margin:28px 0 0;max-width:46em}
+
+/* team */
+.disc{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:36px 0}
+.disc div{border-top:2px solid var(--accent);padding-top:16px}
+.disc h3{font-size:18px}
+.disc p{font-size:15px;margin:0}
+.person{font-family:var(--serif);font-size:26px;color:var(--ink);margin-bottom:6px}
+
+/* ask */
+.ask{background:var(--card);border:1px solid var(--line);padding:40px 38px;margin-top:34px}
+.ask .big{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:28px}
+.ask .big b{display:block;font-family:var(--serif);font-weight:500;font-size:38px;color:var(--ink);line-height:1.1}
+.ask .big span{font-size:13.5px;color:var(--muted);display:block;margin-top:6px;line-height:1.45}
+.fine{font-size:14.5px;color:var(--muted)}
+
+.closing{font-family:var(--serif);font-size:clamp(26px,4vw,38px);line-height:1.3;color:var(--ink);max-width:22em;margin:0}
+footer{border-top:1px solid var(--line);padding:40px 0 56px;font-size:13.5px;color:var(--muted)}
+.fin{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:baseline}
+footer .mark{font-size:17px}
+
+/* mobile safety: grid and flex children may shrink below their content width */
+.cols3>*,.disc>*,.ask .big>*,.steps li>*,.pri li>*,.fin>*,.stats>*{min-width:0}
+img,svg,table{max-width:100%}
+
+@media (max-width:860px){
+  .cols3,.disc,.ask .big{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(4n){border-right:1px solid var(--line)}
+  .stat:nth-child(2n){border-right:0}
+  .stat:nth-last-child(-n+4){border-bottom:1px solid var(--line)}
+  .stat:nth-last-child(-n+2){border-bottom:0}
+  section{padding:68px 0}
+  .hero{padding:80px 0 72px}
+  .steps li{grid-template-columns:52px 1fr}
+}
+@media (max-width:480px){
+  .wrap{padding:0 20px}
+  .stats{grid-template-columns:1fr}
+  .stat,.stat:nth-child(4n),.stat:nth-child(2n){border-right:0}
+  .stat,.stat:nth-last-child(-n+4),.stat:nth-last-child(-n+2){border-bottom:1px solid var(--line)}
+  .stat:last-child{border-bottom:0}
+  .stat{padding:22px 20px}
+  .card{padding:24px 20px}
+  .ask{padding:26px 20px}
+  .btn{display:flex;align-items:center;justify-content:center;min-height:48px;width:100%}
+  .result{padding-left:18px}
+  .result p{font-size:18px}
+  .charter{letter-spacing:.08em}
+  .hero .wm{letter-spacing:.22em}
+}
+@media print{
+  nav,.btns{display:none}
+  body{background:#fff;color:#000;font-size:11.5pt}
+  section{padding:28px 0;break-inside:avoid}
+  .hero{padding:20px 0}
+  .card,.ask,.stats{break-inside:avoid}
+  a{color:#000;text-decoration:none}
+  :root,[data-theme="dark"]{--bg:#fff;--bg2:#fff;--ink:#000;--ink2:#222;--muted:#444;--card:#fff;--line:#bbb}
+}
+</style>
+</head>
+<body>
+
+<nav class="site-head">
+  <div class="wrap navin">
+    <a class="mark" href="index.html">ETH<span>SEC</span></a>
+    <div class="links">
+      <a href="technical.html">Τεχνολογία</a>
+      <a href="scope.html">Πεδίο</a>
+      <a href="finance.html">Οικονομικά</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="wm">ETHSEC</div>
+    <h1>Το εργοστάσιο άμυνας του Ethereum.</h1>
+    <p class="lede">Το EthSec είναι ένα ανεξάρτητο, μη κερδοσκοπικό εργαστήριο ασφάλειας που στρέφει κορυφαία τεχνητή νοημοσύνη στον πιο κρίσιμο κώδικα του Ethereum, με ή χωρίς χρηματοδότηση, και μετατρέπει χρήματα, υπολογιστική ισχύ και εξειδίκευση σε ευπάθειες που εντοπίζονται και διορθώνονται.</p>
+    <div class="btns">
+      <a class="btn p" href="technical.html">Διαβάστε για την τεχνολογία</a>
+      <a class="btn s" href="finance.html">Δείτε τα οικονομικά</a>
+    </div>
+    <p class="charter">Καταστατικός χάρτης αποκλειστικά αμυντικού χαρακτήρα. Συντονισμένη γνωστοποίηση.</p>
+  </div>
+</header>
+
+<section id="why">
+  <div class="wrap narrow">
+    <p class="eyebrow">Γιατί τώρα</p>
+    <h2>Η ισορροπία μετατοπίζεται την ώρα που παρακολουθούμε.</h2>
+    <hr class="rule">
+    <p>Τα μεγάλα μοντέλα αλλάζουν σε πραγματικό χρόνο την ισορροπία μεταξύ επίθεσης και άμυνας, και οι επιτιθέμενοι τα χρησιμοποιούν ήδη. Οι αμυνόμενοι διατηρούν ακόμη προβάδισμα, αλλά αυτό κλείνει. Έχουν άμεση πρόσβαση στον δικό τους κώδικα και στα μοντέλα αιχμής, και το πλεονέκτημα αυτό διαρκεί μόνο εφόσον αξιοποιείται.</p>
+    <p>Τα κορυφαία εργαστήρια αρχίζουν να ανοίγουν μοντέλα με ικανότητες στον τομέα της κυβερνοασφάλειας σε εξακριβωμένες ομάδες για εξουσιοδοτημένο αμυντικό έργο. Το κόστος των tokens συνεχίζει να μειώνεται, επομένως ένας σοβαρός προϋπολογισμός αγοράζει πλέον τεράστιο όγκο ελέγχου κώδικα.</p>
+    <p>Τα κρυπτονομίσματα ανεβάζουν τα διακυβεύματα. Ο κώδικας είναι αμετάβλητος, οι επιτιθέμενοι ανώνυμοι, και ένα μεμονωμένο σφάλμα μπορεί να εκταμιεύσει τα πάντα με τη μία. Η δυναμικότητα ελέγχου για τον κώδικα από τον οποίο εξαρτάται το Ethereum οφείλει να αυξάνεται με τον ρυθμό της απειλής.</p>
+  </div>
+</section>
+
+<section class="alt" id="argus">
+  <div class="wrap">
+    <p class="eyebrow">Τι είναι το Argus</p>
+    <h2>Δύο αποδεδειγμένα συστήματα, ενοποιημένα.</h2>
+    <hr class="rule">
+    <p style="max-width:46em">Το Argus είναι η μηχανή πίσω από το EthSec. Συνδέει ένα επίπεδο ενορχήστρωσης και γνώσης με έναν «φορέα εργασίας» τοπικών μοντέλων, και τα λειτουργεί ως μία πλατφόρμα συνεχούς σάρωσης, ανεξάρτητη από τον πάροχο μοντέλων.</p>
+    <div class="cols3">
+      <div class="card">
+        <div class="k">Ενορχήστρωση</div>
+        <h3>el-bigote</h3>
+        <p>Το επίπεδο μεθοδολογίας και γνώσης: 131 εργαλεία, 40+ αναθέσεις και ο πλήρης κύκλος από τον εντοπισμό έως την υποβολή, από το πρώτο ίχνος (lead) έως την κατατεθειμένη αναφορά.</p>
+      </div>
+      <div class="card">
+        <div class="k">Φορέας εργασίας</div>
+        <h3>dobby</h3>
+        <p>Εκτελεί ανοιχτά μοντέλα σε ιδιόκτητο υλικό για εργασίες μεγάλου όγκου και περιορισμένης πρόσβασης, με σχεδόν μηδενικό οριακό κόστος, και βελτιστοποιείται (fine-tuning) στο δικό του σώμα δεδομένων του EthSec για την ασφάλεια του Ethereum, ώστε το τοπικό επίπεδο να συνεχίζει να βελτιώνεται.</p>
+      </div>
+      <div class="card">
+        <div class="k">Ενοποιημένο</div>
+        <h3>Argus</h3>
+        <p>Μία πλατφόρμα συνεχούς σάρωσης, ανεξάρτητη από τον πάροχο μοντέλων. Τα τοπικά μοντέλα αναλαμβάνουν τον όγκο· τα μοντέλα αιχμής αναλαμβάνουν την πιο απαιτητική συλλογιστική.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <p class="eyebrow">Πώς λειτουργεί</p>
+    <h2>Ένας διαρκής κύκλος.</h2>
+    <hr class="rule">
+    <ol class="steps">
+      <li><div><h3>Καταγραφή</h3><p>Χαρτογράφηση του κώδικα που έχει σημασία, ώστε η προσπάθεια να ακολουθεί τον κίνδυνο και όχι τη συνήθεια.</p></div></li>
+      <li><div><h3>Ανακάλυψη</h3><p>Παραγωγή υποψήφιων ζητημάτων με δρομολογημένη παραγωγή leads σε κλίμακα, μέσα από πολλούς φακούς (lenses) και πολλά μοντέλα.</p></div></li>
+      <li><div><h3>Επικύρωση</h3><p>Διάκριση των πραγματικών ζητημάτων με συνδυασμένη διάψευση από σύνολο μοντέλων (ensemble refutation), ανάλυση προσβασιμότητας, διαφορική δοκιμή και fuzzing.</p></div></li>
+      <li><div><h3>Γνωστοποίηση</h3><p>Δρομολόγηση κάθε επιβεβαιωμένου ζητήματος στον υπεύθυνο του, μέσω συντονισμένης γνωστοποίησης.</p></div></li>
+      <li><div><h3>Επαλήθευση της διόρθωσης</h3><p>Επιβεβαίωση ότι η διόρθωση έκλεισε το ζήτημα, και νέα έναρξη του κύκλου.</p></div></li>
+    </ol>
+    <p class="loopnote">Το Argus επιλέγει το καλύτερο μοντέλο για κάθε εργασία από οποιονδήποτε πάροχο και δρομολογεί με βάση τη μετρημένη ανάκληση (recall) και το κόστος. Ελέγχει κάθε αλλαγή καθώς ενσωματώνεται. Έμπειροι ερευνητές επαληθεύουν και υποβάλλουν. Τίποτα δεν προωθείται με μόνη την εγγύηση ενός μοντέλου.</p>
+  </div>
+</section>
+
+<section class="alt" id="proof">
+  <div class="wrap">
+    <p class="eyebrow">Απόδειξη λειτουργίας</p>
+    <h2>Μια λειτουργική υλοποίηση αναφοράς, όχι ένα σχέδιο.</h2>
+    <hr class="rule">
+    <div class="stats">
+      <div class="stat"><b>40+</b><span>αναθέσεις υπό παρακολούθηση</span></div>
+      <div class="stat"><b>14</b><span>τομείς του οικοσυστήματος χαρτογραφημένοι, από το βασικό επίπεδο έως τη διακυβέρνηση</span></div>
+      <div class="stat"><b>411</b><span>στόχοι καταγεγραμμένοι με την τρέχουσα κατάσταση κάλυψης</span></div>
+      <div class="stat"><b>4</b><span>ολοκληρωμένοι έλεγχοι: Aztec, EigenLayer, Geth και Monad</span></div>
+      <div class="stat"><b>80+</b><span>στόχοι του οικοσυστήματος προετοιμασμένοι και έτοιμοι για σάρωση</span></div>
+      <div class="stat"><b>131</b><span>εργαλεία στην πλατφόρμα</span></div>
+      <div class="stat"><b>Αυξανόμενη</b><span>βιβλιοθήκη φακών (lenses) και βάση γνώσης</span></div>
+      <div class="stat"><b>Σωρευτικό</b><span>αποθετήριο διαψευσμένων υποθέσεων, ώστε κάθε αναζήτηση να είναι φθηνότερη και βαθύτερη από την προηγούμενη</span></div>
+    </div>
+    <div class="result">
+      <p class="eyebrow">Ένα συγκεκριμένο αποτέλεσμα</p>
+      <p>Σε μια ενότητα ανταλλακτηρίου παραγώγων, η διοχέτευση (funnel) ανακάλυψε εκ νέου ένα επιβεβαιωμένο σφάλμα υψηλής σοβαρότητας και έφερε στο φως μια νέα διαίρεση με το μηδέν. Το μοντέλο αιχμής διάβασε περίπου πέντε συναρτήσεις αντί για μια ενότητα 134 αρχείων. Η παραγωγή leads απαίτησε περίπου 115k τοπικά tokens και σχεδόν μηδενική δαπάνη σε μοντέλα αιχμής.</p>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="wrap">
+    <p class="eyebrow">Η ομάδα</p>
+    <h2>Έμπειρη σήμερα, αναπτύσσεται με το έργο.</h2>
+    <hr class="rule">
+    <div class="person">David Theodore</div>
+    <p style="max-width:46em">Ιδρυτής και επικεφαλής. Η σταδιοδρομία του καλύπτει τους τρεις τομείς που απαιτεί αυτό το έργο.</p>
+    <div class="disc">
+      <div><h3>Επίθεση</h3><p>Επιθετική ασφάλεια για την κοινότητα εθνικής ασφάλειας των ΗΠΑ (IC και DoD).</p></div>
+      <div><h3>Κλίμακα</h3><p>Μηχανική ασφάλειας σε μεγάλη κλίμακα στη Google.</p></div>
+      <div><h3>Πρωτόκολλο</h3><p>Ιδρυτικό μέλος της Protocol Security Team του Ethereum Foundation.</p></div>
+    </div>
+    <p style="max-width:46em">Η ομάδα ξεκινά με δύο έμπειρους ερευνητές, τον ιδρυτή και μία πρόσληψη, και τους δύο από τον πρώτο μήνα. Μια μικρή ομάδα αναλυτών, με πολύ χαμηλότερο κόστος ανά άτομο, αναλαμβάνει τις διαδικασίες υποβολής σφαλμάτων και τη ροή των αναφορών. Ένας τρίτος έμπειρος ερευνητής προστίθεται όταν τα έσοδα από bounties και οι δωρεές αρχίσουν να ρέουν, χρηματοδοτούμενος από τα αποτελέσματα και όχι από την άντληση κεφαλαίων.</p>
+  </div>
+</section>
+
+<section id="ask">
+  <div class="wrap">
+    <p class="eyebrow">Το αίτημα</p>
+    <h2>Ένα διετές πρόγραμμα, κυρίως υπολογιστική ισχύς.</h2>
+    <hr class="rule">
+    <p style="max-width:46em">Το EthSec είναι μη κερδοσκοπικός οργανισμός με αρχικό διετή προϋπολογισμό περίπου $10M σε δωρεές. Η υπολογιστική ισχύς αποτελεί το μεγαλύτερο μέρος του κόστους, κυρίως σε tokens μοντέλων αιχμής. Το αντισταθμίζουν οι δωρεές πιστώσεων μοντέλων και τα κέρδη από bounties που επανατοποθετούνται ως πιστώσεις υπολογιστικής ισχύος.</p>
+    <div class="ask">
+      <div class="big">
+        <div><b>~$10M</b><span>αρχικός διετής προϋπολογισμός, σε δωρεές</span></div>
+        <div><b>~$6.6M</b><span>καθαρά μετρητά που απαιτούνται σε δύο έτη, βασικό σενάριο</span></div>
+        <div><b>~1 έτος</b><span>πρόσθετης αυτονομίας πέραν αυτού</span></div>
+      </div>
+      <p>Τα bug bounties οδηγούν την προσπάθεια προς την αυτοχρηματοδότηση. Τα κέρδη επιστρέφουν σε υπολογιστική ισχύ και προσωπικό, και δεν καθορίζουν ποτέ τι θα αναζητηθεί.</p>
+      <p>Το EthSec λειτουργεί επίσης ως κόμβος κατανομής. Δέχεται χρήματα, πιστώσεις μοντέλων ή τον φακό (lens) ενός ελεγκτή, και πολλαπλασιάζει κάθε συνεισφορά σε πολύ περισσότερο εντοπισμένο και διορθωμένο κίνδυνο από όσο θα μπορούσε να χρηματοδοτήσει μόνος του ο συνεισφέρων.</p>
+      <p>Η υπολογιστική ισχύς αντιμετωπίζεται σκόπιμα ως μία κατηγορία: tokens μοντέλων αιχμής, ιδιόκτητο υλικό και συγκριτική αξιολόγηση (benchmarking), με ανακατανομή βάσει μετρημένης ικανότητας και όχι σταθερής αναλογίας, επειδή το υλικό έναντι των tokens και τα ίδια τα μοντέλα αιχμής εξελίσσονται ταχύτατα.</p>
+      <p style="margin-bottom:26px"><a href="finance.html"><strong>Δείτε το πλήρες οικονομικό μοντέλο στη σελίδα Οικονομικά</strong></a></p>
+      <p class="fine" style="margin:0">Τα οικονομικά στοιχεία κοινοποιούνται χωριστά σε υποψήφιους χρηματοδότες. Μια κερδοσκοπική θυγατρική εξ ολοκλήρου ιδιοκτησίας του μη κερδοσκοπικού οργανισμού, η οποία θα παραχωρεί άδεια χρήσης της πνευματικής ιδιοκτησίας του για εμπορική αξιοποίηση, αποτελεί επιλογή υπό εξέταση.</p>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <p class="closing">Οι αμυνόμενοι έχουν προβάδισμα. Το EthSec είναι ο τρόπος να αξιοποιηθεί σωστά.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap fin">
+    <div><a class="mark" href="#top">ETH<span>SEC</span></a> <span style="margin-left:12px">ethsecurity.org</span></div>
+    <div>Θωράκιση του οικοσυστήματος του Ethereum.</div>
+  </div>
+</footer>
+
+</body>
+</html>

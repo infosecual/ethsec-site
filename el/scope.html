@@ -1,0 +1,1036 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="description" content="Πεδίο του Argus: το προτεινόμενο πεδίο οικοσυστήματος του EthSec, με 14 τομείς, 411 στόχους, προτεραιότητες της Φάσης 1 και τον συνεχή βρόχο ελέγχου.">
+<title>EthSec | Πεδίο του Argus</title>
+<style>
+:root{
+  --bg:#eef1f5;
+  --bg2:#e7ecf2;
+  --ink:#0d1620;
+  --ink2:#2b3744;
+  --muted:#5a6778;
+  --accent:#0d7a8a;
+  --accent-ink:#0a6170;
+  --line:#d4dbe4;
+  --card:#ffffff;
+  --btn-bg:#0a6170;
+  --btn-ink:#ffffff;
+  --good:#1d7a4f;
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#090d12;
+    --bg2:#0d141c;
+    --ink:#e9eff6;
+    --ink2:#c3cdd9;
+    --muted:#8a97a8;
+    --accent:#46c7d6;
+    --accent-ink:#7fdce8;
+    --line:#1f2b37;
+    --card:#111923;
+    --btn-bg:#46c7d6;
+    --btn-ink:#090d12;
+    --good:#5bc08c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#090d12;
+  --bg2:#0d141c;
+  --ink:#e9eff6;
+  --ink2:#c3cdd9;
+  --muted:#8a97a8;
+  --accent:#46c7d6;
+  --accent-ink:#7fdce8;
+  --line:#1f2b37;
+  --card:#111923;
+  --btn-bg:#46c7d6;
+  --btn-ink:#090d12;
+  --good:#5bc08c;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{overflow-x:hidden;margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--accent-ink);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--ink)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 28px}
+.narrow{max-width:720px}
+.tnum{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+
+/* nav (identical on every page) */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--bg)}
+nav{background:var(--bg);border-bottom:1px solid var(--line)}
+.navin{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.mark{font-family:var(--serif);font-size:22px;letter-spacing:.14em;font-weight:600;color:var(--ink);text-decoration:none;white-space:nowrap}
+.mark span{color:var(--accent)}
+.links{display:flex;align-items:center;gap:8px}
+.links a{font-size:14px;color:var(--ink2);text-decoration:none;letter-spacing:.02em;border:1px solid var(--line);padding:8px 16px;border-radius:2px;white-space:nowrap;line-height:1}
+.links a:hover{color:var(--ink);border-color:var(--ink)}
+.links a[aria-current="page"]{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+.links a[aria-current="page"]:hover{color:var(--btn-ink);opacity:.9}
+@media (max-width:600px){
+  .navin{flex-direction:column;align-items:stretch;gap:12px;padding:12px 0;min-height:0}
+  .mark{align-self:flex-start}
+  .links{width:100%;gap:8px}
+  .links a{flex:1 1 0;min-width:0;text-align:center;justify-content:center;display:flex;align-items:center;padding:11px 6px;font-size:13px;min-height:44px}
+}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* type */
+h1,h2,h3{font-family:var(--serif);font-weight:500;color:var(--ink);line-height:1.2;margin:0}
+.eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin:0 0 18px}
+h2{font-size:clamp(28px,4vw,40px);margin-bottom:22px}
+h3{font-size:21px;margin-bottom:10px}
+p{margin:0 0 18px;color:var(--ink2)}
+section{padding:96px 0;border-top:1px solid var(--line)}
+section.alt{background:var(--bg2)}
+.rule{width:48px;height:2px;background:var(--accent);margin:0 0 26px;border:0}
+
+/* section header */
+.sec-head{margin-bottom:36px}
+.sec-head h2{margin-bottom:18px}
+.sec-head p:last-child{margin-bottom:0;max-width:46em}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding:132px 0 112px;border-top:0}
+.hero .wrap{position:relative;z-index:2}
+.hero h1{font-size:clamp(44px,8vw,84px);letter-spacing:-.01em;margin-bottom:14px}
+.hero .tag{font-family:var(--serif);font-size:clamp(20px,3vw,28px);color:var(--accent-ink);margin-bottom:28px}
+.lede{font-size:clamp(18px,2.2vw,22px);line-height:1.6;color:var(--ink2);max-width:46em;margin-bottom:34px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:8px 24px;margin:0;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.hero .meta span{display:inline-flex;align-items:center;gap:8px;min-width:0}
+.hero .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:0 0 auto}
+.radar{position:absolute;inset:0;z-index:1;pointer-events:none;display:flex;justify-content:flex-end;align-items:center;opacity:.4}
+.radar svg{width:min(560px,70vw);height:auto;transform:translateX(16%)}
+.ring{fill:none;stroke:var(--accent);stroke-width:1;opacity:.35}
+.sweep{transform-origin:center;animation:spin 7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.sweep{animation:none}}
+
+/* mission commitments (cards) */
+.commit{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:8px}
+.commit .c{background:var(--card);border:1px solid var(--line);border-top:2px solid var(--accent);padding:30px 28px;min-width:0}
+.commit .c .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin-bottom:12px}
+.commit .c h3{font-size:19px;margin-bottom:10px}
+.commit .c p{margin:0;font-size:15.5px}
+
+/* chart */
+.chart{background:var(--card);border:1px solid var(--line);border-top:2px solid var(--accent);padding:28px 28px 22px}
+.chart .ctitle{font-family:var(--serif);font-size:20px;color:var(--ink)}
+.chart .csub{font-size:13px;color:var(--muted);margin:4px 0 22px}
+.bars{display:flex;flex-direction:column;gap:12px}
+.brow{display:grid;grid-template-columns:150px minmax(0,1fr) 56px;gap:14px;align-items:center}
+.brow .blabel{font-size:14.5px;font-weight:600;text-align:right;line-height:1.3;color:var(--ink);min-width:0}
+.brow .blabel .bm{display:block;font-size:10.5px;font-weight:400;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.track{position:relative;height:22px;background:var(--bg2);border:1px solid var(--line);min-width:0}
+.fill{position:absolute;inset:0 auto 0 0;height:100%;background:var(--accent);min-width:4px}
+.bval{font-family:var(--serif);font-size:17px;color:var(--ink);text-align:right}
+.chart .foot{font-size:13px;line-height:1.55;color:var(--muted);margin:22px 0 0;border-top:1px solid var(--line);padding-top:14px}
+
+/* coverage grid */
+.cov{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.dom{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;align-items:start;background:var(--card);border:1px solid var(--line);padding:18px 20px;min-width:0}
+.dom .n{font-family:var(--serif);font-size:18px;line-height:1.3;color:var(--ink);min-width:0}
+.dom .fig{font-size:13.5px;line-height:1.5;color:var(--muted);grid-column:1/2;min-width:0}
+.chip{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:2px;white-space:nowrap;align-self:start;border:1px solid var(--line);display:inline-flex;align-items:center;gap:7px;line-height:1.4}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;flex:0 0 auto}
+.chip.good{color:var(--good);background:color-mix(in srgb,var(--good) 10%,transparent);border-color:color-mix(in srgb,var(--good) 40%,transparent)}
+.chip.good::before{background:var(--good)}
+.chip.ext{color:var(--accent-ink);background:color-mix(in srgb,var(--accent) 12%,transparent);border-color:color-mix(in srgb,var(--accent) 50%,transparent)}
+.chip.ext::before{background:var(--accent)}
+.chip.new{color:var(--muted);background:var(--bg2);border-color:var(--line)}
+.chip.new::before{background:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:22px;font-size:13px;color:var(--ink2)}
+.legend .chip{cursor:default}
+
+/* phase 1 */
+.tier0{background:var(--card);border:1px solid var(--line);border-top:2px solid var(--accent);padding:30px 28px}
+.tier0 .th{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;margin-bottom:8px}
+.tier0 .th h3{font-size:24px;margin:0}
+.tier0 .badge{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;border:1px solid color-mix(in srgb,var(--accent) 50%,transparent);padding:3px 10px;border-radius:2px}
+.tier0 > p{margin:0;font-size:15.5px}
+.surfaces{list-style:none;padding:0;margin:22px 0 0;display:grid;grid-template-columns:repeat(2,1fr);gap:14px 28px}
+.surfaces li{display:flex;gap:12px;font-size:15px;line-height:1.55;color:var(--ink2);align-items:flex-start;min-width:0}
+.surfaces li > span:last-child{min-width:0;overflow-wrap:anywhere}
+.surfaces li b{color:var(--ink);font-weight:600}
+.surfaces .tick{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:0 0 auto;margin-top:9px}
+.t1grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:28px}
+.t1col{background:var(--card);border:1px solid var(--line);border-top:2px solid var(--accent);padding:24px 24px;min-width:0}
+.t1col .h{display:flex;align-items:baseline;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.t1col .h .k{font-family:var(--serif);font-size:19px;color:var(--ink);min-width:0}
+.t1col .h .num{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-left:auto;white-space:nowrap}
+.t1col ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px}
+.t1col li{font-size:15px;line-height:1.45;color:var(--ink)}
+.t1col li b{font-weight:600}
+.t1col li .s{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.note{margin:22px 0 0;font-size:15px;color:var(--muted)}
+.t1col .note{font-size:14px}
+
+/* process */
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;counter-reset:step;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.step{padding:24px 20px 24px 0;position:relative;min-width:0}
+.step + .step{padding-left:20px;border-left:1px solid var(--line)}
+.step .no{counter-increment:step;font-family:var(--serif);font-size:34px;line-height:1;color:var(--accent)}
+.step .no::before{content:"0" counter(step)}
+.step h3{font-size:19px;margin:12px 0 6px}
+.step p{margin:0;font-size:15px;line-height:1.55}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:36px}
+.pillar{border-top:2px solid var(--accent);padding-top:16px;min-width:0}
+.pillar h3{font-size:18px;margin-bottom:8px}
+.pillar p{font-size:15px;margin:0}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);background:var(--card)}
+.stat{padding:28px 24px;border-right:1px solid var(--line);min-width:0}
+.stat:last-child{border-right:0}
+.stat .big{font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.1;color:var(--ink)}
+.stat .lab{margin-top:8px;font-size:13.5px;line-height:1.45;color:var(--muted)}
+
+/* full surface inventory */
+.inv{display:flex;flex-direction:column;gap:24px;margin-top:28px}
+.invdom{background:var(--card);border:1px solid var(--line);border-top:2px solid var(--accent);padding:22px 24px;min-width:0}
+.invhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.invhead .invn{font-family:var(--serif);font-size:22px;color:var(--ink);min-width:0}
+.invhead .invc{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-left:auto}
+.invlist{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:10px 24px}
+.invlist li{font-size:14px;line-height:1.4;display:flex;gap:10px;align-items:flex-start;color:var(--ink2);min-width:0}
+.invlist li > span{min-width:0;overflow-wrap:anywhere}
+.invlist li::before{content:"";width:8px;height:8px;border-radius:50%;flex:0 0 auto;margin-top:6px;background:var(--muted);opacity:.55}
+.invlist li.eng::before{background:var(--good);opacity:1}
+.invlist li.part::before{background:var(--accent);opacity:1}
+.invlist li b{font-weight:600;color:var(--ink)}
+.invlist li .ds{display:block;color:var(--muted);font-size:12px;letter-spacing:.01em;margin-top:1px}
+.invleg{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:14px;color:var(--ink2)}
+.invleg span{display:inline-flex;align-items:center;gap:8px}
+.invleg i.d{width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.55;flex:0 0 auto}
+.invleg i.d.eng{background:var(--good);opacity:1}
+.invleg i.d.part{background:var(--accent);opacity:1}
+
+footer{border-top:1px solid var(--line);padding:40px 0 56px;font-size:13.5px;color:var(--muted)}
+.fin{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:baseline}
+footer .mark{font-size:17px}
+footer .caveat{margin:22px 0 0;font-size:13px;line-height:1.6;color:var(--muted);max-width:80ch}
+footer .caveat b{color:var(--ink2);font-weight:600}
+
+@media (max-width:860px){
+  .commit,.t1grid,.pillars,.cov,.surfaces{grid-template-columns:1fr}
+  .flow{grid-template-columns:repeat(2,1fr);border-bottom:0}
+  .step,.step + .step{padding:22px 16px 22px 0;border-left:0;border-bottom:1px solid var(--line)}
+  .step:nth-child(2n){padding-left:16px;border-left:1px solid var(--line)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(2n){border-right:0}
+  .stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  section{padding:68px 0}
+  .hero{padding:80px 0 72px}
+  .radar{opacity:.2}
+}
+@media (max-width:480px){
+  .wrap{padding:0 18px}
+  .mark{font-size:20px}
+  section{padding:52px 0}
+  .hero{padding:56px 0 52px}
+  .hero .meta{font-size:12px;letter-spacing:.06em}
+  .flow{grid-template-columns:1fr}
+  .step,.step + .step,.step:nth-child(2n){padding:20px 0;border-left:0;border-bottom:1px solid var(--line)}
+  .step:last-child{border-bottom:0}
+  .stats{grid-template-columns:1fr}
+  .stats .stat,.stats .stat:nth-child(n){border-right:0;border-bottom:1px solid var(--line)}
+  .stats .stat:last-child{border-bottom:0}
+  .chart{padding:22px 16px 18px}
+  .brow{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"lab val" "trk trk";gap:6px 12px}
+  .brow .blabel{grid-area:lab;text-align:left;font-size:14px}
+  .brow .blabel .bm{display:inline;margin-left:8px}
+  .brow .track{grid-area:trk}
+  .brow .bval{grid-area:val;font-size:16px}
+  .dom{grid-template-columns:minmax(0,1fr);padding:16px}
+  .dom .fig{grid-column:1}
+  .dom .chip{order:3;justify-self:start;white-space:normal}
+  .commit .c,.t1col,.tier0{padding:22px 18px}
+  .invdom{padding:18px 16px}
+  .invhead .invc{margin-left:0;white-space:normal;flex:1 0 100%}
+  .invhead .invn{font-size:20px}
+  .legend .chip{white-space:normal}
+  .stat{padding:22px 18px}
+}
+@media print{
+  nav,.radar{display:none}
+  body{background:#fff;color:#000;font-size:11.5pt}
+  section{padding:28px 0}
+  .hero{padding:20px 0}
+  .commit .c,.chart,.tier0,.t1col,.step,.pillar,.invdom,.dom,.stats{break-inside:avoid}
+  a{color:#000;text-decoration:none}
+  :root,[data-theme="dark"]{--bg:#fff;--bg2:#fff;--ink:#000;--ink2:#222;--muted:#444;--card:#fff;--line:#bbb}
+}
+</style>
+</head>
+<body>
+
+<nav class="site-head">
+  <div class="wrap navin">
+    <a class="mark" href="index.html">ETH<span>SEC</span></a>
+    <div class="links">
+      <a href="technical.html">Τεχνολογία</a>
+      <a href="scope.html" aria-current="page">Πεδίο</a>
+      <a href="finance.html">Οικονομικά</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="radar" aria-hidden="true">
+    <svg viewBox="0 0 400 400">
+      <circle class="ring" cx="200" cy="200" r="60"/>
+      <circle class="ring" cx="200" cy="200" r="120"/>
+      <circle class="ring" cx="200" cy="200" r="180"/>
+      <line x1="200" y1="20" x2="200" y2="380" class="ring"/>
+      <line x1="20" y1="200" x2="380" y2="200" class="ring"/>
+      <g class="sweep">
+        <path d="M200 200 L200 20 A180 180 0 0 1 340 118 Z" fill="var(--accent)" opacity="0.1"/>
+        <line x1="200" y1="200" x2="200" y2="20" stroke="var(--accent)" stroke-width="1.5" opacity="0.6"/>
+      </g>
+      <circle cx="200" cy="200" r="3" fill="var(--accent)"/>
+    </svg>
+  </div>
+  <div class="wrap">
+    <p class="eyebrow">Προτεινόμενο πεδίο οικοσυστήματος</p>
+    <h1>Argus</h1>
+    <p class="tag">Χίλια μάτια σε κάθε γραμμή.</p>
+    <p class="lede">Το EthSec είναι ένα ανεξάρτητο εργαστήριο ασφάλειας που στρέφει συνεχώς κορυφαία τεχνητή νοημοσύνη στον πιο κρίσιμο κώδικα του οικοσυστήματος του Ethereum. Το Argus είναι η μηχανή του. Το παρόν σημείωμα περιγράφει τι προτείνει να καλύψει αυτή η προσπάθεια και πού στοχεύει πρώτα.</p>
+    <div class="meta">
+      <span><span class="dot"></span>Αποστολή: η ασφάλεια ολόκληρου του οικοσυστήματος του Ethereum</span>
+      <span><span class="dot"></span>14 τομείς χαρτογραφημένοι &middot; 411 στόχοι</span>
+      <span><span class="dot"></span>Οκτώβριος 2026</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section id="mission">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Η αποστολή</p>
+      <h2>Η ασφάλεια ολόκληρου του οικοσυστήματος του Ethereum</h2>
+      <hr class="rule">
+      <p>Όχι ένα πρωτόκολλο και όχι ένα τμήμα. Το βασικό επίπεδο με σοβαρότητα ως πρώτη προτεραιότητα, έπειτα κάθε L2, το επίπεδο εφαρμογών που αγγίζουν καθημερινά οι χρήστες και τα σημεία που η αγορά ελέγχει λιγότερο: πορτοφόλια, υπογραφή, φύλαξη σε υλικό (hardware) και ο κοινός κώδικας από τον οποίο κληρονομούν όλα. Η κατεύθυνση ακολουθεί το σημείο όπου το Ethereum είναι πιο εκτεθειμένο και όπου ένα ανεξάρτητο εργαστήριο προσφέρει ό,τι δεν προσφέρει κανένα μεμονωμένο πρόγραμμα, και καθορίζεται από την κρίση ασφάλειας και όχι από το ποιος στόχος πληρώνει καλύτερα.</p>
+    </div>
+    <div class="commit">
+      <div class="c">
+        <div class="k">Στόχευση</div>
+        <h3>Σπάνια δυνατότητα εκεί που μετράει περισσότερο</h3>
+        <p>Κορυφαία τεχνητή νοημοσύνη με ικανότητα εκμετάλλευσης, υπεύθυνα διαχειριζόμενη, στραμμένη στον κώδικα με τις σοβαρότερες συνέπειες, συμπεριλαμβανομένου του βασικού επιπέδου, και στα κρίσιμα κενά που κανένα πρόγραμμα bounty δεν χρηματοδοτεί.</p>
+      </div>
+      <div class="c">
+        <div class="k">Πολλαπλασιασμός</div>
+        <h3>Κάθε συνεισφορά σε περισσότερο έλεγχο</h3>
+        <p>Η υπολογιστική ισχύς ανεξάρτητη από μοντέλο μετατρέπει δολάρια, πιστώσεις μοντέλων ή τον κερδισμένο με κόπο φακό ενός ελεγκτή σε πολύ μεγαλύτερη κάλυψη από όση θα μπορούσε να χρηματοδοτήσει μόνος του οποιοσδήποτε συνεισφέρων.</p>
+      </div>
+      <div class="c">
+        <div class="k">Επιστροφή</div>
+        <h3>Τα αποτελέσματα στο κοινό αγαθό</h3>
+        <p>Συντονισμένες διορθώσεις μέσω των δικών καναλιών γνωστοποίησης του ιδιοκτήτη και ένα κοινό σώμα μεθόδων που ανεβάζει το κατώτατο επίπεδο ασφάλειας ολόκληρου του οικοσυστήματος.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="ecosystem">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Το τοπίο εντός πεδίου</p>
+      <h2>Πού βρίσκεται η αξία</h2>
+      <hr class="rule">
+      <p>Δεκατέσσερις τομείς, από το βασικό επίπεδο έως τη διακυβέρνηση και το MEV. Το γράφημα δείχνει το κατά προσέγγιση μέγεθος κάθε τομέα με βάση το κύριο μέτρο του, ώστε να αποδοθεί το σχετικό μέγεθος. Τα μέτρα αυτά διαφέρουν και επικαλύπτονται, άρα δεν αθροίζονται: το ίδιο ETH μετράται ταυτόχρονα στο staking, στις καταθέσεις ενός L2 και σε ένα πορτοφόλι.</p>
+    </div>
+    <div class="chart">
+      <div class="ctitle">Κατά προσέγγιση μέγεθος κάθε τομέα εντός πεδίου</div>
+      <div class="csub">USD, μικτά μέτρα, κατάσταση 2026-09 &middot; για σχετικό μέγεθος, χωρίς άθροιση</div>
+      <div class="bars" role="img" aria-label="Οριζόντιο ραβδογράφημα κατά προσέγγιση αξίας ανά τομέα του Ethereum: stablecoins 300 δισ. κεφαλαιοποίηση, δεσμευμένη εγγύηση βασικού επιπέδου 107 δισ., γέφυρες 57 δισ. TVL, oracles 56 δισ. ασφαλισμένη αξία, δανεισμός 54 δισ. TVL, L2 rollups 48 δισ. TVL, staking και restaking 45 δισ., RWA 33 δισ. AUM, ταμεία DAO 30 δισ., perps 20 δισ. ανοιχτό ενδιαφέρον, DEX 14 δισ. TVL.">
+        <div class="brow"><div class="blabel">Stablecoins<span class="bm">κεφαλαιοποίηση</span></div><div class="track"><div class="fill" style="width:100%"></div></div><div class="bval tnum">$300B</div></div>
+        <div class="brow"><div class="blabel">Βασικό επίπεδο<span class="bm">ETH σε staking</span></div><div class="track"><div class="fill" style="width:35.7%"></div></div><div class="bval tnum">$107B</div></div>
+        <div class="brow"><div class="blabel">Γέφυρες<span class="bm">TVL</span></div><div class="track"><div class="fill" style="width:19%"></div></div><div class="bval tnum">$57B</div></div>
+        <div class="brow"><div class="blabel">Oracles<span class="bm">ασφαλισμένη αξία</span></div><div class="track"><div class="fill" style="width:18.7%"></div></div><div class="bval tnum">$56B</div></div>
+        <div class="brow"><div class="blabel">Δανεισμός &amp; CDP<span class="bm">TVL</span></div><div class="track"><div class="fill" style="width:18%"></div></div><div class="bval tnum">$54B</div></div>
+        <div class="brow"><div class="blabel">L2 rollups<span class="bm">TVL</span></div><div class="track"><div class="fill" style="width:16%"></div></div><div class="bval tnum">$48B</div></div>
+        <div class="brow"><div class="blabel">Staking &amp; restaking<span class="bm">σε staking, περίπου</span></div><div class="track"><div class="fill" style="width:15%"></div></div><div class="bval tnum">$45B</div></div>
+        <div class="brow"><div class="blabel">RWA<span class="bm">AUM on-chain</span></div><div class="track"><div class="fill" style="width:11%"></div></div><div class="bval tnum">$33B</div></div>
+        <div class="brow"><div class="blabel">Ταμεία DAO<span class="bm">υπό διακυβέρνηση</span></div><div class="track"><div class="fill" style="width:10%"></div></div><div class="bval tnum">$30B</div></div>
+        <div class="brow"><div class="blabel">Perps<span class="bm">ανοιχτό ενδιαφέρον</span></div><div class="track"><div class="fill" style="width:6.7%"></div></div><div class="bval tnum">$20B</div></div>
+        <div class="brow"><div class="blabel">DEX<span class="bm">TVL</span></div><div class="track"><div class="fill" style="width:4.7%"></div></div><div class="bval tnum">$14B</div></div>
+      </div>
+      <p class="foot">Συν τα επίπεδα πρόσβασης και ροής που αγγίζουν το σύνολο: πορτοφόλια λογισμικού (300M+ εγκαταστάσεις, $150B+ υπό αυτοφύλαξη), φύλαξη σε υλικό και θεσμική φύλαξη (Safe περίπου $42B, με τους θεσμικούς θεματοφύλακες πολύ μεγαλύτερους), διακανονισμός NFT και αγορών, και ροή account abstraction και intents. Τα μεγέθη είναι εκτιμήσεις από DefiLlama, L2Beat και δημόσια εργαλεία παρακολούθησης· επαληθεύστε πριν από εξωτερική χρήση.</p>
+    </div>
+  </div>
+</section>
+
+<section id="coverage">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Εικόνα κάλυψης</p>
+      <h2>Τι καλύπτει ήδη η υλοποίηση αναφοράς</h2>
+      <hr class="rule">
+      <p>Το Argus στηρίζεται σε λειτουργική βιβλιοθήκη ανίχνευσης και όχι σε σχέδιο στα χαρτιά. Κάθε τομέας παρακάτω επισημαίνεται ανάλογα με το πόσο φτάνει σήμερα η βιβλιοθήκη. Ο τρέχων κύκλος πρόσθεσε νέα κάλυψη για τις επιφάνειες πορτοφολιών, φύλαξης και εφαρμογών που η αγορά ελέγχει λιγότερο και όπου συγκεντρώνονται πλέον οι πραγματικές απώλειες χρηστών.</p>
+    </div>
+    <div class="cov">
+      <div class="dom"><span class="n">Βασικό επίπεδο: πελάτες L1 &amp; βασικό πρωτόκολλο</span><span class="chip good">Σε βάθος κάλυψη</span><span class="fig">ETH σε staking ~$107B &middot; 11 πελάτες, συναίνεση, KZG, προδιαγραφές</span></div>
+      <div class="dom"><span class="n">L2 rollups &amp; στοίβες (stacks)</span><span class="chip ext">Καλυμμένο, επεκταμένο</span><span class="fig">TVL ~$48B &middot; στοίβες OP/ZK σε βάθος· Arbitrum &amp; AggLayer νέα</span></div>
+      <div class="dom"><span class="n">Δανεισμός &amp; CDP</span><span class="chip good">Σε βάθος κάλυψη</span><span class="fig">TVL ~$54B &middot; Aave, Compound, Morpho, Euler, Sky</span></div>
+      <div class="dom"><span class="n">DEX &amp; AMM</span><span class="chip good">Σε βάθος κάλυψη</span><span class="fig">TVL ~$14B &middot; Uniswap v3/v4, Curve, Balancer</span></div>
+      <div class="dom"><span class="n">Staking, restaking &amp; LRTs</span><span class="chip ext">Καλυμμένο, επεκταμένο</span><span class="fig">~$45B &middot; Lido &amp; EigenLayer σε βάθος· RocketPool, Symbiotic, θησαυροφυλάκια LRT νέα</span></div>
+      <div class="dom"><span class="n">Γέφυρες &amp; διαλειτουργικότητα</span><span class="chip ext">Καλυμμένο, επεκταμένο</span><span class="fig">TVL ~$57B &middot; φακός μοντέλου εμπιστοσύνης· ρυθμίσεις LayerZero/CCIP/Hyperlane νέες</span></div>
+      <div class="dom"><span class="n">Stablecoins</span><span class="chip ext">Καλυμμένο, επεκταμένο</span><span class="fig">Κεφαλαιοποίηση ~$300B &middot; USDC, Sky, Ethena· φακός mint-redeem PSM/RWA νέος</span></div>
+      <div class="dom"><span class="n">Perps &amp; παράγωγα</span><span class="chip ext">Καλυμμένο, επεκταμένο</span><span class="fig">Ανοιχτό ενδιαφέρον ~$20B &middot; GMX, dYdX· φακός διακανονισμού υβριδικού CLOB νέος</span></div>
+      <div class="dom"><span class="n">Πορτοφόλια λογισμικού &amp; υπογραφή</span><span class="chip new">Νέο σε αυτόν τον κύκλο</span><span class="fig">300M+ εγκαταστάσεις &middot; δικαιώματα dApp, EIP-712, προσομοίωση, Snaps</span></div>
+      <div class="dom"><span class="n">Πορτοφόλια υλικού &amp; φύλαξη</span><span class="chip new">Νέο σε αυτόν τον κύκλο</span><span class="fig">Safe ~$42B &middot; secure element, MPC/TSS, Safe, απομακρυσμένοι υπογράφοντες</span></div>
+      <div class="dom"><span class="n">Oracles &amp; διαθεσιμότητα δεδομένων</span><span class="chip ext">Καλυμμένο, επεκταμένο</span><span class="fig">Ασφαλισμένα ~$56B &middot; ενσωμάτωση Chainlink/Pyth· δίκτυα &amp; DA νέα</span></div>
+      <div class="dom"><span class="n">NFT, πρότυπα token &amp; RWA</span><span class="chip new">Νέο σε αυτόν τον κύκλο</span><span class="fig">RWA ~$33B &middot; Seaport, ERC-6551, weird-ERC20, ENS/CCIP-Read</span></div>
+      <div class="dom"><span class="n">Account abstraction &amp; intents</span><span class="chip ext">Καλυμμένο, επεκταμένο</span><span class="fig">Πλευρά συμβολαίων σε βάθος· off-chain solver/διακανονισμός intents νέο</span></div>
+      <div class="dom"><span class="n">Διακυβέρνηση &amp; MEV</span><span class="chip ext">Καλυμμένο, επεκταμένο</span><span class="fig">Ταμεία ~$30B &middot; timelock/MEV· off-chain ψηφοφορία &amp; εμπιστοσύνη στους relays νέα</span></div>
+    </div>
+    <div class="legend">
+      <span class="chip good">Σε βάθος κάλυψη</span>
+      <span class="chip ext">Καλυμμένο, επεκτάθηκε σε αυτόν τον κύκλο</span>
+      <span class="chip new">Νέοι φακοί ανίχνευσης σε αυτόν τον κύκλο</span>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="phase1">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Πού στοχεύει πρώτα το Argus</p>
+      <h2>Φάση 1: έξι κατηγορίες, καλυμμένες πλήρως</h2>
+      <hr class="rule">
+      <p>Η Φάση 1 δεσμεύεται σε ολόκληρες κατηγορίες και όχι σε ένα επιλεγμένο σύνολο κορυφαίων στόχων. Κάθε κατηγορία έχει έναν φακό ανίχνευσης που σαρώνει κάθε στόχο της, οπότε η δέσμευση σε μια κατηγορία σημαίνει ότι ελέγχεται ολόκληρος ο κατάλογός της και όχι μόνο το μεγαλύτερο όνομα. Οι έξι είναι οι τέσσερις που κατονομάζει ευθέως ο καταστατικός χάρτης, το βασικό επίπεδο, όλα τα L2, τα πορτοφόλια και το υλικό (hardware), συν τα δύο συστημικά θεμέλια από τα οποία κληρονομούν εμπιστοσύνη όλες οι άλλες κατηγορίες.</p>
+    </div>
+
+    <div class="tier0">
+      <div class="th"><h3>1. Το βασικό επίπεδο</h3><span class="badge">Και οι 21 στόχοι &middot; κορυφαία προτεραιότητα</span></div>
+      <p class="muted">Η κατηγορία με τη βαθύτερη εμπλοκή ήδη· ο βραχυπρόθεσμος μοχλός είναι οι επιφάνειες που μια αγορά διαμορφωμένη από bounty παραλείπει εκ κατασκευής, όπου λείπει ακόμη η πλήρης κάλυψη της κατηγορίας.</p>
+      <ul class="surfaces">
+        <li><span class="tick"></span><span><b>Engine API</b>: το αξιόπιστο όριο μεταξύ EL και CL, που δεν αμείβεται και ελέγχεται λιγότερο, υλοποιημένο 11 φορές.</span></li>
+        <li><span class="tick"></span><span><b>PeerDAS</b>: η νεότερη ενεργή επιφάνεια συναίνεσης, επαναϋλοποιημένη με έξι τρόπους, ήδη αποδίδει.</span></li>
+        <li><span class="tick"></span><span><b>MEV-Boost και relays</b>: εκτός πρωτοκόλλου, χωρίς bounty, πάνω από το 90% των μπλοκ περνά από τέσσερις builders.</span></li>
+        <li><span class="tick"></span><span><b>Glamsterdam πριν την ενεργοποίηση</b>: ePBS και block-level access lists, παράθυρο ελέγχου που κλείνει με το mainnet.</span></li>
+        <li><span class="tick"></span><span><b>Ασάφεια μεταξύ προδιαγραφών</b>: η μία κατηγορία ανεξάρτητη από το μερίδιο αγοράς· μια κοινή εσφαλμένη ανάγνωση μπορεί να διασπάσει πολλούς πελάτες ταυτόχρονα.</span></li>
+        <li><span class="tick"></span><span><b>Κοινό KZG και κύκλος ζωής επικυρωτών</b>: μία εξάρτηση πίσω από τα blobs κάθε πελάτη· η μηχανή καταστάσεων των ~$107B σε staking.</span></li>
+      </ul>
+    </div>
+
+    <div class="t1grid">
+      <div class="t1col">
+        <div class="h"><span class="k">2. L2 rollups</span><span class="num">και τα 22</span></div>
+        <ul>
+          <li><b>Εμβάθυνση στα πέντε ενεργά</b><span class="s">OP, zkSync, Scroll, Taiko, Polygon</span></li>
+          <li><b>Εκκίνηση από το μηδέν στους ηγέτες</b><span class="s">Arbitrum, Base, Starknet, Linea, AggLayer</span></li>
+          <li><b>Σάρωση της ουράς του OP-Stack</b><span class="s">ένα πέρασμα παραλλαγών, όχι εννέα έλεγχοι</span></li>
+        </ul>
+        <p class="note" style="margin-top:12px">Δύο αλυσίδες συγκεντρώνουν ~75% της συνολικής αξίας των L2 και προς το παρόν δεν έχουν ενεργή εμπλοκή.</p>
+      </div>
+      <div class="t1col">
+        <div class="h"><span class="k">3. Πορτοφόλια λογισμικού</span><span class="num">και τα 17</span></div>
+        <ul>
+          <li><b>MetaMask + Snaps</b><span class="s">μεγαλύτερο MAU· plugins σε sandbox</span></li>
+          <li><b>Rabby, Trust Wallet</b><span class="s">ανοιχτά· επαναχρησιμοποιούμενο wallet-core</span></li>
+          <li><b>Safe{Wallet} UI</b><span class="s">ο φορέας επίθεσης του Bybit</span></li>
+          <li><b>Coinbase, OKX, Phantom</b><span class="s">κλειστά· έλεγχος black-box</span></li>
+        </ul>
+      </div>
+      <div class="t1col">
+        <div class="h"><span class="k">4. Υλικό &amp; φύλαξη</span><span class="num">και τα 21</span></div>
+        <ul>
+          <li><b>Ανοιχτό firmware</b><span class="s">Ledger, Trezor, Keystone, Coldcard</span></li>
+          <li><b>MPC / TSS, υπογράφοντες</b><span class="s">Safe, Fireblocks, Web3Signer/Dirk</span></li>
+          <li><b>Θεσμική φύλαξη</b><span class="s">ανάγνωση σε επίπεδο αρχιτεκτονικής</span></li>
+        </ul>
+      </div>
+      <div class="t1col">
+        <div class="h"><span class="k">5. Γέφυρες &amp; διαλειτουργικότητα</span><span class="num">και τα 15</span></div>
+        <ul>
+          <li><b>Επίπεδα μηνυμάτων</b><span class="s">CCIP, LayerZero V2, Wormhole/NTT</span></li>
+          <li><b>Διαδρομές μεταφοράς</b><span class="s">Circle CCTP, Across, Stargate</span></li>
+          <li><b>Συστημικό</b><span class="s">ένα σφάλμα διαχέεται σε όλες τις αλυσίδες</span></li>
+        </ul>
+      </div>
+      <div class="t1col">
+        <div class="h"><span class="k">6. Oracles &amp; DA</span><span class="num">και τα 27</span></div>
+        <ul>
+          <li><b>Oracles τιμών</b><span class="s">Chainlink, Pyth, UMA, RedStone</span></li>
+          <li><b>Διαθεσιμότητα δεδομένων</b><span class="s">EigenDA, Celestia, Avail, blobs</span></li>
+          <li><b>Υποδομή RPC &amp; indexer</b><span class="s">Infura, Alchemy, The Graph</span></li>
+        </ul>
+      </div>
+      <div class="t1col">
+        <div class="h"><span class="k">Οριζόντιοι φακοί</span><span class="num">Φάση 1</span></div>
+        <ul>
+          <li><b>PSM / mint-redeem</b><span class="s">ένας φακός, έξι stablecoins</span></li>
+          <li><b>Weird-ERC20</b><span class="s">σαρώνει κάθε ενσωματωτή</span></li>
+        </ul>
+        <p class="note" style="margin-top:12px">Χτίζονται μία φορά και φτάνουν σε κάθε κατηγορία της Φάσης 1, παρότι οι τομείς προέλευσής τους ανήκουν στη Φάση 2.</p>
+      </div>
+    </div>
+    <p class="note">Οι υπόλοιπες οκτώ κατηγορίες ανήκουν στη Φάση 2 και ανοίγουν με σειρά αναμενόμενης αξίας (EV) μόλις ενισχυθεί το θεμέλιο: δανεισμός, DEX, restaking και LSTs, stablecoins, perps, πρότυπα token και RWA, account abstraction και intents, και διακυβέρνηση και MEV.</p>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Πώς λειτουργεί</p>
+      <h2>Η ασφάλεια ως ένας συνεχής βρόχος</h2>
+      <hr class="rule">
+      <p>Ένα εργοστάσιο άμυνας τρέχει τον έλεγχο ως βρόχο όπου κάθε πέρασμα τροφοδοτεί το επόμενο, ώστε η κάλυψη και η γνώση να συσσωρεύονται αντί να μηδενίζονται σε κάθε εμπλοκή.</p>
+    </div>
+    <div class="flow">
+      <div class="step"><div class="no"></div><h3>Απογραφή</h3><p>Χαρτογράφηση του κώδικα που μετράει σε όλο το οικοσύστημα, δεμένη με κάθε έκδοση.</p></div>
+      <div class="step"><div class="no"></div><h3>Ανακάλυψη</h3><p>Δρομολογημένη παραγωγή ενδείξεων σε κλίμακα, μέσω πολλών ποικίλων φακών ανάλυσης.</p></div>
+      <div class="step"><div class="no"></div><h3>Επικύρωση</h3><p>Διαψευστική αξιολόγηση από σύνολο μοντέλων, προσβασιμότητα, διαφορικός έλεγχος και fuzzing.</p></div>
+      <div class="step"><div class="no"></div><h3>Γνωστοποίηση</h3><p>Δρομολόγηση κάθε επιβεβαιωμένου ζητήματος στον ιδιοκτήτη του μέσω συντονισμένης γνωστοποίησης.</p></div>
+      <div class="step"><div class="no"></div><h3>Επαλήθευση</h3><p>Έλεγχος των διαφορών της διόρθωσης για επιβεβαίωση ότι έκλεισε το ζήτημα, και νέα έναρξη του βρόχου.</p></div>
+    </div>
+    <div class="pillars">
+      <div class="pillar"><h3>Δρομολόγηση ανεξάρτητη από μοντέλο</h3><p>Το καλύτερο μοντέλο για κάθε εργασία από οποιονδήποτε πάροχο, βαθμολογημένο με μετρημένη ανάκληση (recall) και κόστος. Ανοιχτά μοντέλα σε δικό μας υλικό σηκώνουν την ανάγνωση μεγάλου όγκου· τα μοντέλα αιχμής αναλαμβάνουν τη σπάνια, δυσκολότερη επαλήθευση.</p></div>
+      <div class="pillar"><h3>Συνεχής και όχι στιγμιότυπο</h3><p>Ο κώδικας υπό εξέλιξη είναι κινούμενος στόχος, γι' αυτό κάθε αλλαγή ελέγχεται μόλις προσγειωθεί. Η κάλυψη φθίνει με κάθε έκδοση και η απόκλιση πυροδοτεί νέα σάρωση χωρίς άνθρωπο στον βρόχο.</p></div>
+      <div class="pillar"><h3>Τίποτα δεν κυκλοφορεί μόνο επειδή το είπε ένα μοντέλο</h3><p>Η κρίση ενός μοντέλου είναι ένδειξη και ποτέ επιβεβαίωση. Κάθε εύρημα περνά από μια σειρά ελέγχων επικύρωσης και ένας ανώτερος ερευνητής το επαληθεύει και το καταθέτει.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="state">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Υλοποίηση αναφοράς</p>
+      <h2>Αυτό λειτουργεί σήμερα</h2>
+      <hr class="rule">
+      <p>Το παραπάνω πεδίο θεμελιώνεται σε λειτουργικό σύστημα και όχι σε φιλοδοξία. Ο χάρτης του οικοσυστήματος και το σχέδιο της Φάσης 1 προέρχονται από πραγματική διέλευση του τοπίου, και η βιβλιοθήκη ανίχνευσης επεκτάθηκε σε αυτόν τον κύκλο ώστε να καλύψει τις νέες επιφάνειες που κατονομάζει η αποστολή.</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="big tnum">14</div><div class="lab">τομείς οικοσυστήματος χαρτογραφημένοι, από το βασικό επίπεδο έως τη διακυβέρνηση και το MEV</div></div>
+      <div class="stat"><div class="big tnum">411</div><div class="lab">στόχοι σε απογραφή με τρέχον μέγεθος και κατάσταση κάλυψης</div></div>
+      <div class="stat"><div class="big tnum">23</div><div class="lab">νέοι φακοί ανίχνευσης που χτίστηκαν σε αυτόν τον κύκλο για τις επιφάνειες με ανεπαρκή έλεγχο</div></div>
+      <div class="stat"><div class="big tnum">40+</div><div class="lab">εμπλοκές που ήδη παρακολουθούνται σε ελέγχους και bounties</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="surface">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Η πλήρης επιφάνεια εντός πεδίου</p>
+      <h2>Κάθε στόχος εντός πεδίου</h2>
+      <hr class="rule">
+      <p>Η πλήρης απογραφή πίσω από την παραπάνω σύνοψη: και οι 411 στόχοι στους 14 τομείς, με σήμανση για το αν βρίσκονται σήμερα σε ενεργή εμπλοκή. Πρόκειται για το πλήρες πεδίο και όχι για σύντομη λίστα. Οι κατάλογοι και τα μεγέθη προέρχονται από σάρωση του οικοσυστήματος σε δύο περάσματα και πρέπει να επαληθευτούν δειγματοληπτικά πριν από οποιαδήποτε εξωτερική χρήση.</p>
+    </div>
+    <div class="invleg">
+      <span><i class="d eng"></i> Σε ενεργή εμπλοκή</span>
+      <span><i class="d part"></i> Μερική εμπλοκή</span>
+      <span><i class="d"></i> Χωρίς εμπλοκή ακόμη (να ανοίξει στη Φάση&nbsp;1/2)</span>
+    </div>
+    <div class="inv">
+    <div class="invdom">
+      <div class="invhead"><span class="invn">Πελάτες L1 &amp; βασικό πρωτόκολλο</span><span class="invc">26 στόχοι &middot; 13 σε ενεργή εμπλοκή</span></div>
+      <ul class="invlist">
+        <li class="eng"><span><b>Lighthouse</b> <span class="ds">πελάτης συναίνεσης L1</span></span></li>
+        <li class="eng"><span><b>Geth (go-ethereum)</b> <span class="ds">πελάτης εκτέλεσης L1</span></span></li>
+        <li class="eng"><span><b>Nethermind</b> <span class="ds">πελάτης εκτέλεσης L1</span></span></li>
+        <li class="eng"><span><b>Shared KZG crypto dependencies (c-kzg-4844, go-eth-kzg)</b> <span class="ds">βασική εξάρτηση L1</span></span></li>
+        <li class="eng"><span><b>execution-specs / consensus-specs</b> <span class="ds">βασικό πρωτόκολλο L1</span></span></li>
+        <li class="eng"><span><b>Prysm</b> <span class="ds">πελάτης συναίνεσης L1</span></span></li>
+        <li class="part"><span><b>Engine API (EL/CL local trust boundary)</b> <span class="ds">βασικό πρωτόκολλο L1</span></span></li>
+        <li class="eng"><span><b>Reth</b> <span class="ds">πελάτης εκτέλεσης L1</span></span></li>
+        <li class="eng"><span><b>Besu</b> <span class="ds">πελάτης εκτέλεσης L1</span></span></li>
+        <li class="part"><span><b>Validator lifecycle: deposit / withdrawal / exit / consolidation</b> <span class="ds">βασικό πρωτόκολλο L1</span></span></li>
+        <li class="eng"><span><b>Erigon</b> <span class="ds">πελάτης εκτέλεσης L1</span></span></li>
+        <li class="eng"><span><b>Teku</b> <span class="ds">πελάτης συναίνεσης L1</span></span></li>
+        <li class="eng"><span><b>Nimbus</b> <span class="ds">πελάτης συναίνεσης L1</span></span></li>
+        <li class="part"><span><b>PeerDAS (EIP-7594 data-column sampling/reconstruction)</b> <span class="ds">βασικό πρωτόκολλο L1</span></span></li>
+        <li class="eng"><span><b>Lodestar</b> <span class="ds">πελάτης συναίνεσης L1</span></span></li>
+        <li class="eng"><span><b>Grandine</b> <span class="ds">πελάτης συναίνεσης L1</span></span></li>
+        <li><span><b>Glamsterdam: ePBS (EIP-7732) + Block-Level Access Lists (EIP-7928)</b> <span class="ds">μελλοντική αλλαγή πρωτοκόλλου L1</span></span></li>
+        <li><span><b>MEV-Boost / builder-relay software</b> <span class="ds">υποδομή εκτός πρωτοκόλλου, παρακείμενη στο L1</span></span></li>
+        <li><span><b>EOF (EVM Object Format, EIP-7692 superset)</b> <span class="ds">μελλοντική αλλαγή πρωτοκόλλου L1</span></span></li>
+        <li><span><b>Statelessness: Verkle trees to binary tree + STARK proofs (EIP-7864)</b> <span class="ds">μελλοντική αλλαγή πρωτοκόλλου L1</span></span></li>
+        <li><span><b>Native L1 account abstraction (EIP-7701, RIP-7560)</b> <span class="ds">μελλοντική αλλαγή πρωτοκόλλου L1</span></span></li>
+        <li><span><b>Obol Network (Charon DVT)</b> <span class="ds">υποδομή staking L1</span></span></li>
+        <li><span><b>SSV Network</b> <span class="ds">υποδομή staking L1</span></span></li>
+        <li><span><b>Commit-Boost</b> <span class="ds">sidecar επικυρωτή παρακείμενο στο L1</span></span></li>
+        <li class="part"><span><b>Vouch / Dirk (Attestant)</b> <span class="ds">θεσμικός επικυρωτής πολλαπλών κόμβων L1</span></span></li>
+        <li><span><b>Beacon deposit contract (EIP-6110 pathway)</b> <span class="ds">βασικό πρωτόκολλο L1</span></span></li>
+      </ul>
+    </div>
+    <div class="invdom">
+      <div class="invhead"><span class="invn">L2 Rollups</span><span class="invc">40 στόχοι &middot; 5 σε ενεργή εμπλοκή</span></div>
+      <ul class="invlist">
+        <li><span><b>Arbitrum One + Nova (Nitro / ArbOS / BoLD)</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Base</b> <span class="ds">L2 rollup</span></span></li>
+        <li class="eng"><span><b>OP Mainnet / OP Stack Superchain framework</b> <span class="ds">L2 rollup + πλαίσιο rollup</span></span></li>
+        <li class="eng"><span><b>zkSync Era + ZK Stack / Elastic Network</b> <span class="ds">L2 rollup + πλαίσιο rollup</span></span></li>
+        <li><span><b>Linea</b> <span class="ds">L2 rollup, zkEVM Type-1/Type-2</span></span></li>
+        <li><span><b>Starknet</b> <span class="ds">L2 rollup, STARK/Cairo</span></span></li>
+        <li class="eng"><span><b>Scroll</b> <span class="ds">L2 rollup, εγγενές zkEVM</span></span></li>
+        <li class="eng"><span><b>Taiko (Alethia)</b> <span class="ds">L2 rollup</span></span></li>
+        <li class="eng"><span><b>Polygon PoS (Bor + Heimdall)</b> <span class="ds">L2 / sidechain</span></span></li>
+        <li><span><b>AggLayer + Polygon CDK</b> <span class="ds">πλαίσιο rollup / διακανονισμός μεταξύ αλυσίδων</span></span></li>
+        <li><span><b>Arbitrum Orbit</b> <span class="ds">πλαίσιο rollup</span></span></li>
+        <li><span><b>Mantle</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Blast</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Manta Pacific</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Metis</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>opBNB</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Zora</b> <span class="ds">L2 rollup, με ανάπτυξη μέσω Conduit</span></span></li>
+        <li><span><b>Mode</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Fraxtal</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Boba Network</b> <span class="ds">L2 rollup</span></span></li>
+        <li class="part"><span><b>Polygon zkEVM (legacy)</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>RaaS control planes (Caldera, Conduit, Alchemy Rollups, AltLayer)</b> <span class="ds">υποδομή rollup / off-chain έλεγχος</span></span></li>
+        <li><span><b>Unichain</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Ink</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Soneium</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>World Chain</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Abstract</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Celo</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Aztec</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Fuel</b> <span class="ds">L2</span></span></li>
+        <li><span><b>Eclipse</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>MegaETH</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Immutable zkEVM</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Lisk</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Swellchain</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Kroma</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>BOB (Build on Bitcoin)</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Zircuit</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Morph</b> <span class="ds">L2 rollup</span></span></li>
+        <li><span><b>Plume</b> <span class="ds">L2 rollup</span></span></li>
+      </ul>
+    </div>
+    <div class="invdom">
+      <div class="invhead"><span class="invn">Δανεισμός &amp; CDP</span><span class="invc">21 στόχοι</span></div>
+      <ul class="invlist">
+        <li><span><b>Aave (v3 + v4)</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Morpho (Blue + Vaults)</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Sky (MakerDAO core CDP)</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Spark (SparkLend + Spark Liquidity Layer)</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Compound (v2 legacy + v3/Comet)</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Fluid (Instadapp)</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Euler v2</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Curve LlamaLend</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Gearbox Protocol</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Silo Finance (v2/v3)</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Term Finance</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Radiant Capital</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Ajna Protocol</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Liquity (V1 + V2 BOLD)</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Abracadabra (MIM)</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Alchemix</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Notional Finance</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Dolomite</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Moonwell</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Inverse Finance (FiRM, DOLA)</b> <span class="ds">lending-cdp</span></span></li>
+        <li><span><b>Exactly</b> <span class="ds">lending-cdp</span></span></li>
+      </ul>
+    </div>
+    <div class="invdom">
+      <div class="invhead"><span class="invn">DEX &amp; AMM</span><span class="invc">24 στόχοι</span></div>
+      <ul class="invlist">
+        <li><span><b>Uniswap v3</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>Uniswap v4</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>UniswapX</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>Curve Finance (DEX + crvUSD + LlamaLend)</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>Balancer v2/v3</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>PancakeSwap (v2/v3 + Infinity CLMM)</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>Aerodrome / Velodrome (Slipstream, merging into &quot;Aero&quot;/METADEX03)</b> <span class="ds">dex-amm, AMM + συγκεντρωμένη ρευστότητα</span></span></li>
+        <li><span><b>Fluid DEX (Instadapp)</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>Maverick Protocol</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>Ekubo</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>Ambient Finance (CrocSwap)</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>SushiSwap (V2/V3/Trident/RouteProcessor)</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>CoW Swap / CoW Protocol</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>1inch (Aggregation Protocol + Fusion + Limit Order Protocol)</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>0x Protocol (incl. Matcha)</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>Odos</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>Paraswap (Velora)</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>KyberSwap (Aggregator + Elastic/Classic AMM)</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>Camelot</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>Trader Joe (LFJ)</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>DODO</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>Bancor / Carbon</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>Hashflow</b> <span class="ds">dex-amm</span></span></li>
+        <li><span><b>SyncSwap</b> <span class="ds">dex-amm</span></span></li>
+      </ul>
+    </div>
+    <div class="invdom">
+      <div class="invhead"><span class="invn">LST, LRT &amp; Restaking</span><span class="invc">23 στόχοι &middot; 1 σε ενεργή εμπλοκή</span></div>
+      <ul class="invlist">
+        <li><span><b>Lido (stETH / wstETH, incl. Lido V3 stVaults + Dual Governance)</b> <span class="ds">lst-lrt-restaking</span></span></li>
+        <li class="eng"><span><b>EigenLayer (+ EigenDA + AVS ecosystem + operator slashing)</b> <span class="ds">lst-lrt-restaking</span></span></li>
+        <li><span><b>Binance staked ETH (BETH)</b> <span class="ds">lst-lrt-restaking</span></span></li>
+        <li><span><b>Ether.fi (eETH, + Ether.fi Cash / Liquid vaults)</b> <span class="ds">lst-lrt-restaking / LRT-hybrid</span></span></li>
+        <li><span><b>Rocket Pool (rETH, minipools to Saturn megapools, node operators)</b> <span class="ds">lst-lrt-restaking, χωρίς αδειοδότηση</span></span></li>
+        <li><span><b>Kelp DAO (rsETH)</b> <span class="ds">lst-lrt-restaking</span></span></li>
+        <li><span><b>StakeWise V3 (osETH)</b> <span class="ds">lst-lrt-restaking, θησαυροφυλάκιο χωρίς αδειοδότηση</span></span></li>
+        <li><span><b>Symbiotic</b> <span class="ds">lst-lrt-restaking</span></span></li>
+        <li><span><b>Coinbase Wrapped Staked ETH (cbETH)</b> <span class="ds">lst-lrt-restaking</span></span></li>
+        <li><span><b>Mantle mETH Protocol</b> <span class="ds">lst-lrt-restaking, υπό διακυβέρνηση L2-DAO</span></span></li>
+        <li><span><b>Mellow Protocol (LRT vault curation layer)</b> <span class="ds">lst-lrt-restaking</span></span></li>
+        <li><span><b>Stader (ETHx)</b> <span class="ds">lst-lrt-restaking, πολλαπλών αλυσίδων</span></span></li>
+        <li><span><b>Swell (swETH / Swell Liquid Restaking / Swellchain)</b> <span class="ds">lst-lrt-restaking + Liquid Restaking</span></span></li>
+        <li><span><b>Frax Ether (sfrxETH)</b> <span class="ds">lst-lrt-restaking</span></span></li>
+        <li><span><b>Karak</b> <span class="ds">lst-lrt-restaking</span></span></li>
+        <li><span><b>Renzo (ezETH)</b> <span class="ds">lst-lrt-restaking</span></span></li>
+        <li><span><b>Puffer Finance (pufETH)</b> <span class="ds">lst-lrt-restaking, εγγενές restaking</span></span></li>
+        <li><span><b>Origin Ether (OETH/wOETH)</b> <span class="ds">lst</span></span></li>
+        <li><span><b>Dinero (pxETH / apxETH)</b> <span class="ds">lst</span></span></li>
+        <li><span><b>Bedrock (uniETH / uniBTC)</b> <span class="ds">lrt</span></span></li>
+        <li><span><b>Liquid Collective (LsETH)</b> <span class="ds">lst</span></span></li>
+        <li><span><b>Eigenpie (Magpie)</b> <span class="ds">lrt</span></span></li>
+        <li><span><b>Ankr (ankrETH)</b> <span class="ds">lst</span></span></li>
+      </ul>
+    </div>
+    <div class="invdom">
+      <div class="invhead"><span class="invn">Γέφυρες &amp; διαλειτουργικότητα</span><span class="invc">23 στόχοι &middot; 1 σε ενεργή εμπλοκή</span></div>
+      <ul class="invlist">
+        <li><span><b>Chainlink CCIP</b> <span class="ds">bridges-interop</span></span></li>
+        <li><span><b>LayerZero V2 (Endpoint, DVN, OFT)</b> <span class="ds">bridges-interop</span></span></li>
+        <li><span><b>Circle CCTP (V1 legacy + V2)</b> <span class="ds">bridges-interop</span></span></li>
+        <li class="eng"><span><b>Wormhole (Core Bridge + Guardian network + NTT)</b> <span class="ds">bridges-interop</span></span></li>
+        <li><span><b>Stargate Finance (LayerZero-native liquidity/OFT bridge)</b> <span class="ds">bridges-interop</span></span></li>
+        <li><span><b>Across Protocol (ERC-7683 intents)</b> <span class="ds">bridges-interop</span></span></li>
+        <li><span><b>Hyperlane</b> <span class="ds">bridges-interop</span></span></li>
+        <li><span><b>Axelar Network</b> <span class="ds">bridges-interop, επικυρωτής app-chain</span></span></li>
+        <li><span><b>deBridge (DLN - deBridge Liquidity Network)</b> <span class="ds">bridges-interop</span></span></li>
+        <li><span><b>Celer (cBridge / State Guard Network)</b> <span class="ds">bridges-interop</span></span></li>
+        <li><span><b>Synapse Protocol</b> <span class="ds">bridges-interop</span></span></li>
+        <li><span><b>Squid (Axelar-based swap router)</b> <span class="ds">bridges-interop</span></span></li>
+        <li><span><b>Socket / Bungee (bridge aggregator)</b> <span class="ds">bridges-interop</span></span></li>
+        <li><span><b>Connext / Everclear (wound down 2026-05)</b> <span class="ds">bridges-interop</span></span></li>
+        <li class="part"><span><b>Canonical L2 rollup bridges (bundle, cross-reference only)</b> <span class="ds">bridges-interop</span></span></li>
+        <li><span><b>Hop Protocol</b> <span class="ds">γέφυρα</span></span></li>
+        <li><span><b>Orbiter Finance</b> <span class="ds">γέφυρα</span></span></li>
+        <li><span><b>Chainflip</b> <span class="ds">γέφυρα</span></span></li>
+        <li><span><b>THORChain</b> <span class="ds">γέφυρα</span></span></li>
+        <li><span><b>Symbiosis</b> <span class="ds">γέφυρα</span></span></li>
+        <li><span><b>Meson</b> <span class="ds">γέφυρα</span></span></li>
+        <li><span><b>Relay (relay.link)</b> <span class="ds">γέφυρα</span></span></li>
+        <li><span><b>Allbridge</b> <span class="ds">γέφυρα</span></span></li>
+      </ul>
+    </div>
+    <div class="invdom">
+      <div class="invhead"><span class="invn">Stablecoins</span><span class="invc">23 στόχοι</span></div>
+      <ul class="invlist">
+        <li><span><b>Tether (USDT)</b> <span class="ds">stablecoins</span></span></li>
+        <li class="part"><span><b>Circle USDC + CCTP</b> <span class="ds">stablecoins</span></span></li>
+        <li><span><b>Sky (DAI/USDS + Spark PSM)</b> <span class="ds">stablecoins</span></span></li>
+        <li><span><b>Ethena (USDe/sUSDe)</b> <span class="ds">stablecoins</span></span></li>
+        <li><span><b>World Liberty Financial (USD1)</b> <span class="ds">stablecoins</span></span></li>
+        <li><span><b>BlackRock BUIDL / RWA-backed treasury tokens (Ondo USDY+OUSG, Superstate USTB, Franklin Templeton BENJI, Hashnote USYC)</b> <span class="ds">stablecoins</span></span></li>
+        <li><span><b>PayPal/Paxos (PYUSD, + PAXG/USDG bounty scope)</b> <span class="ds">stablecoins</span></span></li>
+        <li><span><b>Aave GHO</b> <span class="ds">stablecoins</span></span></li>
+        <li><span><b>First Digital USD (FDUSD)</b> <span class="ds">stablecoins</span></span></li>
+        <li><span><b>Frax (frxUSD / Frax v3 / Fraxtal)</b> <span class="ds">stablecoins</span></span></li>
+        <li><span><b>Usual (USD0/USD0++)</b> <span class="ds">stablecoins</span></span></li>
+        <li><span><b>Curve crvUSD (LLAMMA / PegKeeper)</b> <span class="ds">stablecoins</span></span></li>
+        <li><span><b>Elixir deUSD (defunct)</b> <span class="ds">stablecoins</span></span></li>
+        <li><span><b>Generic PSM / mint-redeem mechanism family (cross-protocol: Sky PSM, GHO GSM, Frax AMO/custodian redeem, Curve PegKeeper, Usual mint-redeem, Ethena mint-redeem)</b> <span class="ds">stablecoins</span></span></li>
+        <li><span><b>Liquity LUSD / BOLD</b> <span class="ds">stablecoin</span></span></li>
+        <li><span><b>Resolv (USR / RLP)</b> <span class="ds">stablecoin</span></span></li>
+        <li><span><b>Mountain Protocol (USDM)</b> <span class="ds">stablecoin</span></span></li>
+        <li><span><b>Agora (AUSD)</b> <span class="ds">stablecoin</span></span></li>
+        <li><span><b>M^0 (M / wM)</b> <span class="ds">stablecoin</span></span></li>
+        <li><span><b>f(x) Protocol (fxUSD)</b> <span class="ds">stablecoin</span></span></li>
+        <li><span><b>Angle (USDA / agEUR)</b> <span class="ds">stablecoin</span></span></li>
+        <li><span><b>Level (lvlUSD)</b> <span class="ds">stablecoin</span></span></li>
+        <li><span><b>Falcon Finance (USDf)</b> <span class="ds">stablecoin</span></span></li>
+      </ul>
+    </div>
+    <div class="invdom">
+      <div class="invhead"><span class="invn">Perps &amp; παράγωγα</span><span class="invc">30 στόχοι &middot; 1 σε ενεργή εμπλοκή</span></div>
+      <ul class="invlist">
+        <li><span><b>Hyperliquid (HyperCore + HyperEVM)</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Aster</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Lighter</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Variational (Omni)</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>GRVT</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Paradex</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Extended</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>EdgeX</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>ApeX Protocol</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>GMX (v1 + v2)</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Synthetix v3 (perps + debt pool)</b> <span class="ds">perps-derivatives</span></span></li>
+        <li class="eng"><span><b>dYdX v4</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Vertex Protocol</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Aevo</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Ostium</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Derive (formerly Lyra)</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Gains Network (gTrade)</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Contango</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Level Finance</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>MUX Protocol</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Premia</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Ribbon Finance</b> <span class="ds">perps-derivatives</span></span></li>
+        <li><span><b>Avantis</b> <span class="ds">perps</span></span></li>
+        <li><span><b>SynFutures</b> <span class="ds">perps</span></span></li>
+        <li><span><b>Kwenta / Polynomial</b> <span class="ds">perps</span></span></li>
+        <li><span><b>HMX</b> <span class="ds">perps</span></span></li>
+        <li><span><b>Perennial</b> <span class="ds">perps</span></span></li>
+        <li><span><b>Thales / Overtime</b> <span class="ds">παράγωγα</span></span></li>
+        <li><span><b>Opyn (Squeeth)</b> <span class="ds">επιλογές (options)</span></span></li>
+        <li><span><b>Stryke (ex-Dopex)</b> <span class="ds">επιλογές (options)</span></span></li>
+      </ul>
+    </div>
+    <div class="invdom">
+      <div class="invhead"><span class="invn">Πορτοφόλια λογισμικού</span><span class="invc">28 στόχοι</span></div>
+      <ul class="invlist">
+        <li><span><b>MetaMask (+ Snaps)</b> <span class="ds">πορτοφόλι επέκτασης προγράμματος περιήγησης + κινητό</span></span></li>
+        <li><span><b>Rabby</b> <span class="ds">πορτοφόλι επέκτασης προγράμματος περιήγησης</span></span></li>
+        <li><span><b>Coinbase Wallet</b> <span class="ds">πορτοφόλι κινητού + επέκτασης προγράμματος περιήγησης</span></span></li>
+        <li><span><b>Rainbow</b> <span class="ds">πορτοφόλι κινητού + επέκτασης προγράμματος περιήγησης</span></span></li>
+        <li><span><b>Trust Wallet</b> <span class="ds">πορτοφόλι κινητού</span></span></li>
+        <li><span><b>Frame</b> <span class="ds">πορτοφόλι υπολογιστή</span></span></li>
+        <li><span><b>Zerion</b> <span class="ds">πορτοφόλι επέκτασης προγράμματος περιήγησης + κινητό</span></span></li>
+        <li><span><b>OKX Wallet</b> <span class="ds">πορτοφόλι κινητού + επέκτασης προγράμματος περιήγησης</span></span></li>
+        <li><span><b>Phantom (EVM)</b> <span class="ds">πορτοφόλι επέκτασης προγράμματος περιήγησης + κινητό</span></span></li>
+        <li><span><b>Backpack</b> <span class="ds">πορτοφόλι επέκτασης προγράμματος περιήγησης + κινητό</span></span></li>
+        <li><span><b>Uniswap Wallet</b> <span class="ds">πορτοφόλι επέκτασης προγράμματος περιήγησης + κινητό</span></span></li>
+        <li><span><b>Safe{Wallet} UI</b> <span class="ds">web front end για multisig έξυπνων συμβολαίων</span></span></li>
+        <li><span><b>Argent</b> <span class="ds">πορτοφόλι επέκτασης προγράμματος περιήγησης + κινητό</span></span></li>
+        <li><span><b>Ambire</b> <span class="ds">πορτοφόλι επέκτασης προγράμματος περιήγησης + κινητό</span></span></li>
+        <li><span><b>imToken</b> <span class="ds">πορτοφόλι κινητού</span></span></li>
+        <li><span><b>Enkrypt</b> <span class="ds">πορτοφόλι επέκτασης προγράμματος περιήγησης</span></span></li>
+        <li><span><b>Taho</b> <span class="ds">πορτοφόλι επέκτασης προγράμματος περιήγησης</span></span></li>
+        <li><span><b>Brave Wallet</b> <span class="ds">πορτοφόλι λογισμικού</span></span></li>
+        <li><span><b>Exodus</b> <span class="ds">πορτοφόλι λογισμικού</span></span></li>
+        <li><span><b>Bitget Wallet</b> <span class="ds">πορτοφόλι λογισμικού</span></span></li>
+        <li><span><b>Binance Web3 Wallet</b> <span class="ds">πορτοφόλι λογισμικού</span></span></li>
+        <li><span><b>TokenPocket</b> <span class="ds">πορτοφόλι λογισμικού</span></span></li>
+        <li><span><b>Core (Ava Labs)</b> <span class="ds">πορτοφόλι λογισμικού</span></span></li>
+        <li><span><b>Ctrl (ex-XDEFI)</b> <span class="ds">πορτοφόλι λογισμικού</span></span></li>
+        <li><span><b>SafePal</b> <span class="ds">πορτοφόλι λογισμικού</span></span></li>
+        <li><span><b>MyEtherWallet (MEW)</b> <span class="ds">πορτοφόλι λογισμικού</span></span></li>
+        <li><span><b>Status</b> <span class="ds">πορτοφόλι λογισμικού</span></span></li>
+        <li><span><b>Daimo</b> <span class="ds">πορτοφόλι λογισμικού</span></span></li>
+      </ul>
+    </div>
+    <div class="invdom">
+      <div class="invhead"><span class="invn">Πορτοφόλια υλικού &amp; φύλαξη</span><span class="invc">33 στόχοι</span></div>
+      <ul class="invlist">
+        <li><span><b>Safe (Safe{Wallet} / Safe Global, formerly Gnosis Safe)</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Coinbase Custody / Coinbase Prime</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Ledger (Nano S Plus/X, Stax, Flex; BOLOS secure-element OS; Ledger Live; Ledger Recover; Clear Signing/ERC-7730 initiative)</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Fireblocks</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>BitGo / BitGo Trust</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Trezor / SatoshiLabs (Safe 3, Safe 5, Safe 7)</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Anchorage Digital</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Remote validator signers: Web3Signer (Consensys) and Dirk (Attestant)</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Turnkey</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Dynamic</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Web3Auth</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Privy</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Copper</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Generic institutional HSM/vault key-management infrastructure (HashiCorp Vault, AWS CloudHSM/Nitro Enclaves, YubiHSM, Google Cloud HSM)</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Zengo</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Keystone (Keystone3 Pro)</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>BitBox02 (Shift Crypto)</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Coldcard (Coinkite)</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>GridPlus Lattice1</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>OneKey</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Portal (Portal HQ)</b> <span class="ds">wallets-hardware-custody</span></span></li>
+        <li><span><b>Tangem</b> <span class="ds">πορτοφόλι υλικού</span></span></li>
+        <li><span><b>D&#x27;CENT</b> <span class="ds">πορτοφόλι υλικού</span></span></li>
+        <li><span><b>Blockstream Jade</b> <span class="ds">πορτοφόλι υλικού</span></span></li>
+        <li><span><b>NGRAVE ZERO</b> <span class="ds">πορτοφόλι υλικού</span></span></li>
+        <li><span><b>Cypherock X1</b> <span class="ds">πορτοφόλι υλικού</span></span></li>
+        <li><span><b>ELLIPAL</b> <span class="ds">πορτοφόλι υλικού</span></span></li>
+        <li><span><b>Casa</b> <span class="ds">φύλαξη</span></span></li>
+        <li><span><b>Unchained</b> <span class="ds">φύλαξη</span></span></li>
+        <li><span><b>Fordefi</b> <span class="ds">φύλαξη</span></span></li>
+        <li><span><b>Lit Protocol</b> <span class="ds">φύλαξη</span></span></li>
+        <li><span><b>Cobo</b> <span class="ds">φύλαξη</span></span></li>
+        <li><span><b>Ceffu</b> <span class="ds">φύλαξη</span></span></li>
+      </ul>
+    </div>
+    <div class="invdom">
+      <div class="invhead"><span class="invn">Oracles &amp; υποδομή διαθεσιμότητας δεδομένων</span><span class="invc">40 στόχοι &middot; 1 σε ενεργή εμπλοκή</span></div>
+      <ul class="invlist">
+        <li><span><b>Chainlink Data Feeds / OCR</b> <span class="ds">oracles</span></span></li>
+        <li><span><b>Chainlink CCIP</b> <span class="ds">oracles</span></span></li>
+        <li><span><b>Pyth Network</b> <span class="ds">oracles</span></span></li>
+        <li><span><b>UMA Optimistic Oracle</b> <span class="ds">oracles</span></span></li>
+        <li><span><b>Chronicle Protocol</b> <span class="ds">oracles</span></span></li>
+        <li><span><b>RedStone</b> <span class="ds">oracles</span></span></li>
+        <li class="part"><span><b>EigenDA</b> <span class="ds">data-availability</span></span></li>
+        <li class="eng"><span><b>Celestia</b> <span class="ds">data-availability</span></span></li>
+        <li><span><b>Chainlink VRF (Verifiable Random Function)</b> <span class="ds">oracles</span></span></li>
+        <li><span><b>Chainlink Automation (Keepers)</b> <span class="ds">oracles</span></span></li>
+        <li><span><b>Chainlink Data Streams</b> <span class="ds">oracles</span></span></li>
+        <li><span><b>Infura</b> <span class="ds">rpc-node-infra</span></span></li>
+        <li><span><b>Alchemy</b> <span class="ds">rpc-node-infra</span></span></li>
+        <li><span><b>QuickNode</b> <span class="ds">rpc-node-infra</span></span></li>
+        <li><span><b>The Graph</b> <span class="ds">rpc-node-infra</span></span></li>
+        <li><span><b>Avail</b> <span class="ds">data-availability</span></span></li>
+        <li><span><b>Flashbots Protect RPC / MEV-Boost Relay Infra</b> <span class="ds">rpc-node-infra</span></span></li>
+        <li class="part"><span><b>Ethereum Native Blobs / EIP-4844 / PeerDAS (Fusaka)</b> <span class="ds">data-availability</span></span></li>
+        <li><span><b>Ankr</b> <span class="ds">rpc-node-infra</span></span></li>
+        <li><span><b>reth</b> <span class="ds">rpc-node-infra</span></span></li>
+        <li><span><b>Erigon</b> <span class="ds">rpc-node-infra</span></span></li>
+        <li><span><b>API3 / dAPIs</b> <span class="ds">oracles</span></span></li>
+        <li><span><b>Chainlink Proof-of-Reserve</b> <span class="ds">oracles</span></span></li>
+        <li><span><b>NearDA</b> <span class="ds">data-availability</span></span></li>
+        <li><span><b>Band Protocol</b> <span class="ds">oracles</span></span></li>
+        <li><span><b>Tellor</b> <span class="ds">oracles</span></span></li>
+        <li><span><b>Dune Analytics</b> <span class="ds">rpc-node-infra</span></span></li>
+        <li><span><b>Switchboard</b> <span class="ds">oracle</span></span></li>
+        <li><span><b>Supra</b> <span class="ds">oracle</span></span></li>
+        <li><span><b>DIA</b> <span class="ds">oracle</span></span></li>
+        <li><span><b>Pragma</b> <span class="ds">oracle</span></span></li>
+        <li><span><b>eOracle</b> <span class="ds">oracle</span></span></li>
+        <li><span><b>Espresso</b> <span class="ds">διαθεσιμότητα δεδομένων + κοινή αλληλουχία (sequencing)</span></span></li>
+        <li><span><b>0G (ZeroGravity)</b> <span class="ds">data-availability</span></span></li>
+        <li><span><b>Pocket Network (POKT)</b> <span class="ds">υποδομή rpc</span></span></li>
+        <li><span><b>Lava Network</b> <span class="ds">υποδομή rpc</span></span></li>
+        <li><span><b>Tenderly</b> <span class="ds">υποδομή rpc/ανάπτυξης</span></span></li>
+        <li><span><b>Blockdaemon / Chainstack / dRPC</b> <span class="ds">υποδομή rpc</span></span></li>
+        <li><span><b>Etherscan</b> <span class="ds">υποδομή explorer/δεδομένων</span></span></li>
+        <li><span><b>Gelato</b> <span class="ds">υποδομή αυτοματισμού</span></span></li>
+      </ul>
+    </div>
+    <div class="invdom">
+      <div class="invhead"><span class="invn">NFT, πρότυπα token &amp; RWA</span><span class="invc">38 στόχοι</span></div>
+      <ul class="invlist">
+        <li><span><b>OpenSea / Seaport Protocol</b> <span class="ds">αγορά NFT</span></span></li>
+        <li><span><b>Securitize</b> <span class="ds">RWA</span></span></li>
+        <li><span><b>Weird / Non-Standard ERC-20 Tokens (integration bug class)</b> <span class="ds">πρότυπο token</span></span></li>
+        <li><span><b>Ondo Finance</b> <span class="ds">RWA</span></span></li>
+        <li><span><b>ERC-6551 Token Bound Accounts (standard + Tokenbound)</b> <span class="ds">πρότυπο token</span></span></li>
+        <li><span><b>ENS + NameWrapper + CCIP-Read (ERC-3668)</b> <span class="ds">ταυτότητα/κοινωνικό</span></span></li>
+        <li><span><b>Maple Finance</b> <span class="ds">RWA</span></span></li>
+        <li><span><b>BlackRock BUIDL (via Securitize)</b> <span class="ds">RWA</span></span></li>
+        <li><span><b>EAS (Ethereum Attestation Service)</b> <span class="ds">ταυτότητα/κοινωνικό</span></span></li>
+        <li><span><b>Blur / Blend</b> <span class="ds">αγορά NFT</span></span></li>
+        <li><span><b>Worldcoin / World ID</b> <span class="ds">ταυτότητα/κοινωνικό</span></span></li>
+        <li><span><b>ERC-3643 / T-REX Permissioned Security Token Standard</b> <span class="ds">πρότυπο token</span></span></li>
+        <li><span><b>Centrifuge</b> <span class="ds">RWA</span></span></li>
+        <li><span><b>Superstate (USTB/USCC, transitioning to Invesco/Bitwise)</b> <span class="ds">RWA</span></span></li>
+        <li><span><b>Farcaster</b> <span class="ds">ταυτότητα/κοινωνικό</span></span></li>
+        <li><span><b>Gitcoin Passport / Human Passport</b> <span class="ds">ταυτότητα/κοινωνικό</span></span></li>
+        <li><span><b>Lens Protocol (+ Lens Chain)</b> <span class="ds">ταυτότητα/κοινωνικό</span></span></li>
+        <li><span><b>Magic Eden (EVM)</b> <span class="ds">αγορά NFT</span></span></li>
+        <li><span><b>ERC-2981 Royalty Standard + Marketplace Royalty Enforcement</b> <span class="ds">πρότυπο token</span></span></li>
+        <li><span><b>Zora Protocol</b> <span class="ds">αγορά NFT</span></span></li>
+        <li><span><b>Reservoir Protocol</b> <span class="ds">αγορά NFT</span></span></li>
+        <li><span><b>Spiko</b> <span class="ds">RWA</span></span></li>
+        <li><span><b>Franklin Templeton BENJI (Franklin OnChain U.S. Government Money Fund)</b> <span class="ds">RWA</span></span></li>
+        <li><span><b>Manifold</b> <span class="ds">αγορά NFT</span></span></li>
+        <li><span><b>NFTX / Sudoswap (NFT AMM &amp; fractionalization)</b> <span class="ds">αγορά NFT</span></span></li>
+        <li><span><b>Goldfinch</b> <span class="ds">RWA</span></span></li>
+        <li><span><b>Physical-Asset-Backed NFT Platforms (e.g., Courtyard)</b> <span class="ds">RWA</span></span></li>
+        <li><span><b>LooksRare</b> <span class="ds">nft-marketplace</span></span></li>
+        <li><span><b>Rarible</b> <span class="ds">nft-marketplace</span></span></li>
+        <li><span><b>ERC-404 / hybrid token standards</b> <span class="ds">πρότυπο token</span></span></li>
+        <li><span><b>ERC-7540 async tokenized vaults</b> <span class="ds">πρότυπο token</span></span></li>
+        <li><span><b>OpenEden (TBILL / USDO)</b> <span class="ds">rwa</span></span></li>
+        <li><span><b>Hashnote (USYC)</b> <span class="ds">rwa</span></span></li>
+        <li><span><b>Backed Finance (bTokens)</b> <span class="ds">rwa</span></span></li>
+        <li><span><b>Clearpool</b> <span class="ds">rwa</span></span></li>
+        <li><span><b>TrueFi</b> <span class="ds">rwa</span></span></li>
+        <li><span><b>BendDAO / ParaSpace</b> <span class="ds">nft-finance</span></span></li>
+        <li><span><b>RealT</b> <span class="ds">rwa</span></span></li>
+      </ul>
+    </div>
+    <div class="invdom">
+      <div class="invhead"><span class="invn">Account Abstraction, Intents &amp; Solvers</span><span class="invc">26 στόχοι</span></div>
+      <ul class="invlist">
+        <li><span><b>Safe{Wallet} client + Safe Transaction Service</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>Pimlico (bundler, now part of Alchemy)</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>Alchemy Account Abstraction (Account Kit / Modular Account + bundler RPC)</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>Coinbase Smart Wallet + bundler/paymaster (Base)</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>Stackup</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>Biconomy (Nexus account + bundler/paymaster + MEE)</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>ZeroDev (Kernel + bundler/paymaster + session keys)</b> <span class="ds">aa-intents-solvers + κλειδιά συνεδρίας</span></span></li>
+        <li><span><b>Candide (Voltaire bundler, Safe-based accounts)</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>Etherspot (Skandha bundler, Arka paymaster)</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>ERC-4337 alt-mempool / ERC-7562 P2P layer (shared across bundlers)</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>CoW Protocol (CoW Swap driver/solver competition + MEV Blocker)</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>UniswapX</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>1inch Fusion (resolver network)</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>Across Protocol / Open Intents Framework reference implementation</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>Anoma</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>Enso Network</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>Bungee / Socket Protocol</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>deBridge DLN</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>LI.FI (aggregator + LI.FI Intents / OIF)</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>Eco Protocol (Eco Routes)</b> <span class="ds">aa-intents-solvers</span></span></li>
+        <li><span><b>Rhinestone</b> <span class="ds">aa</span></span></li>
+        <li><span><b>EIP-7702 delegation (set-code for EOAs)</b> <span class="ds">aa</span></span></li>
+        <li><span><b>thirdweb</b> <span class="ds">aa</span></span></li>
+        <li><span><b>Particle Network</b> <span class="ds">aa</span></span></li>
+        <li><span><b>Soul Wallet</b> <span class="ds">aa</span></span></li>
+        <li><span><b>Safe4337Module</b> <span class="ds">aa</span></span></li>
+      </ul>
+    </div>
+    <div class="invdom">
+      <div class="invhead"><span class="invn">Διακυβέρνηση, MEV &amp; διάφορα</span><span class="invc">36 στόχοι</span></div>
+      <ul class="invlist">
+        <li><span><b>Safe (Gnosis Safe) smart contracts + Safe{Wallet} infra</b> <span class="ds">ταμείο/multisig</span></span></li>
+        <li><span><b>Flashbots MEV-Boost + mev-boost-relay (reference relay)</b> <span class="ds">υποδομή MEV</span></span></li>
+        <li><span><b>Snapshot (off-chain governance voting)</b> <span class="ds">εργαλεία διακυβέρνησης/DAO</span></span></li>
+        <li><span><b>MEV relay ecosystem forks (Ultra Sound Money, Aestus, bloXroute, Agnostic)</b> <span class="ds">υποδομή MEV</span></span></li>
+        <li><span><b>BuilderNet (Flashbots + beaverbuild + Nethermind, TEE-based building)</b> <span class="ds">υποδομή MEV</span></span></li>
+        <li><span><b>Concentrated closed-source block builders (Titan, beaverbuild, rsync-builder)</b> <span class="ds">υποδομή MEV</span></span></li>
+        <li><span><b>Safe Zodiac modules / SafeSnap-oSnap (Reality.eth execution bridge)</b> <span class="ds">γέφυρα εκτέλεσης διακυβέρνησης</span></span></li>
+        <li><span><b>Aragon OSx</b> <span class="ds">εργαλεία διακυβέρνησης/DAO</span></span></li>
+        <li class="part"><span><b>Major DAO treasuries + cross-domain governance execution (Uniswap, Arbitrum, Optimism, Sky/MakerDAO)</b> <span class="ds">εργαλεία διακυβέρνησης/DAO</span></span></li>
+        <li><span><b>CoW Protocol (CoW Swap batch auctions + MEV Blocker)</b> <span class="ds">υποδομή MEV</span></span></li>
+        <li><span><b>OpenZeppelin Contracts (library-wide systemic dependency)</b> <span class="ds">κοινή συστημική βιβλιοθήκη</span></span></li>
+        <li><span><b>Permit2</b> <span class="ds">κοινή συστημική βιβλιοθήκη</span></span></li>
+        <li><span><b>OpenZeppelin Governor + TimelockController</b> <span class="ds">εργαλεία διακυβέρνησης/DAO</span></span></li>
+        <li><span><b>Solady</b> <span class="ds">κοινή συστημική βιβλιοθήκη</span></span></li>
+        <li><span><b>Convex Finance (vlCVX meta-governance)</b> <span class="ds">vote-escrow/μετα-διακυβέρνηση</span></span></li>
+        <li><span><b>Votium / Hidden Hand / Warden (veToken bribe markets)</b> <span class="ds">vote-escrow/μετα-διακυβέρνηση</span></span></li>
+        <li><span><b>Curve DAO / veCRV gauge voting</b> <span class="ds">vote-escrow/μετα-διακυβέρνηση</span></span></li>
+        <li><span><b>Compound Governor Bravo / Governor Alpha (legacy deployments)</b> <span class="ds">εργαλεία διακυβέρνησης/DAO</span></span></li>
+        <li><span><b>Tally (governance front-end/indexer)</b> <span class="ds">εργαλεία διακυβέρνησης/DAO</span></span></li>
+        <li><span><b>MEV-Share / SUAVE</b> <span class="ds">υποδομή MEV</span></span></li>
+        <li><span><b>WETH9 (canonical wrapped ether)</b> <span class="ds">κοινή συστημική βιβλιοθήκη</span></span></li>
+        <li><span><b>CREATE2 deterministic deployment factories</b> <span class="ds">κοινή συστημική βιβλιοθήκη</span></span></li>
+        <li><span><b>Multicall / Multicall3</b> <span class="ds">κοινή συστημική βιβλιοθήκη</span></span></li>
+        <li><span><b>Nouns DAO</b> <span class="ds">διακυβέρνηση</span></span></li>
+        <li><span><b>Juicebox</b> <span class="ds">διακυβέρνηση</span></span></li>
+        <li><span><b>Hats Protocol</b> <span class="ds">διακυβέρνηση</span></span></li>
+        <li><span><b>Delegate.xyz (Delegate Registry)</b> <span class="ds">υποδομή διακυβέρνησης</span></span></li>
+        <li><span><b>Moloch / DAOhaus</b> <span class="ds">διακυβέρνηση</span></span></li>
+        <li><span><b>Kleros</b> <span class="ds">διακυβέρνηση/επίλυση διαφορών</span></span></li>
+        <li><span><b>Reality.eth / Kleros oracle</b> <span class="ds">υποδομή διακυβέρνησης</span></span></li>
+        <li><span><b>Sablier</b> <span class="ds">διάφορα</span></span></li>
+        <li><span><b>Superfluid</b> <span class="ds">διάφορα</span></span></li>
+        <li><span><b>Eden Network / bloXroute</b> <span class="ds">υποδομή MEV</span></span></li>
+        <li><span><b>Blocknative</b> <span class="ds">υποδομή MEV</span></span></li>
+        <li><span><b>Gauntlet / Chaos Labs</b> <span class="ds">υποδομή διαχείρισης κινδύνου</span></span></li>
+        <li><span><b>Gnosis Chain</b> <span class="ds">διάφορα</span></span></li>
+      </ul>
+    </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fin">
+      <div><a class="mark" href="#top">ETH<span>SEC</span></a> &nbsp; ethsecurity.org</div>
+      <div>Ασφάλεια για το οικοσύστημα του Ethereum.</div>
+    </div>
+    <p class="caveat"><b>Συντάχθηκε τον Οκτώβριο 2026.</b> Τα μεγέθη είναι εκτιμήσεις από δημόσια εργαλεία παρακολούθησης (DefiLlama, L2Beat και παρόμοια) σε ένα μόνο ερευνητικό πέρασμα· χρησιμοποιούν διαφορετικά μέτρα, επικαλύπτονται μεταξύ τομέων και πρέπει να επαληθευτούν δειγματοληπτικά πριν από οποιαδήποτε εξωτερική ή δημόσια χρήση. Η κατεύθυνση και οι προτεραιότητες αντικατοπτρίζουν την τρέχουσα κρίση και θα μεταβάλλονται όσο αλλάζει το τοπίο. Επικεφαλής: David Theodore. Το πλήρες υπόβαθρο και το μοντέλο χρηματοδότησης καλύπτονται ξεχωριστά.</p>
+  </div>
+</footer>
+
+</body>
+</html>

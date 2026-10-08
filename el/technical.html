@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="description" content="Πώς λειτουργεί το Argus, για μηχανικούς: η αρχιτεκτονική τριών επιπέδων, μια εμπεριστατωμένη ματιά στα el-bigote και dobby, το επίπεδο υπολογισμού και απομόνωσης, ο οδικός χάρτης κατασκευής και η πύλη που δικαιολογεί κάθε κλιμάκωση.">
+<title>EthSec | Τεχνολογία</title>
+<style>
+:root{
+  --bg:#eef1f5;
+  --bg2:#e7ecf2;
+  --ink:#0d1620;
+  --ink2:#2b3744;
+  --muted:#5a6778;
+  --accent:#0d7a8a;
+  --accent-ink:#0a6170;
+  --line:#d4dbe4;
+  --card:#ffffff;
+  --btn-bg:#0a6170;
+  --btn-ink:#ffffff;
+  --good:#1d7a4f;
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#090d12;
+    --bg2:#0d141c;
+    --ink:#e9eff6;
+    --ink2:#c3cdd9;
+    --muted:#8a97a8;
+    --accent:#46c7d6;
+    --accent-ink:#7fdce8;
+    --line:#1f2b37;
+    --card:#111923;
+    --btn-bg:#46c7d6;
+    --btn-ink:#090d12;
+    --good:#5bc08c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#090d12;
+  --bg2:#0d141c;
+  --ink:#e9eff6;
+  --ink2:#c3cdd9;
+  --muted:#8a97a8;
+  --accent:#46c7d6;
+  --accent-ink:#7fdce8;
+  --line:#1f2b37;
+  --card:#111923;
+  --btn-bg:#46c7d6;
+  --btn-ink:#090d12;
+  --good:#5bc08c;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:124px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
+a{color:var(--accent-ink);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--ink)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 28px}
+.narrow{max-width:720px}
+[hidden]{display:none!important}
+
+/* nav (identical on every page) */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--bg)}
+nav{background:var(--bg);border-bottom:1px solid var(--line)}
+.navin{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.mark{font-family:var(--serif);font-size:22px;letter-spacing:.14em;font-weight:600;color:var(--ink);text-decoration:none;white-space:nowrap}
+.mark span{color:var(--accent)}
+.links{display:flex;align-items:center;gap:8px}
+.links a{font-size:14px;color:var(--ink2);text-decoration:none;letter-spacing:.02em;border:1px solid var(--line);padding:8px 16px;border-radius:2px;white-space:nowrap;line-height:1}
+.links a:hover{color:var(--ink);border-color:var(--ink)}
+.links a[aria-current="page"]{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+.links a[aria-current="page"]:hover{color:var(--btn-ink);opacity:.9}
+@media (max-width:600px){
+  .navin{flex-direction:column;align-items:stretch;gap:12px;padding:12px 0;min-height:0}
+  .mark{align-self:flex-start}
+  .links{width:100%;gap:8px}
+  .links a{flex:1 1 0;min-width:0;text-align:center;justify-content:center;display:flex;align-items:center;padding:11px 6px;font-size:13px;min-height:44px}
+}
+
+/* sub-nav: the technology sections as tabs */
+.subnav{background:var(--bg);border-bottom:1px solid var(--line)}
+.subnav .wrap{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-top:12px;padding-bottom:12px;scrollbar-width:none}
+.subnav .wrap::-webkit-scrollbar{display:none}
+.subnav button{flex:0 0 auto;background:none;border:1px solid var(--line);color:var(--ink2);font:inherit;font-size:13px;letter-spacing:.03em;padding:8px 15px;border-radius:999px;cursor:pointer;white-space:nowrap;line-height:1.2}
+.subnav button:hover{border-color:var(--ink);color:var(--ink)}
+.subnav button[aria-current="true"]{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+
+/* type */
+h1,h2,h3,h4{font-family:var(--serif);font-weight:500;color:var(--ink);line-height:1.2;margin:0}
+.eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin:0 0 18px}
+h2{font-size:clamp(28px,4vw,40px);margin-bottom:22px}
+h3{font-size:21px;margin-bottom:10px}
+p{margin:0 0 18px;color:var(--ink2)}
+.rule{width:48px;height:2px;background:var(--accent);margin:0 0 26px;border:0}
+
+/* tab sections */
+.tab{padding:46px 0 76px;border-top:0}
+.wm{font-family:var(--serif);letter-spacing:.3em;font-size:14px;color:var(--accent-ink);margin:0 0 20px;font-weight:600}
+.pagetitle{font-family:var(--serif);font-weight:500;font-size:clamp(34px,5.5vw,56px);line-height:1.1;letter-spacing:-.01em;color:var(--ink);margin:0 0 20px;max-width:16ch;text-wrap:balance}
+.lede{font-size:clamp(18px,2.2vw,22px);line-height:1.6;color:var(--ink2);max-width:46em;margin-bottom:20px}
+.sublede{font-size:17px;max-width:46em;margin-bottom:0}
+.meta{margin-top:30px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.note{max-width:46em}
+code{font-family:var(--mono);font-size:.86em;background:var(--bg2);border:1px solid var(--line);padding:1px 6px;overflow-wrap:anywhere}
+
+/* three-layer cards */
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.card{background:var(--card);border:1px solid var(--line);padding:30px 28px;border-top:2px solid var(--accent);min-width:0}
+.card p{margin:0;font-size:15.5px}
+.card .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin-bottom:12px}
+
+/* result callout */
+.result{border-left:3px solid var(--accent);padding:6px 0 6px 26px;max-width:760px;margin-top:34px}
+.result .eyebrow{margin-bottom:10px}
+.result p{font-family:var(--serif);font-size:20px;line-height:1.6;color:var(--ink);margin:0}
+
+/* buttons */
+.btns{display:flex;gap:14px;flex-wrap:wrap}
+.btns.row{margin-top:34px}
+.btn{display:inline-block;padding:14px 28px;font-size:15px;font-weight:600;letter-spacing:.03em;text-decoration:none;border-radius:2px;border:1px solid var(--btn-bg)}
+.btn.s{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn.s:hover{background:var(--ink);color:var(--bg)}
+
+/* architecture box */
+.archbox{margin-top:8px;background:var(--card);border:1px solid var(--line);padding:30px 28px}
+.layerlabel{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 12px;line-height:1.5}
+.lanes-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.lane{border:1px solid var(--line);border-top:2px solid var(--accent);background:var(--bg);padding:14px 14px;font-size:14px;line-height:1.5;color:var(--ink2);min-width:0;overflow-wrap:anywhere}
+.lane b{display:block;font-family:var(--serif);font-weight:500;font-size:17px;color:var(--ink);margin-bottom:4px}
+.conn{height:22px;border-left:1px dashed var(--accent);width:0;margin:10px 0 10px 50%}
+.planebox{border:1px solid var(--accent);padding:16px 18px;background:var(--bg)}
+.planebox .h{font-family:var(--serif);font-size:19px;color:var(--ink);margin-bottom:6px}
+.planebox .d{font-size:14.5px;color:var(--ink2);line-height:1.6}
+.units{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.unit{border:1px solid var(--line);background:var(--bg);padding:14px;min-width:0}
+.unit .cap{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.unit .box{padding:9px 11px;margin-top:9px;font-size:13.5px;line-height:1.45;color:var(--ink2);overflow-wrap:anywhere}
+.unit .cred{background:var(--bg2);border:1px dashed var(--accent)}
+.unit .run{background:var(--card);border:1px solid var(--accent);color:var(--ink)}
+.unit .poc{background:var(--card);border:1px dashed var(--line);color:var(--muted)}
+.unit .edge{font-family:var(--mono);font-size:12px;color:var(--accent-ink);margin-top:10px;overflow-wrap:anywhere}
+.rail{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.svc{border:1px solid var(--line);background:var(--bg);padding:14px;min-width:0}
+.svc .n{font-family:var(--serif);font-size:17px;color:var(--ink)}
+.svc .m{font-size:14px;color:var(--ink2);margin-top:4px;line-height:1.5}
+.svc .st{font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-top:10px;font-weight:600;color:var(--muted)}
+.svc .st.now{color:var(--accent-ink)}
+
+/* roadmap */
+.road{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin:34px 0 0}
+.rchip{display:block;background:var(--card);border:1px solid var(--line);border-top:2px solid var(--line);padding:16px 14px;text-decoration:none;color:var(--ink);min-width:0;min-height:40px}
+.rchip:hover{color:var(--ink);border-color:var(--accent)}
+.rchip .num{font-family:var(--serif);font-size:26px;color:var(--accent);line-height:1}
+.rchip .s{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--muted);margin-top:10px}
+.rchip h4{font-family:var(--serif);font-weight:500;font-size:17px;line-height:1.3;color:var(--ink);margin:6px 0 0}
+.rchip.done,.rchip.now{border-top-color:var(--accent)}
+.rchip.done .s,.rchip.now .s{color:var(--accent-ink)}
+.road + .note{margin-top:26px}
+
+/* step detail list */
+.steps{list-style:none;margin:40px 0 0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:72px 1fr;gap:8px 20px;padding:26px 0;border-top:1px solid var(--line)}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--serif);font-size:34px;color:var(--accent);line-height:1}
+.steps li.s{scroll-margin-top:124px}
+.steps div{min-width:0}
+.steps h3{margin:0 0 6px;font-size:20px}
+.steps .why{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--muted);margin:0 0 8px}
+.hd{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;margin-bottom:6px}
+.hd h3{margin:0}
+.badge{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:3px 10px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.badge.done{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+.badge.now{border-color:var(--accent);color:var(--accent-ink)}
+.bul{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.bul li{display:block;position:relative;padding:0 0 0 20px;border:0;font-size:15.5px;line-height:1.6;color:var(--ink2);counter-increment:none}
+.bul li:last-child{border:0}
+.bul li::before{content:"";position:absolute;left:2px;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent);font-size:0}
+.bul li b{color:var(--ink);font-weight:600}
+.files{margin-top:14px;font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted);overflow-wrap:anywhere}
+.verif{margin-top:14px;border-left:3px solid var(--accent);padding:4px 0 4px 16px;font-size:15px;color:var(--ink2);line-height:1.6}
+.verif b{color:var(--ink);font-weight:600}
+
+footer{border-top:1px solid var(--line);padding:40px 0 56px;font-size:13.5px;color:var(--muted)}
+.fin{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:baseline}
+footer .mark{font-size:17px}
+
+.cols3>*,.fin>*{min-width:0}
+html,body{overflow-x:clip;max-width:100%}
+img,svg,pre,table{max-width:100%}
+
+@media (max-width:860px){
+  .cols3{grid-template-columns:1fr}
+  .lanes-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .units{grid-template-columns:1fr}
+  .rail{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .road{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:480px){
+  .wrap{padding:0 18px}
+  .lanes-row,.rail,.road,.units{grid-template-columns:1fr}
+  .tab{padding:36px 0 56px}
+  .archbox{padding:20px 16px}
+  .steps li{grid-template-columns:40px minmax(0,1fr);gap:6px 12px}
+  .steps li::before{font-size:26px}
+  .result{padding-left:18px}
+  .result p{font-size:18px}
+  h2{margin-bottom:18px}
+  .badge{white-space:normal}
+  .btn{padding:12px 20px}
+}
+@media print{
+  .site-head,.subnav,.btns{display:none}
+  [hidden]{display:block!important}
+  body{background:#fff;color:#000;font-size:11.5pt}
+  .tab{padding:24px 0;break-inside:avoid}
+  .card,.archbox,.steps li,.result{break-inside:avoid}
+  a{color:#000;text-decoration:none}
+  :root{--bg:#fff;--bg2:#fff;--ink:#000;--ink2:#222;--muted:#444;--card:#fff;--line:#bbb}
+}
+</style>
+</head>
+<body>
+
+<div class="site-head">
+  <nav>
+    <div class="wrap navin">
+      <a class="mark" href="index.html">ETH<span>SEC</span></a>
+      <div class="links">
+        <a href="technical.html" aria-current="page">Τεχνολογία</a>
+        <a href="scope.html">Πεδίο</a>
+        <a href="finance.html">Οικονομικά</a>
+      </div>
+    </div>
+  </nav>
+  <div class="subnav">
+    <div class="wrap">
+      <button type="button" data-tab="overview" aria-current="true">Επισκόπηση</button>
+      <button type="button" data-tab="elbigote">el-bigote</button>
+      <button type="button" data-tab="dobby">dobby</button>
+      <button type="button" data-tab="arch">Υπολογιστικό επίπεδο</button>
+      <button type="button" data-tab="road">Οδικός χάρτης</button>
+      <button type="button" data-tab="gate">Πύλη ασφάλειας</button>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<section id="overview" class="tab">
+  <div class="wrap">
+    <p class="wm">ETHSEC &middot; ARGUS</p>
+    <h1 class="pagetitle">Πώς λειτουργεί το Argus</h1>
+    <p class="lede">Το Argus είναι η μηχανή της EthSec: μια πλατφόρμα συνεχούς σάρωσης, ανεξάρτητη από το μοντέλο, που εντοπίζει και συμβάλλει στη διόρθωση ευπαθειών σε κρίσιμο κώδικα του Ethereum. Η σελίδα εξηγεί πώς είναι κατασκευασμένο, για μηχανικούς που το συναντούν για πρώτη φορά.</p>
+    <p class="sublede">Λειτουργεί ως τρία επίπεδα σε έναν κύκλο. Το el-bigote φέρει τη μεθοδολογία και τη γνώση. Το dobby εκτελεί ανοικτά μοντέλα σε ιδιόκτητο υλικό για την ανάγνωση μεγάλου όγκου. Ένας dispatcher εκτελεί κάθε μονάδα εργασίας σε απομονωμένο sandbox, σε πολλές υπολογιστικές λωρίδες ταυτόχρονα.</p>
+    <div class="cols3">
+      <div class="card"><div class="k">Πρώτο επίπεδο</div><h3>el-bigote</h3><p>Ενορχήστρωση, μεθοδολογία και γνώση: ο κύκλος από την εύρεση έως την υποβολή, μια μεγάλη βιβλιοθήκη φακών ανάλυσης και περίπου 131 εργαλεία που μετατρέπουν έναν στόχο σε ιεραρχημένα, επικυρωμένα ευρήματα.</p></div>
+      <div class="card"><div class="k">Δεύτερο επίπεδο</div><h3>dobby</h3><p>Το εργαλείο των τοπικών μοντέλων. Ανοικτά μοντέλα σε ιδιόκτητο υλικό αναλαμβάνουν την ανάγνωση μεγάλου όγκου, ενώ τα μοντέλα αιχμής αναλαμβάνουν τη δυσκολότερη συλλογιστική. Εύρος με σχεδόν μηδενικό οριακό κόστος.</p></div>
+      <div class="card"><div class="k">Τρίτο επίπεδο</div><h3>Dispatcher</h3><p>Το επίπεδο υπολογισμού και απομόνωσης. Εκτελεί κάθε μονάδα εργασίας σε ενισχυμένο sandbox, σε πολλές υπολογιστικές λωρίδες ταυτόχρονα, και δεν κρατά ποτέ διαπιστευτήριο κεντρικά.</p></div>
+    </div>
+    <p style="max-width:46em;margin-top:28px">Μαζί σχηματίζουν έναν συνεχή κύκλο: καταγραφή του κώδικα που έχει σημασία, παραγωγή υποψήφιων ζητημάτων σε κλίμακα, αυστηρή επικύρωσή τους, γνωστοποίηση των πραγματικών μέσω του καναλιού του ιδιοκτήτη, επαλήθευση της διόρθωσης και νέα έναρξη. Χρησιμοποιήστε τις καρτέλες παραπάνω για να εμβαθύνετε σε κάθε επίπεδο.</p>
+    <p class="meta">Υλοποίηση αναφοράς &middot; Το Step 1 ολοκληρώθηκε &middot; 31 tests επιτυγχάνουν</p>
+  </div>
+</section>
+
+<section id="elbigote" class="tab" hidden>
+  <div class="wrap">
+    <p class="eyebrow">Πρώτο επίπεδο</p>
+    <h2>el-bigote: ενορχήστρωση, μεθοδολογία και γνώση</h2>
+    <hr class="rule">
+    <p style="max-width:46em">Το el-bigote είναι το πλαίσιο ασφαλούς αναθεώρησης στο κέντρο του Argus. Περιέχει τη μεθοδολογία, τη βάση γνώσης και περίπου 131 εργαλεία, και εκτελεί έναν ενιαίο κύκλο από την πρώτη ένδειξη έως την υποβολή της αναφοράς. Λίγοι μηχανισμοί κάνουν το μεγαλύτερο μέρος της δουλειάς.</p>
+    <p style="max-width:46em"><b>Παραγωγή ενδείξεων σε κλίμακα.</b> Πολλοί διαφορετικοί φακοί ανάλυσης εφαρμόζονται σε έναν στόχο. Ένας δρομολογητής της βάσης γνώσης φορτώνει μόνο τη γνώση για τις κατηγορίες ευπαθειών που αφορούν συγκεκριμένο τμήμα κώδικα, ώστε κάθε πέρασμα να εστιάζει σε όσα μπορεί πραγματικά να πάνε στραβά σε αυτόν τον κώδικα και όχι σε μια γενική λίστα ελέγχου.</p>
+    <p style="max-width:46em"><b>Ένα φίλτρο επικύρωσης.</b> Κάθε υποψήφιο ζήτημα δοκιμάζεται επιθετικά πριν γίνει πιστευτό: διαψευστική κρίση από σύνολο, όπου k ανεξάρτητοι αναθεωρητές προσπαθούν να το καταρρίψουν, ανάλυση προσβασιμότητας, διαφορική δοκιμή και fuzzing. Μια κατηγορία επίπτωσης προάγεται μόνο όταν ένας ντετερμινιστικός oracle ενεργοποιείται στο exploit και παραμένει σιωπηλός σε έναν αντίστοιχο έλεγχο αναφοράς, ώστε ο ισχυρισμός να στηρίζεται σε δοκιμή και όχι σε γνώμη.</p>
+    <p style="max-width:46em"><b>Σωρευτική μνήμη.</b> Ένα μητρώο διαψευσμένων ισχυρισμών καταγράφει κάθε αδιέξοδο και συμβουλεύεται πριν από κάθε αναζήτηση, ώστε το σύστημα να μην ανακαλύπτει ξανά έναν μηχανισμό που έχει ήδη αποκλείσει. Κάθε πέρασμα στο οικοσύστημα γίνεται φθηνότερο και βαθύτερο από το προηγούμενο.</p>
+    <p style="max-width:46em"><b>Επιλογή της επόμενης κίνησης.</b> Η εργασία ιεραρχείται με ένα μοντέλο κάλυψης επί αναμενόμενης αξίας, ώστε η προσπάθεια να ακολουθεί τον κίνδυνο και την ανεξέταστη επιφάνεια αντί για τη συνήθεια, και η κάλυψη παρακολουθείται ως προς την ακριβή έκδοση κάθε στόχου.</p>
+    <div class="result">
+      <p class="eyebrow">Ο κανόνας</p>
+      <p>Η κρίση ενός μοντέλου είναι μόνο ένδειξη, ποτέ επιβεβαίωση. Ένας έμπειρος ερευνητής επαληθεύει και υποβάλλει. Τίποτα δεν κυκλοφορεί με μόνη εγγύηση ένα μοντέλο.</p>
+    </div>
+  </div>
+</section>
+
+<section id="dobby" class="tab" hidden>
+  <div class="wrap">
+    <p class="eyebrow">Δεύτερο επίπεδο &middot; το τοπικό επίπεδο</p>
+    <h2>dobby: το εργαλείο των τοπικών μοντέλων</h2>
+    <hr class="rule">
+    <p style="max-width:46em">Το dobby εκτελεί την ανάγνωση μεγάλου όγκου σε ανοικτά μοντέλα σε ιδιόκτητο υλικό, ώστε το εύρος να κοστίζει σχεδόν μηδέν στο περιθώριο. Χρησιμοποιεί υβριδικό σχεδιασμό: ένα μοντέλο αιχμής ενορχηστρώνει, σχεδιάζοντας την εργασία και επαληθεύοντας τους ισχυρισμούς υψηλής σοβαρότητας απέναντι στον πραγματικό πηγαίο κώδικα, ενώ ένα τοπικό ανοικτό μοντέλο κάνει το μεγαλύτερο μέρος της ανάγνωσης και της διαλογής.</p>
+    <p style="max-width:46em"><b>Καμία εξουσία, τυποποιημένη έξοδος.</b> Το τοπικό μοντέλο δεν εκτελεί ποτέ εργαλεία. Διαβάζει κείμενο και επιστρέφει δομημένο JSON επικυρωμένο με σχήμα: έναν τυποποιημένο φάκελο που φέρει το αποτέλεσμα με βαθμό εμπιστοσύνης και την προέλευσή του. Ο orchestrator εξετάζει αυτό το συνοπτικό JSON και ελέγχει δειγματοληπτικά μόνο τους κορυφαίους ισχυρισμούς απέναντι στην πηγή.</p>
+    <p style="max-width:46em"><b>Προϋπολογισμένο πλαίσιο, με προσωρινή αποθήκευση.</b> Το τοπικό μοντέλο διαβάζει πρώτα προϋπολογισμένο, ντετερμινιστικό πλαίσιο, δηλαδή γράφους κλήσεων, προσβασιμότητα και ροές taint που παράγουν τα εργαλεία ανάλυσης του el-bigote, αντί για ακατέργαστο κώδικα. Το πλαίσιο αυτό αποδίδεται ντετερμινιστικά, ώστε η μηχανή συμπερασμού να επαναχρησιμοποιεί το KV cache και το ακριβό prefill να πληρώνεται μία φορά σε πολλές κλήσεις.</p>
+    <p style="max-width:46em"><b>Μετρημένο, όχι θεωρούμενο.</b> Ένα πλαίσιο σύγκρισης μοντέλων βαθμολογεί κάθε μοντέλο με βάση ντετερμινιστικές χρυσές ετικέτες και πραγματικά επιβεβαιωμένα ευρήματα, επειδή η αυτόνομη ικανότητα ανίχνευσης ευπαθειών είναι σχεδόν τυχαία. Τα μοντέλα δρομολογούνται με βάση μετρημένη ανάκληση και κόστος, όχι με βάση δημόσιο πίνακα κατάταξης.</p>
+    <p style="max-width:46em"><b>Εξειδίκευση, σε εξέλιξη.</b> Τα ανοικτά μοντέλα προσαρμόζονται (fine-tuning) με ελαφρούς προσαρμογείς LoRA στο ίδιο το σώμα δεδομένων ασφάλειας του Ethereum της EthSec: παλαιότερες αναθέσεις και επιβεβαιωμένα ευρήματα, η μνήμη διαψευσμένων ισχυρισμών με τα αδιέξοδα, η βιβλιοθήκη φακών και βάσης γνώσης, και ο πραγματικός κώδικας Go, Solidity και Rust του οικοσυστήματος. Η πρόοδος μετριέται σε αμφίπλευρο benchmark που βαθμολογεί τόσο την ανάκληση (πραγματικά σφάλματα που εντοπίστηκαν) όσο και το ποσοστό εσφαλμένων επιβεβαιώσεων (βέβαιες λανθασμένες κρίσεις), επειδή η επίδοση σε σύνολα δοκιμών C και C++ δεν μεταφέρεται σε Go του Cosmos SDK ή σε Solidity για DeFi. Ο προϋπολογισμός υπολογισμού μετατοπίζεται προς το ιδιόκτητο υλικό όσο τα ανοικτά μοντέλα αποδεικνύονται.</p>
+    <div class="result">
+      <p class="eyebrow">Ο κανόνας</p>
+      <p>Ένα τοπικό μοντέλο είναι γεννήτρια ενδείξεων, όχι oracle. Η έξοδός του είναι μη αξιόπιστα δεδομένα που επαληθεύουν ο orchestrator και τα ντετερμινιστικά εργαλεία. Δεν έχει ποτέ την εξουσία να ενεργήσει, και ένας έμπειρος ερευνητής επαληθεύει και υποβάλλει.</p>
+    </div>
+  </div>
+</section>
+
+<section id="arch" class="tab" hidden>
+  <div class="wrap">
+    <p class="eyebrow">Τρίτο επίπεδο</p>
+    <h2>Το επίπεδο υπολογισμού και απομόνωσης</h2>
+    <hr class="rule">
+    <p class="note">Διαβάστε από πάνω προς τα κάτω ως μία μονάδα εργασίας. Οι υπολογιστικές λωρίδες παρέχουν χωρητικότητα, το επίπεδο ελέγχου αναθέτει μια μονάδα σε λωρίδα και sandbox, κάθε sandbox εκτελεί <code>wf-run</code> σε έναν στόχο με ακριβώς ένα διαπιστευτήριο, και τα ευρήματα συλλέγονται μέσω αποδιπλασιασμού και απόδοσης πατρότητας. Οι υπηρεσίες στην κάτω ράγα περιβάλλουν κάθε μονάδα. Οι ετικέτες κατάστασης δείχνουν τι έχει κατασκευαστεί, τι είναι σε εξέλιξη και τι είναι προγραμματισμένο.</p>
+
+    <div class="archbox">
+      <p class="layerlabel">L0 &middot; υπολογιστικές λωρίδες (όλες πρώτης τάξης, με δρομολόγηση κατά πολιτική, μετά επίπτωση, μετά ROI)</p>
+      <div class="lanes-row">
+        <div class="lane"><b>local_rig</b>dobby σε ιδιόκτητα rigs. Εύρος, σχεδόν μηδενικό οριακό κόστος.</div>
+        <div class="lane"><b>donated_lot</b>πιστώσεις που χορηγήθηκαν από πάροχο, χρησιμοποιούνται πρώτες.</div>
+        <div class="lane"><b>hosted</b>φιλοξενούμενη πρόσβαση σε μοντέλο σε κόμβο του ιδιοκτήτη.</div>
+        <div class="lane"><b>org_env</b>περιβάλλον ομάδας ή επιχείρησης.</div>
+        <div class="lane"><b>metered_key</b>API παρόχου πίσω από proxy έγχυσης.</div>
+      </div>
+      <div class="conn"></div>
+      <div class="planebox">
+        <div class="h">Επίπεδο ελέγχου</div>
+        <div class="d">Step 1 (ολοκληρώθηκε): χρονοπρογραμματιστής με προτεραιότητα στην επίπτωση, επιλογή λωρίδας με το καλύτερο ROI, κλειδώματα ανά λογαριασμό, πύλη χρήσης. Step 3: Temporal AccountLedger ανά λογαριασμό, UnitWorkflow ανά μονάδα, προσαρμογείς SandboxProvider.</div>
+      </div>
+      <div class="conn"></div>
+      <p class="layerlabel">L1 + L2 &middot; ένα sandbox ανά μονάδα, N ταυτόχρονα (η εκκίνηση έχει κατασκευαστεί, η εκτέλεση είναι το step 2)</p>
+      <div class="units">
+        <div class="unit"><div class="cap">μονάδα &middot; λογαριασμός A</div><div class="box cred">διαπιστευτήριο, μόνο για ανάγνωση, μόνο δυαδικό αρχείο του προμηθευτή</div><div class="box run">wf-run + ένας στόχος @commit</div><div class="box poc">VM για PoC, χωρίς διαπιστευτήριο (step 6)</div><div class="edge">proxy εξόδου: μόνο λίστα επιτρεπόμενων</div></div>
+        <div class="unit"><div class="cap">μονάδα &middot; λογαριασμός B</div><div class="box cred">διαπιστευτήριο, μόνο για ανάγνωση, μόνο δυαδικό αρχείο του προμηθευτή</div><div class="box run">wf-run + ένας στόχος @commit</div><div class="box poc">VM για PoC, χωρίς διαπιστευτήριο (step 6)</div><div class="edge">proxy εξόδου: μόνο λίστα επιτρεπόμενων</div></div>
+        <div class="unit"><div class="cap">μονάδα &middot; λογαριασμός C</div><div class="box cred">διαπιστευτήριο, μόνο για ανάγνωση, μόνο δυαδικό αρχείο του προμηθευτή</div><div class="box run">wf-run + ένας στόχος @commit</div><div class="box poc">VM για PoC, χωρίς διαπιστευτήριο (step 6)</div><div class="edge">proxy εξόδου: μόνο λίστα επιτρεπόμενων</div></div>
+      </div>
+      <div class="conn"></div>
+      <p class="layerlabel">οριζόντιες υπηρεσίες (περιβάλλουν κάθε μονάδα)</p>
+      <div class="rail">
+        <div class="svc"><div class="n">Συντονισμός</div><div class="m">Πίνακας διεκδικήσεων, αποδιπλασιασμός μεταξύ κόμβων, μητρώο απόδοσης πατρότητας, μητρώο πολιτικών.</div><div class="st">step 4</div></div>
+        <div class="svc"><div class="n">Χωρητικότητα + τηλεμετρία</div><div class="m">Διατήρηση των λωρίδων απασχολημένων με την καλύτερη εργασία, σήματα παραθύρου, πίνακες ελέγχου.</div><div class="st now">step 1 επιλογή / step 5 πλήρες</div></div>
+        <div class="svc"><div class="n">Εμπιστοσύνη</div><div class="m">Φύλαξη, προστασία από δηλητηρίαση, διακόπτης τερματισμού, microVM + διαχωρισμός PoC.</div><div class="st">step 2 / 3 / 6</div></div>
+        <div class="svc"><div class="n">Ανθρώπινη ροή</div><div class="m">Αποκεντρωμένη υποβολή, ουρά επαληθευτών, κονσόλα ερευνητή.</div><div class="st">step 6</div></div>
+      </div>
+    </div>
+    <div class="btns row">
+      <a class="btn s" href="index.html">Επισκόπηση της EthSec</a>
+      <a class="btn s" href="finance.html">Οικονομικά</a>
+    </div>
+  </div>
+</section>
+
+<section id="road" class="tab" hidden>
+  <div class="wrap">
+    <p class="eyebrow">Όλα τα βήματα</p>
+    <h2>Έξι βήματα, πρώτα ο κορμός, τελευταίος ο στόλος</h2>
+    <hr class="rule">
+    <div class="road">
+      <a class="rchip done" href="#s1"><div class="num">01</div><div class="s">Ολοκληρώθηκε</div><h4>Κορμός τυφλός ως προς τα διαπιστευτήρια</h4></a>
+      <a class="rchip now" href="#s2"><div class="num">02</div><div class="s">Επόμενο</div><h4>Πραγματική εκτέλεση + liveness</h4></a>
+      <a class="rchip next" href="#s3"><div class="num">03</div><div class="s">Προγραμματισμένο</div><h4>Επίπεδο ελέγχου Temporal</h4></a>
+      <a class="rchip next" href="#s4"><div class="num">04</div><div class="s">Προγραμματισμένο</div><h4>Συντονισμός</h4></a>
+      <a class="rchip next" href="#s5"><div class="num">05</div><div class="s">Προγραμματισμένο</div><h4>Χωρητικότητα + τηλεμετρία</h4></a>
+      <a class="rchip next" href="#s6"><div class="num">06</div><div class="s">Προγραμματισμένο</div><h4>Ενίσχυση εμπιστοσύνης + κλιμάκωση</h4></a>
+    </div>
+    <p class="note">Κάθε βήμα παραδίδει λειτουργικό, δοκιμασμένο κώδικα πριν ξεκινήσει το επόμενο, και κάθε κλιμάκωση εξαρτάται από έναν μετρημένο δείκτη ποιότητας και όχι από το σχέδιο (δείτε την καρτέλα Πύλη ασφάλειας). Η αρίθμηση συμπυκνώνει το σχέδιο κατασκευής του DESIGN.md στα τμήματα που παραδίδω.</p>
+
+    <ol class="steps">
+      <li class="s" id="s1"><div>
+        <div class="hd"><h3>Κορμός τυφλός ως προς τα διαπιστευτήρια</h3><span class="badge done">Ολοκληρώθηκε &middot; 31 tests</span></div>
+        <p class="why">το τμήμα πάνω στο οποίο στηρίζονται όλα τα άλλα</p>
+        <ul class="bul">
+        <li><b>Μητρώο λωρίδων</b> με προστασία κατά των μυστικών: μόνο μεταδεδομένα, απορρίπτει οποιαδήποτε τιμή token ή πεδίο με όνομα μυστικού, ώστε ένα διαπιστευτήριο να μην βρίσκεται ποτέ εδώ.</li>
+        <li><b>Χρονοπρογραμματιστής με προτεραιότητα στην επίπτωση</b>: η ουρά ιεραρχείται με το <code>impact_priority</code> (κάλυψη υψηλών και κρίσιμων ευρημάτων στο πεδίο του Argus), ενώ το bounty είναι απλώς σημαία και ποτέ κριτήριο ιεράρχησης.</li>
+        <li><b>Επιλογή λωρίδας με το καλύτερο ROI</b>: τοπικό rig, μετά δωρεά πιστώσεων, μετά φιλοξενούμενη πρόσβαση σε μοντέλο, μετά περιβάλλον ομάδας, μετά API με μέτρηση χρήσης, με πύλες για cyber-χρήση και συναίνεση και μία ενεργή μονάδα ανά λογαριασμό.</li>
+        <li><b>Ενισχυμένος κατασκευαστής εκκίνησης</b>: παράγει τις εντολές <code>docker run</code> και <code>wf-run</code>, απορρίπτει απαγορευμένα mounts και δεν βάζει ποτέ κλειδί στο argv. Το συμβόλαιο ασφάλειας ελέγχεται πάνω στο argv, ώστε να ισχύει χωρίς Docker.</li>
+        <li><b>Πύλη χρήσης, κλειδώματα, περιορισμένος συλλέκτης</b>: πύλη παραθύρου ανά λωρίδα από σήματα εντός ζώνης, κλειδώματα ταυτοχρονισμού ανά λογαριασμό και συλλέκτης που αντιγράφει στο δέντρο της ανάθεσης και δεν υποβάλλει ποτέ.</li>
+        </ul>
+        <div class="files">~/repos/la-barba/dispatch/ : dispatch.mjs &middot; lib/{registry,unit,schedule,launch,usagegate,lock,harvest,egress,errors}.mjs &middot; test/ (7 suites) &middot; SPEC.md</div>
+        <div class="verif"><b>Επαληθεύτηκε:</b> <code>node --test dispatch/test/</code> 31 επιτυγχάνουν, ενώ τα <code>dispatch plan/run/accounts</code> επιδείχθηκαν σε ξηρή εκτέλεση.</div>
+      </div></li>
+      <li class="s" id="s2"><div>
+        <div class="hd"><h3>Πραγματική εκτέλεση + liveness δύο λογαριασμών</h3><span class="badge now">Επόμενο</span></div>
+        <p class="why">απόδειξη της απομόνωσης πριν από οποιαδήποτε κλιμάκωση</p>
+        <ul class="bul">
+        <li><b>Κύκλος ζωής εκκίνησης και απελευθέρωσης εννέα σταδίων</b>: plan, prep (clone στο pin), net (εσωτερικό δίκτυο + sidecar εξόδου), acquire (κλείδωμα), run, απόδειξη ταυτότητας, work (wf-run με heartbeat και συγχρονισμό ημερολογίου), harvest, reap. Απελευθερώνει πάντα τους πόρους και συνεχίζει μέσω <code>wf-run --resume</code>.</li>
+        <li><b>Φρουρός ταυτότητας</b>: επιβεβαιώνει ότι η συνδεδεμένη σύνδεση ανήκει στον αναμενόμενο λογαριασμό πριν από οποιαδήποτε εργασία, χωρίς να εκτυπώνει το token, και η αναντιστοιχία διακόπτει τη διαδικασία.</li>
+        <li><b>Δοκιμή liveness δύο λογαριασμών</b>: δύο απομονωμένες συνδέσεις εκτελούνται ταυτόχρονα σε έναν απλό δημόσιο στόχο και πρέπει να περάσουν κάθε γραμμή: ταυτοχρονισμός, απομόνωση ταυτότητας, καμία διαρροή token, καμία σύγκρουση refresh-token, παράθυρο ανά λογαριασμό, τερματισμός και συνέχιση, καθαρή απελευθέρωση.</li>
+        <li><b>Ελάχιστος διακόπτης τερματισμού</b> (stop-compute, stop-spill) και μίσθωση dead-man, ώστε ένα χαμένο επίπεδο ελέγχου να προκαλεί παύση και όχι εκτέλεση.</li>
+        </ul>
+        <div class="files">προσθέτει lib/{sandbox,execute,identity,provision}.mjs &middot; agent/Dockerfile &middot; test/fake-docker + execute.test.mjs &middot; LIVENESS.md</div>
+        <div class="verif"><b>Πύλη:</b> η δοκιμή liveness περνά επιτυχώς σε δύο παρεχόμενους λογαριασμούς.</div>
+      </div></li>
+      <li class="s" id="s3"><div>
+        <div class="hd"><h3>Επίπεδο ελέγχου Temporal</h3><span class="badge next">Προγραμματισμένο</span></div>
+        <p class="why">ανθεκτικό, με δυνατότητα συνέχισης, πολλά ταυτόχρονα</p>
+        <ul class="bul">
+        <li><b>AccountLedger</b> (μία μακρόβια ροή εργασίας ανά λογαριασμό): η πύλη θέσεων που κρατά την ζωντανή κατάσταση παραθύρου, τον ταυτοχρονισμό και τον κανόνα υπερχείλισης, αντικαθιστώντας την πύλη χρήσης μίας εκτέλεσης.</li>
+        <li><b>UnitWorkflow</b> (μία ανά μονάδα): κράτηση θέσης, παροχή sandbox, εκτέλεση του κύκλου ζωής με heartbeats, harvest, απελευθέρωση, με συνέχιση μετά από κατάρρευση από το ημερολόγιο και το ιστορικό του Temporal.</li>
+        <li>Προσαρμογείς <b>SandboxProvider</b> πίσω από μία διεπαφή: τοπικό Docker τώρα, cloud αργότερα.</li>
+        <li><b>Διακόπτης τερματισμού σε επίπεδα και μηνιαία άσκηση</b>: διακριτά πεδία stop-compute, stop-filing, stop-spill και ανάκλησης διαπιστευτηρίων, με διαδρομή εκτός ζώνης που δεν εξαρτάται από το επίπεδο ελέγχου.</li>
+        </ul>
+        <div class="verif"><b>Υιοθέτηση:</b> Temporal αυτοφιλοξενούμενο (MIT). Διατήρηση των ev-planner και coverage ως ιεραρχητή και του coord για αιτήματα προς ανθρώπους.</div>
+      </div></li>
+      <li class="s" id="s4"><div>
+        <div class="hd"><h3>Συντονισμός μεταξύ ερευνητών</h3><span class="badge next">Προγραμματισμένο</span></div>
+        <p class="why">καμία χαμένη εργασία, καμία διπλή υποβολή</p>
+        <ul class="bul">
+        <li><b>Πίνακας διεκδικήσεων</b>: μίσθωση ενός (στόχος, επιφάνεια, φακός), ώστε ο στόλος να μην καλύπτει την ίδια επιφάνεια πενήντα φορές, με κατηγορία συνόλου για σκόπιμη αύξηση της βεβαιότητας και χρονικά περιορισμένες μισθώσεις κατά του αποθησαυρισμού.</li>
+        <li><b>Πύλη αποδιπλασιασμού μεταξύ κόμβων</b>: ομαδοποίηση υποψηφίων ανά βασική αιτία πριν υποβληθεί οτιδήποτε, με κλείδωμα κάθε ομάδας σε έναν ερευνητή, επειδή τα διπλότυπα δεν αμείβονται και επιβαρύνουν τους συντηρητές.</li>
+        <li><b>Μητρώο απόδοσης πατρότητας</b>: υπογεγραμμένα συμβάντα μόνο προσθήκης για μίσθωση, δαπάνη, υποψήφιο, επαλήθευση, υποβολή και αποτέλεσμα, ως πηγή αλήθειας για την απόδοση πίστωσης.</li>
+        <li><b>Μητρώο πολιτικής προγραμμάτων</b>: κανόνες ανά πρόγραμμα ως αυστηρή πύλη (ένας υπεύθυνος άνθρωπος, γνωστοποίηση χρήσης AI όπου απαιτείται, ο υποβάλλων αναπαράγει το PoC), με παρατηρητή μετατόπισης του πεδίου.</li>
+        </ul>
+        <div class="verif"><b>Επεκτείνει</b> το coord.py του el-bigote. Η υποβολή παραμένει αποκεντρωμένη, με κάθε ερευνητή υπό τη δική του ταυτότητα.</div>
+      </div></li>
+      <li class="s" id="s5"><div>
+        <div class="hd"><h3>Κατανεμητής χωρητικότητας και τηλεμετρία</h3><span class="badge next">Προγραμματισμένο</span></div>
+        <p class="why">διατήρηση ολόκληρου του στόλου απασχολημένου με την καλύτερη εργασία</p>
+        <ul class="bul">
+        <li><b>Μοντέλο λωρίδων και τηλεμετρία παραθύρου</b>: σήματα παραθύρου εντός ζώνης ανά sandbox, χωρίς token που να εγκαταλείπει το μηχάνημα του ιδιοκτήτη, και Claude Code OpenTelemetry για την αξία που εξάγεται ανά παράθυρο.</li>
+        <li><b>Διάταξη κατά επίπτωση στον ev-planner</b>: σύνδεση της κατάταξης επίπτωσης και ενός όρου κάλυψης, ώστε ο κατανεμητής να απλώνεται στους 80+ στόχους, με το κόστος να μην αποτελεί πύλη (δωρεά πιστώσεων και η συνεργασία).</li>
+        <li><b>Μητρώο δωρεάς πιστώσεων</b>: κάθε χορήγηση ως παρακολουθούμενο παρτίδα, χρησιμοποιείται πρώτη και αναφέρεται πίσω στο εργαστήριο που τη χορήγησε.</li>
+        <li><b>Πίνακες ελέγχου</b>: πίνακας παραθύρων του στόλου, κάλυψη ανά στόχο, επαληθευμένα TP ανά λωρίδα, σπαταλημένη χωρητικότητα, ανίχνευση ανωμαλιών και ανεξέλεγκτης λειτουργίας.</li>
+        </ul>
+        <div class="verif"><b>Στόχος</b> εδώ είναι η αποτελεσματική απόδοση και μια αξιόπιστη αναφορά χρήσης προς τα εργαστήρια, όχι ο έλεγχος του προϋπολογισμού.</div>
+      </div></li>
+      <li class="s" id="s6"><div>
+        <div class="hd"><h3>Ενίσχυση εμπιστοσύνης και κλιμάκωση</h3><span class="badge next">Προγραμματισμένο</span></div>
+        <p class="why">από λίγους λογαριασμούς στον στόλο</p>
+        <ul class="bul">
+        <li><b>microVM ανά μονάδα και PoC VM χωρίς διαπιστευτήρια</b>: για μονάδες με παραδοθέντα ή εχθρικό κώδικα, ώστε ένας στόχος με prompt injection να μην φτάνει στο διαπιστευτήριο ενώ αποδεικνύεται ένα σφάλμα.</li>
+        <li><b>Προστασία από δηλητηρίαση κοινών μνημών</b>: υπογραφή ανά κόμβο, συμβουλευτικές διαψεύσεις, επανεξαγωγή canary, ώστε ένας κακόβουλος κόμβος να μην μπορεί να κρύψει ένα σφάλμα από τον στόλο.</li>
+        <li><b>Cloud SandboxProvider</b> (E2B ή Modal) και η διαφορά μεταξύ λογαριασμών του wf-run v2, ώστε μία εκτέλεση να καλύπτει πολλούς λογαριασμούς.</li>
+        <li><b>Υπογραφή κόμβων και ταυτότητα φορτίου εργασίας</b> (Sigstore, SPIFFE) και μια ελάχιστη κονσόλα ερευνητή (κατάσταση κόμβου, παράθυρο, παύση, οι διεκδικήσεις του και η ουρά επαλήθευσης).</li>
+        </ul>
+        <div class="verif"><b>Ξεκινά</b> μόνο αφού η δοκιμή liveness και μια πρώιμη ανάγνωση της απόδοσης δικαιολογήσουν την κλιμάκωση.</div>
+      </div></li>
+    </ol>
+  </div>
+</section>
+
+<section id="gate" class="tab" hidden>
+  <div class="wrap">
+    <p class="eyebrow">Η πύλη</p>
+    <h2>Κάθε κλιμάκωση κερδίζεται από έναν μετρημένο δείκτη</h2>
+    <hr class="rule">
+    <div class="result">
+      <p class="eyebrow">Πάγια στάση</p>
+      <p>Η EthSec είναι μη κερδοσκοπικό εργαστήριο που λειτουργεί σε συνεργασία με μεγάλους παρόχους μοντέλων, επομένως οι δεσμευτικοί περιορισμοί είναι η ασφάλεια και η ποιότητα, όχι ο προϋπολογισμός: η προστασία ευρημάτων υπό embargo, ο αποδιπλασιασμός, το όριο ψευδώς θετικών και η περιορισμένη απώλεια όταν ο χειριστής είναι εκτός σύνδεσης. Στόχος είναι υψηλής και κρίσιμης σοβαρότητας ευρήματα να εντοπίζονται και να διορθώνονται σε ολόκληρο το πεδίο του Argus και να υποβάλλονται όπου υπάρχει bounty.</p>
+    </div>
+    <p class="note" style="margin-top:30px">Πύλη για κλιμάκωση πέρα από το πιλοτικό δύο λογαριασμών: ο ρυθμός επαληθευμένων TP ανά μονάδα, ο ρυθμός συγκρούσεων διπλοτύπων μεταξύ ερευνητών, ο ρυθμός ψευδώς θετικών που φτάνουν σε άνθρωπο, ο ρυθμός επανάληψης ταυτοποίησης ανά λογαριασμό και ο χρόνος έως τη σιωπή στην άσκηση τερματισμού. Τα steps 3 έως 6 ξεκινούν μόνο εφόσον αυτοί οι δείκτες διατηρούνται. Τίποτα δεν κλιμακώνεται μόνο με βάση το σχέδιο.</p>
+    <div class="btns row">
+      <a class="btn s" href="index.html">Επισκόπηση της EthSec</a>
+      <a class="btn s" href="finance.html">Οικονομικά</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap fin">
+    <div><a class="mark" href="index.html">ETH<span>SEC</span></a> &nbsp; ethsecurity.org</div>
+    <div>Ασφάλεια για το οικοσύστημα του Ethereum.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var tabs=['overview','elbigote','dobby','arch','road','gate'];
+  var btns=document.querySelectorAll('.subnav button');
+  var secs={};
+  tabs.forEach(function(id){secs[id]=document.getElementById(id);});
+  function show(id){
+    if(tabs.indexOf(id)<0){id='overview';}
+    tabs.forEach(function(t){secs[t].hidden=(t!==id);});
+    btns.forEach(function(b){b.setAttribute('aria-current',b.getAttribute('data-tab')===id?'true':'false');});
+  }
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){
+      var id=b.getAttribute('data-tab');
+      show(id);
+      if(window.history&&history.replaceState){history.replaceState(null,'','#'+id);}
+      else{location.hash=id;}
+      window.scrollTo(0,0);
+    });
+  });
+  window.addEventListener('hashchange',function(){
+    var h=location.hash.replace('#','');
+    if(tabs.indexOf(h)>=0){show(h);window.scrollTo(0,0);}
+  });
+  var init=location.hash.replace('#','');
+  show(tabs.indexOf(init)>=0?init:'overview');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="description" content="Οικονομικά στοιχεία EthSec: ένας διετής προϋπολογισμός $10M μη κερδοσκοπικού οργανισμού, η χρήση των κεφαλαίων, τα σενάρια, το περιθώριο ρευστότητας και το σχέδιο ομάδας. Μεγέθη σχεδιασμού βασικού σεναρίου.">
+<title>EthSec | Οικονομικά</title>
+<style>
+:root{
+  --bg:#eef1f5;
+  --bg2:#e7ecf2;
+  --ink:#0d1620;
+  --ink2:#2b3744;
+  --muted:#5a6778;
+  --accent:#0d7a8a;
+  --accent-ink:#0a6170;
+  --line:#d4dbe4;
+  --card:#ffffff;
+  --btn-bg:#0a6170;
+  --btn-ink:#ffffff;
+  --good:#1d7a4f;
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#090d12;
+    --bg2:#0d141c;
+    --ink:#e9eff6;
+    --ink2:#c3cdd9;
+    --muted:#8a97a8;
+    --accent:#46c7d6;
+    --accent-ink:#7fdce8;
+    --line:#1f2b37;
+    --card:#111923;
+    --btn-bg:#46c7d6;
+    --btn-ink:#090d12;
+    --good:#5bc08c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#090d12;
+  --bg2:#0d141c;
+  --ink:#e9eff6;
+  --ink2:#c3cdd9;
+  --muted:#8a97a8;
+  --accent:#46c7d6;
+  --accent-ink:#7fdce8;
+  --line:#1f2b37;
+  --card:#111923;
+  --btn-bg:#46c7d6;
+  --btn-ink:#090d12;
+  --good:#5bc08c;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--accent-ink);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--ink)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 28px}
+.narrow{max-width:720px}
+
+/* nav (identical on every page) */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--bg)}
+nav{background:var(--bg);border-bottom:1px solid var(--line)}
+.navin{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.mark{font-family:var(--serif);font-size:22px;letter-spacing:.14em;font-weight:600;color:var(--ink);text-decoration:none;white-space:nowrap}
+.mark span{color:var(--accent)}
+.links{display:flex;align-items:center;gap:8px}
+.links a{font-size:14px;color:var(--ink2);text-decoration:none;letter-spacing:.02em;border:1px solid var(--line);padding:8px 16px;border-radius:2px;white-space:nowrap;line-height:1}
+.links a:hover{color:var(--ink);border-color:var(--ink)}
+.links a[aria-current="page"]{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+.links a[aria-current="page"]:hover{color:var(--btn-ink);opacity:.9}
+@media (max-width:600px){
+  .navin{flex-direction:column;align-items:stretch;gap:12px;padding:12px 0;min-height:0}
+  .mark{align-self:flex-start}
+  .links{width:100%;gap:8px}
+  .links a{flex:1 1 0;min-width:0;text-align:center;justify-content:center;display:flex;align-items:center;padding:11px 6px;font-size:13px;min-height:44px}
+}
+
+/* type */
+h1,h2,h3{font-family:var(--serif);font-weight:500;color:var(--ink);line-height:1.2;margin:0;overflow-wrap:break-word}
+.eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin:0 0 18px}
+h2{font-size:clamp(28px,4vw,40px);margin-bottom:22px}
+h3{font-size:21px;margin-bottom:10px}
+p{margin:0 0 18px;color:var(--ink2)}
+section{padding:96px 0;border-top:1px solid var(--line)}
+section.alt{background:var(--bg2)}
+.rule{width:48px;height:2px;background:var(--accent);margin:0 0 26px;border:0}
+
+/* hero (page header) */
+.hero{padding:112px 0 88px;border-top:0}
+.hero h1{font-size:clamp(36px,6vw,64px);letter-spacing:-.01em;margin-bottom:28px;max-width:18ch}
+.lede{font-size:clamp(18px,2.2vw,22px);line-height:1.6;color:var(--ink2);max-width:46em;margin-bottom:32px}
+
+/* cards */
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.cols2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:36px}
+.card{background:var(--card);border:1px solid var(--line);padding:30px 28px;border-top:2px solid var(--accent);min-width:0}
+.card p{margin:0;font-size:15.5px}
+.card p + p{margin-top:14px}
+.card .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin-bottom:12px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:44px 0 36px;border:1px solid var(--line);background:var(--card)}
+.stat{padding:28px 24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}
+.stat:nth-child(4n){border-right:0}
+.stat:nth-last-child(-n+4){border-bottom:0}
+.stat b{display:block;font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.1;color:var(--ink)}
+.stat span{display:block;margin-top:8px;font-size:13.5px;line-height:1.45;color:var(--muted)}
+
+/* page-specific: internal notice */
+.notice{border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--card);padding:16px 22px;max-width:46em}
+.notice .eyebrow{margin:0 0 6px}
+.notice p{margin:0;font-size:15px;color:var(--ink2)}
+
+/* page-specific: bars (use of funds, scenarios) */
+.bars{margin:34px 0 8px;display:flex;flex-direction:column;gap:18px}
+.bar{display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr) minmax(0,130px);gap:6px 18px;align-items:center;font-size:15.5px}
+.bar .lab{color:var(--ink);min-width:0;overflow-wrap:break-word}
+.bar .track{background:var(--card);border:1px solid var(--line);height:20px;overflow:hidden;min-width:0}
+.bar .fill{height:100%;background:var(--accent)}
+.bar .fill.two{background:var(--ink2)}
+.bar .fill.three{background:var(--muted)}
+.bar .fill.soft{opacity:.55}
+.bar .val{text-align:right;font-family:var(--serif);font-size:17px;color:var(--ink);min-width:0;white-space:nowrap}
+
+/* page-specific: table */
+.tblwrap{overflow-x:auto;margin-top:34px;border:1px solid var(--line);background:var(--card);-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:15.5px}
+th,td{text-align:left;padding:13px 20px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink2)}
+th{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;background:var(--bg2)}
+td.num,th.num{text-align:right;white-space:nowrap;font-family:var(--serif);font-size:17px}
+td.num{color:var(--ink)}
+tr:last-child td{border-bottom:0}
+tr.total td{color:var(--ink);font-weight:700;background:var(--bg2)}
+
+/* page-specific: proposed card */
+.card.proposed{border:1px dashed var(--accent);border-top:2px solid var(--accent);margin-top:24px}
+.tagp{display:inline-block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;border:1px solid var(--accent);padding:3px 10px;margin-bottom:14px;max-width:100%;overflow-wrap:break-word}
+
+/* page-specific: bullet list */
+ul.clean{list-style:none;margin:34px 0 0;padding:0}
+ul.clean li{position:relative;padding:20px 0 20px 28px;border-top:1px solid var(--line);font-size:16px;color:var(--ink2)}
+ul.clean li:last-child{border-bottom:1px solid var(--line)}
+ul.clean li::before{content:"";position:absolute;left:4px;top:34px;width:8px;height:8px;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:600}
+
+.lead{max-width:46em}
+.fine{font-size:14.5px;color:var(--muted)}
+
+footer{border-top:1px solid var(--line);padding:40px 0 56px;font-size:13.5px;color:var(--muted)}
+.fin{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:baseline}
+footer .mark{font-size:17px}
+
+@media (max-width:860px){
+  .cols3,.cols2{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(4n){border-right:1px solid var(--line)}
+  .stat:nth-child(2n){border-right:0}
+  .stat:nth-last-child(-n+4){border-bottom:1px solid var(--line)}
+  .stat:nth-last-child(-n+2){border-bottom:0}
+  section{padding:68px 0}
+  .hero{padding:72px 0 64px}
+  .bar{grid-template-columns:minmax(0,170px) minmax(0,1fr) minmax(0,120px)}
+}
+@media (max-width:480px){
+  body{font-size:16px}
+  .wrap{padding:0 20px}
+  section{padding:56px 0}
+  .hero{padding:56px 0 52px}
+  .card{padding:24px 20px}
+  .stats{grid-template-columns:1fr}
+  .stat:nth-child(n),.stat:nth-last-child(n){border-right:0;border-bottom:1px solid var(--line)}
+  .stat:last-child:nth-child(n){border-bottom:0}
+  .stat{padding:22px 20px}
+  .stat b{font-size:34px}
+  .notice{padding:14px 16px}
+  .bar{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"lab val" "track track";gap:8px 14px}
+  .bar .lab{grid-area:lab}
+  .bar .val{grid-area:val}
+  .bar .track{grid-area:track}
+  th,td{padding:12px 14px}
+  ul.clean li{padding:18px 0 18px 24px;font-size:15.5px}
+  ul.clean li::before{top:30px}
+}
+@media print{
+  nav{display:none}
+  body{background:#fff;color:#000;font-size:11.5pt}
+  section{padding:28px 0;break-inside:avoid}
+  .hero{padding:20px 0}
+  .card,.stats,.notice,.tblwrap{break-inside:avoid}
+  a{color:#000;text-decoration:none}
+  :root,[data-theme="dark"]{--bg:#fff;--bg2:#fff;--ink:#000;--ink2:#222;--muted:#444;--card:#fff;--line:#bbb}
+}
+</style>
+</head>
+<body>
+
+<nav class="site-head">
+  <div class="wrap navin">
+    <a class="mark" href="index.html">ETH<span>SEC</span></a>
+    <div class="links">
+      <a href="technical.html">Τεχνολογία</a>
+      <a href="scope.html">Πεδίο</a>
+      <a href="finance.html" aria-current="page">Οικονομικά</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Οικονομικά στοιχεία EthSec. Διατηρούνται χωριστά από τις σελίδες τεχνολογίας και πεδίου εκ σχεδιασμού, συνδέονται, δεν συγχωνεύονται.
+     Μεγέθη από το 24μηνο μοντέλο ταμειακών ροών (βασικό σενάριο), 2026-10. Οι αμοιβές και το σχέδιο διευρυμένων
+     προσλήψεων είναι εκτιμήσεις σχεδιασμού. Προετοιμασμένο για υποψήφιους χρηματοδότες. Χωρίς ονόματα δωρητών,
+     εταίρων ή μελών της ομάδας εκ σχεδιασμού. Αυτόνομο, λειτουργεί εκτός σύνδεσης. -->
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow">Οικονομικά &middot; διατηρούνται χωριστά από τις σελίδες τεχνολογίας και πεδίου</p>
+    <h1>Το αίτημα, η χρήση των κεφαλαίων και το σχέδιο ομάδας.</h1>
+    <p class="lede">Ένα διετές σχέδιο μη κερδοσκοπικού οργανισμού. Τα μεγέθη προέρχονται από το 24μηνο μοντέλο ταμειακών ροών, βασικό σενάριο. Οι αμοιβές και η ενότητα διευρυμένων προσλήψεων αποτελούν εκτιμήσεις σχεδιασμού.</p>
+    <div class="notice">
+      <p class="eyebrow">Προετοιμασμένο για υποψήφιους χρηματοδότες</p>
+      <p>Μεγέθη σχεδιασμού βασικού σεναρίου από το 24μηνο μοντέλο ταμειακών ροών.</p>
+    </div>
+  </div>
+</header>
+
+<!-- AT A GLANCE -->
+<section id="glance">
+  <div class="wrap">
+    <p class="eyebrow">Το αίτημα με μια ματιά</p>
+    <h2>Ένας διετής προϋπολογισμός $10M, κατά κύριο λόγο υπολογιστική ισχύς.</h2>
+    <hr class="rule">
+    <div class="stats">
+      <div class="stat"><b>$10.0M</b><span>Διετής προϋπολογισμός, που αντλείται ως δωρεές προς μη κερδοσκοπικό οργανισμό, με προκαταβολική λήψη</span></div>
+      <div class="stat"><b>$6.6M</b><span>Καθαρά μετρητά που απαιτούνται σε 24 μήνες (βασικό), μετά τις πιστώσεις και τις ανακυκλωμένες αμοιβές (bounties)</span></div>
+      <div class="stat"><b>$3.4M</b><span>Ταμειακό απόθεμα τον 24ο μήνα, περίπου 12 μήνες επιπλέον περιθώριο ρευστότητας</span></div>
+      <div class="stat"><b>~$5M/έτος</b><span>Μεικτός ρυθμός δαπάνης υπολογιστικής ισχύος, κυρίως tokens μοντέλων αιχμής, που αντισταθμίζεται από δωρηθείσες πιστώσεις</span></div>
+    </div>
+    <p class="lead">Η άντληση κεφαλαίων καλύπτει πλήρως τις καθαρές ταμειακές ανάγκες των 24 μηνών στο βασικό και στο χαμηλό σενάριο, με το υπόλοιπο ως απόθεμα αν οι δωρηθείσες πιστώσεις ή τα έσοδα από bounties φτάσουν αργά ή περιορισμένα. Τα bug bounties τηρούνται συντηρητικά ώστε ο προϋπολογισμός να μην εξαρτάται ποτέ από αυτά, ενώ κάθε πλεόνασμα ανακυκλώνεται σε υπολογιστική ισχύ και προσωπικό.</p>
+  </div>
+</section>
+
+<!-- USE OF FUNDS -->
+<section class="alt" id="funds">
+  <div class="wrap">
+    <p class="eyebrow">Χρήση κεφαλαίων &middot; 24 μήνες &middot; βασικό</p>
+    <h2>Πού κατευθύνονται τα χρήματα και τι τα αντισταθμίζει.</h2>
+    <hr class="rule">
+    <p class="lead">Το μεικτό κόστος σε δύο έτη ανέρχεται σε περίπου $13.4M. Η υπολογιστική ισχύς (tokens, υλικό, benchmarking) αποτελεί την πλειονότητα, με το ταλέντο ως επόμενη κατηγορία. Οι δωρηθείσες πιστώσεις μοντέλων και τα κέρδη από bounties, ανακυκλωμένα ως πιστώσεις υπολογιστικής ισχύος, μειώνουν τα απαιτούμενα καθαρά μετρητά στα $6.6M.</p>
+    <div class="bars">
+      <div class="bar"><span class="lab">Υπολογιστική ισχύς (tokens, υλικό, benchmarking)</span><div class="track"><div class="fill" style="width:60%"></div></div><span class="val">$8.01M &middot; 60%</span></div>
+      <div class="bar"><span class="lab">Ταλέντο (ομάδα + προσλήψεις)</span><div class="track"><div class="fill two" style="width:35%"></div></div><span class="val">$4.71M &middot; 35%</span></div>
+      <div class="bar"><span class="lab">Γενικά έξοδα + σύσταση</span><div class="track"><div class="fill three" style="width:5%"></div></div><span class="val">$0.68M &middot; 5%</span></div>
+    </div>
+    <p class="lead fine" style="margin-top:20px">Η υπολογιστική ισχύς είναι σκόπιμα μία ενιαία κατηγορία. Τα tokens μοντέλων αιχμής, το ιδιόκτητο υλικό και το benchmarking τηρούνται μαζί και ανακατανέμονται με βάση τη μετρημένη απόδοση, όχι μια σταθερή αναλογία. Το υλικό έναντι των tokens, οι σταθμοί μνήμης Apple-silicon έναντι των συστοιχιών GPU, και τα φιλοξενούμενα μοντέλα αιχμής που ξεπερνούν διαδοχικά το ένα το άλλο, εξελίσσονται όλα γρήγορα, οπότε ο επιμερισμός εντός αυτής της κατηγορίας παραμένει σκόπιμα ευέλικτος. Οι δωρηθείσες πιστώσεις μοντέλων και τα κέρδη από bounties, ανακυκλωμένα ως πιστώσεις υπολογιστικής ισχύος, το αντισταθμίζουν.</p>
+    <div class="tblwrap">
+      <table>
+        <tr><th>Από το μεικτό στο καθαρό μετρητό (24 μήνες, βασικό)</th><th class="num">Ποσό</th></tr>
+        <tr><td>Μεικτό κόστος (συμπ. υπολογιστικής ισχύος σε είδος)</td><td class="num">$13.39M</td></tr>
+        <tr><td>Μείον: δωρηθείσες πιστώσεις υπολογιστικής ισχύος (σε είδος)</td><td class="num">-$3.50M</td></tr>
+        <tr><td>Μείον: έσοδα από bounties ανακυκλωμένα ως πιστώσεις υπολογιστικής ισχύος</td><td class="num">-$3.29M</td></tr>
+        <tr class="total"><td>Απαιτούμενα καθαρά μετρητά</td><td class="num">$6.60M</td></tr>
+        <tr><td>Αντληθέντα κεφάλαια</td><td class="num">$10.00M</td></tr>
+        <tr class="total"><td>Ταμειακό απόθεμα τον 24ο μήνα</td><td class="num">$3.40M</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIOS -->
+<section id="scenarios">
+  <div class="wrap">
+    <p class="eyebrow">Σενάρια</p>
+    <h2>Χαμηλό, βασικό και ένα σενάριο ακραίων συνθηκών, έναντι των ίδιων $10M.</h2>
+    <hr class="rule">
+    <p class="lead">Τα απαιτούμενα καθαρά μετρητά σε 24 μήνες υπό τρεις ομάδες παραδοχών. Η μεγαλύτερη διακύμανση είναι το μέγεθος και ο χρονισμός των δωρηθεισών πιστώσεων υπολογιστικής ισχύος. Τα $10M καλύπτουν το χαμηλό και το βασικό σενάριο με απόθεμα, ενώ το υψηλό σενάριο είναι οριακό εκτός αν ρυθμιστεί ο ρυθμός των προσλήψεων ή της δαπάνης σε tokens.</p>
+    <div class="bars">
+      <div class="bar"><span class="lab">Χαμηλό</span><div class="track"><div class="fill soft" style="width:57%"></div></div><span class="val">$5.71M καθαρά</span></div>
+      <div class="bar"><span class="lab">Βασικό</span><div class="track"><div class="fill" style="width:66%"></div></div><span class="val">$6.60M καθαρά</span></div>
+      <div class="bar"><span class="lab">Υψηλό (ακραίο)</span><div class="track"><div class="fill two" style="width:84%"></div></div><span class="val">$8.41M καθαρά</span></div>
+    </div>
+    <p class="lead fine" style="margin-top:20px">Απόθεμα έναντι της άντλησης $10M: περίπου $4.3M (χαμηλό), $3.4M (βασικό), $1.6M (υψηλό). Οι μπάρες δείχνουν τα απαιτούμενα καθαρά μετρητά ως ποσοστό της άντλησης.</p>
+  </div>
+</section>
+
+<!-- TEAM + HIRING -->
+<section class="alt" id="team">
+  <div class="wrap">
+    <p class="eyebrow">Ομάδα και αμοιβές</p>
+    <h2>Ένας μικρός πυρήνας ανώτερων στελεχών, μια σχεδιασμένη εφεδρεία.</h2>
+    <hr class="rule">
+    <div class="cols2">
+      <div class="card"><h3>Στο βασικό μοντέλο σήμερα</h3><p>Ο ιδρυτής και ένας ανώτερος ερευνητής, και οι δύο από τον πρώτο μήνα, με συμβάσεις ανώτερου επιπέδου, στο επίπεδο που διεκδικεί αυτό το ταλέντο στις κορυφαίες πλατφόρμες διαγωνισμών. Το μοντέλο χρηματοδοτεί επίσης έναν ακόμη ερευνητή από έσοδα bounties έως τον 24ο μήνα.</p></div>
+      <div class="card"><h3>Γιατί τόσο έμπειρη ομάδα</h3><p>Η παραγωγικότητα κλιμακώνεται με την υπολογιστική ισχύ, όχι με τον αριθμό του προσωπικού. Λίγοι κορυφαίοι ερευνητές στο τέλος της διαδικασίας επικυρώνουν και υποβάλλουν ό,τι αναδεικνύουν τα μοντέλα, ενώ το pipeline κάνει τον μεγάλο όγκο ανάγνωσης και διαλογής. Το κόστος ανά εύρημα υψηλής ή κρίσιμης σοβαρότητας, και όχι η γραμμή των μισθών, είναι το νούμερο που αξίζει να παρακολουθεί κανείς.</p></div>
+    </div>
+    <div class="card proposed">
+      <span class="tagp">Προτεινόμενο &middot; προστίθεται πάνω στο βασικό μοντέλο</span>
+      <h3>Σχέδιο διευρυμένων προσλήψεων</h3>
+      <p>Πάνω από τον πυρήνα των δύο ανώτερων στελεχών, το σχέδιο προσθέτει μια μικρή εφεδρεία αναλυτών για τις εργασίες υποβολής ευπαθειών και την παραγωγικότητα αναφορών, με πολύ χαμηλότερο κόστος ανά άτομο, και έναν τρίτο ανώτερο ερευνητή μόλις αρχίσουν να εισρέουν έσοδα από bounties και δωρεές, ώστε αυτή η πρόσληψη να χρηματοδοτείται από τα αποτελέσματα και όχι από την άντληση κεφαλαίων.</p>
+      <p>Διαδρομή χρηματοδότησης: το βασικό σενάριο περιλαμβάνει ήδη απόθεμα περίπου $3.4M και έναν μηχανισμό που διοχετεύει το ήμισυ των εσόδων από bounties σε επιπλέον προσλήψεις. Μια σταδιακή επέκταση χωράει μέσα σε αυτό, με τους αναλυτές και τον τρίτο ερευνητή να εντάσσονται καθώς φθάνουν οι δωρηθείσες πιστώσεις και τα έσοδα από bounties, και τον τρίτο ερευνητή ειδικότερα όταν τον υποστηρίξει μια δεύτερη βασική δέσμευση χρηματοδότησης ή ένας σταθερός ρυθμός εσόδων από bounties. Η πρόωρη ένταξη προσλήψεων περικόπτει αναλόγως τους περίπου 12 μήνες περιθωρίου ρευστότητας μετά την άντληση. Πρόκειται για εκτιμήσεις σχεδιασμού.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOR-PROFIT PATH -->
+<section id="for-profit">
+  <div class="wrap narrow">
+    <p class="eyebrow">Δομή</p>
+    <h2>Μια κερδοσκοπική διαδρομή, προαιρετική.</h2>
+    <hr class="rule">
+    <p>Η δομή μπορεί να υποστηρίξει μια κερδοσκοπική θυγατρική που ανήκει εξ ολοκλήρου στον μη κερδοσκοπικό οργανισμό, με την πνευματική ιδιοκτησία του μη κερδοσκοπικού οργανισμού να της παραχωρείται με άδεια για εμπορική χρήση. Κάθε πλεόνασμα επιστρέφει στον μη κερδοσκοπικό οργανισμό και στην αποστολή του. Πρόκειται για επιλογή υπό εξέταση, που τελεί υπό νομική έγκριση και έγκριση διακυβέρνησης, όχι για δέσμευση.</p>
+  </div>
+</section>
+
+<!-- BURN + COMPUTE -->
+<section class="alt" id="burn">
+  <div class="wrap">
+    <p class="eyebrow">Δαπάνη (burn), περιθώριο ρευστότητας και η θέση για την υπολογιστική ισχύ</p>
+    <h2>Το σχήμα της δαπάνης.</h2>
+    <hr class="rule">
+    <ul class="clean">
+      <li><b>Η μέγιστη καθαρή μηνιαία δαπάνη είναι περίπου $0.62M</b>, τον δεύτερο μήνα, λόγω της εφάπαξ αγοράς υλικού. Η μέση καθαρή δαπάνη του δεύτερου έτους σταθεροποιείται κοντά στα $275K τον μήνα.</li>
+      <li><b>Η υπολογιστική ισχύς (tokens, υλικό, benchmarking) είναι η μεγαλύτερη και πιο ευέλικτη κατηγορία.</b> Τα tokens μοντέλων αιχμής ανέρχονται περίπου σε $3.5M το πρώτο έτος και $4.5M το δεύτερο έτος (βασικό), κλιμακούμενα με τον όγκο ελέγχου, ενώ οι πιστώσεις σε είδος καλύπτουν περίπου το 45% της μεικτής δαπάνης σε tokens.</li>
+      <li><b>Το υλικό είναι μια μικρή εφάπαξ αγορά</b>, περίπου $225K για έναν διακομιστή GPU και έναν σταθμό εργασίας 512GB, αφού πρώτα επικυρωθεί σε ενοικιαζόμενες GPU του cloud. Τα ιδιόκτητα μηχανήματα αναλαμβάνουν την ανάγνωση μεγάλου όγκου με σχεδόν μηδενικό οριακό κόστος.</li>
+      <li><b>Οι δωρηθείσες πιστώσεις είναι ο σημαντικότερος παράγοντας διακύμανσης.</b> Το μέγεθος και ο χρονισμός τους μετακινούν τα απαιτούμενα καθαρά μετρητά περισσότερο από οποιονδήποτε άλλο παράγοντα, γι' αυτό και η έγκαιρη εξασφάλισή τους αποτελεί πρωταρχικό στόχο.</li>
+      <li><b>Τα bounties οδηγούν την προσπάθεια προς την αυτοχρηματοδότηση.</b> Τα κέρδη ανακυκλώνονται σε υπολογιστική ισχύ και προσωπικό και ποτέ δεν καθορίζουν τι θα αναζητηθεί, καθώς η κατεύθυνση ορίζεται από την κρισιμότητα.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- NOTES -->
+<section id="notes">
+  <div class="wrap">
+    <p class="eyebrow">Παραδοχές και σημειώσεις</p>
+    <h2>Διαβάζοντας τα νούμερα.</h2>
+    <hr class="rule">
+    <ul class="clean">
+      <li>Τα μεγέθη αφορούν το βασικό σενάριο ενός 24μηνου μοντέλου ταμειακών ροών. Τα χαμηλά και υψηλά σενάρια μεταβάλλουν τον ρυθμό δαπάνης σε tokens, το μέγεθος και τον χρονισμό των πιστώσεων, και τα έσοδα από bounties.</li>
+      <li>Οι ερευνητές μοντελοποιούνται ως εξωτερικοί συνεργάτες (contractors). Ο εργοδοτικός φόρος μισθοδοσίας, οι παροχές και οι χρεώσεις πλατφορμών είτε δεν περιλαμβάνονται είτε ενσωματώνονται στα γενικά έξοδα.</li>
+      <li>Τα έσοδα από bounties αντιμετωπίζονται ως πιστώσεις υπολογιστικής ισχύος έναντι της δαπάνης σε tokens και όχι ως μετρητά προς τον οργανισμό, ώστε ο προϋπολογισμός να μην στηρίζεται σε αυτά.</li>
+      <li>Θεωρείται ότι τα κεφάλαια λαμβάνονται προκαταβολικά από έναν βασικό δωρητή (anchor). Το μοντέλο υποστηρίζει επίσης σταδιακές εισπράξεις.</li>
+      <li>Αυτά τα οικονομικά στοιχεία διατηρούνται σε δική τους σελίδα εκ σχεδιασμού. Η τεχνολογία και το πεδίο βρίσκονται στη σελίδα <a href="technical.html">Τεχνολογία</a> και στην <a href="index.html">επισκόπηση</a>.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap fin">
+    <div><a class="mark" href="#top">ETH<span>SEC</span></a> &nbsp; ethsecurity.org</div>
+    <div>Διασφαλίζοντας το οικοσύστημα του Ethereum.</div>
+  </div>
+</footer>
+
+</body>
+</html>
