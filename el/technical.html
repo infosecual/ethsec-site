@@ -138,13 +138,15 @@ code{font-family:var(--mono);font-size:.86em;background:var(--bg2);border:1px so
 .loopback{font-size:13px;color:var(--ink2);margin-top:14px;border-left:2px solid var(--accent);padding-left:14px;max-width:52em}
 
 /* el-bigote: the validation gauntlet */
-.gauntlet{display:flex;flex-direction:column;gap:9px;margin-top:8px;max-width:760px}
-.gstage{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:6px 18px;align-items:center}
+.gauntlet{display:flex;flex-direction:column;gap:12px;margin-top:8px;max-width:840px}
+.gstage{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr) minmax(0,232px);gap:6px 16px;align-items:center}
 .gstage .lab b{color:var(--ink);font-family:var(--serif);font-weight:500;font-size:15.5px;display:block}
 .gstage .lab span{font-size:12px;color:var(--muted);line-height:1.4;display:block;margin-top:2px}
-.gstage .surv{height:30px;background:var(--accent);display:flex;align-items:center;padding:0 12px;color:var(--btn-ink);font-size:12px;letter-spacing:.02em;white-space:nowrap;min-width:0}
-.gstage.gate .surv{background:var(--good)}
-.gstage.human .surv{background:var(--ink2)}
+.gstage .track{height:26px;background:var(--bg2);border:1px solid var(--line);min-width:0;overflow:hidden}
+.gstage .fill{height:100%;background:var(--accent)}
+.gstage.gate .fill{background:var(--good)}
+.gstage.human .fill{background:var(--ink2)}
+.gstage .surv{font-size:12.5px;color:var(--ink2);line-height:1.45;min-width:0;overflow-wrap:break-word}
 
 /* dobby: the pipeline */
 .pipe{max-width:720px;margin-top:8px}
@@ -236,6 +238,7 @@ img,svg,pre,table{max-width:100%}
   .rail{grid-template-columns:repeat(2,minmax(0,1fr))}
   .road{grid-template-columns:repeat(3,minmax(0,1fr))}
   .loop{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .gstage{grid-template-columns:minmax(0,170px) minmax(0,1fr) minmax(0,180px)}
   .facts{grid-template-columns:1fr}
   .facts div{border-right:0;border-bottom:1px solid var(--line)}
   .facts div:last-child{border-bottom:0}
@@ -332,13 +335,13 @@ img,svg,pre,table{max-width:100%}
     <p class="col">Κάθε υποψήφιο δέχεται επίθεση πριν γίνει πιστευτό. Περνά μόνο αν επιβιώσει από κάθε στάδιο με τη σειρά, και τα περισσότερα δεν τα καταφέρνουν. Το κόστος ανά στάδιο αυξάνεται καθώς μειώνεται ο πληθυσμός, οπότε η φθηνή διάψευση τρέχει πρώτη και η ακριβή απόδειξη τελευταία.</p>
     <div class="fig">
       <div class="gauntlet">
-        <div class="gstage"><div class="lab"><b>Παραγωγή ενδείξεων</b><span>διαφορετικοί φακοί, δρομολόγηση μέσω KB</span></div><div class="surv" style="width:100%">υποψήφια στην είσοδο, με χαμηλή βεβαιότητα</div></div>
-        <div class="gstage"><div class="lab"><b>Διάψευση από σύνολο</b><span>k ανεξάρτητοι αξιολογητές προσπαθούν να το καταρρίψουν</span></div><div class="surv" style="width:62%">επιζώντες με πλειοψηφία, fail-open</div></div>
-        <div class="gstage"><div class="lab"><b>Προσβασιμότητα</b><span>είναι το sink προσβάσιμο από μη αξιόπιστη είσοδο</span></div><div class="surv" style="width:42%">μόνο τα προσβάσιμα</div></div>
-        <div class="gstage"><div class="lab"><b>Διαφορικός έλεγχος</b><span>συμπεριφορά έναντι αναφοράς ή fork</span></div><div class="surv" style="width:28%">επιβεβαιωμένη απόκλιση</div></div>
-        <div class="gstage"><div class="lab"><b>Fuzzing</b><span>αυτόματα παραγόμενα harnesses ανά γλώσσα</span></div><div class="surv" style="width:19%">αναπαραγώγιμη ενεργοποίηση</div></div>
-        <div class="gstage gate"><div class="lab"><b>Πύλη oracle</b><span>ενεργοποιείται στο exploit, σιωπά στο control</span></div><div class="surv" style="width:12%">προαχθείσα κατηγορία επίπτωσης</div></div>
-        <div class="gstage human"><div class="lab"><b>Ανθρώπινη υποβολή</b><span>ο ανώτερος ερευνητής επαληθεύει και υποβάλλει</span></div><div class="surv" style="width:7%">γνωστοποιημένο εύρημα</div></div>
+        <div class="gstage"><div class="lab"><b>Παραγωγή ενδείξεων</b><span>διαφορετικοί φακοί, δρομολόγηση μέσω KB</span></div><div class="track"><div class="fill" style="width:100%"></div></div><div class="surv">υποψήφια στην είσοδο, με χαμηλή βεβαιότητα</div></div>
+        <div class="gstage"><div class="lab"><b>Διάψευση από σύνολο</b><span>k ανεξάρτητοι αξιολογητές προσπαθούν να το καταρρίψουν</span></div><div class="track"><div class="fill" style="width:62%"></div></div><div class="surv">επιζώντες με πλειοψηφία, fail-open</div></div>
+        <div class="gstage"><div class="lab"><b>Προσβασιμότητα</b><span>είναι το sink προσβάσιμο από μη αξιόπιστη είσοδο</span></div><div class="track"><div class="fill" style="width:42%"></div></div><div class="surv">μόνο τα προσβάσιμα</div></div>
+        <div class="gstage"><div class="lab"><b>Διαφορικός έλεγχος</b><span>συμπεριφορά έναντι αναφοράς ή fork</span></div><div class="track"><div class="fill" style="width:28%"></div></div><div class="surv">επιβεβαιωμένη απόκλιση</div></div>
+        <div class="gstage"><div class="lab"><b>Fuzzing</b><span>αυτόματα παραγόμενα harnesses ανά γλώσσα</span></div><div class="track"><div class="fill" style="width:19%"></div></div><div class="surv">αναπαραγώγιμη ενεργοποίηση</div></div>
+        <div class="gstage gate"><div class="lab"><b>Πύλη oracle</b><span>ενεργοποιείται στο exploit, σιωπά στο control</span></div><div class="track"><div class="fill" style="width:12%"></div></div><div class="surv">προαχθείσα κατηγορία επίπτωσης</div></div>
+        <div class="gstage human"><div class="lab"><b>Ανθρώπινη υποβολή</b><span>ο ανώτερος ερευνητής επαληθεύει και υποβάλλει</span></div><div class="track"><div class="fill" style="width:7%"></div></div><div class="surv">γνωστοποιημένο εύρημα</div></div>
       </div>
       <p class="figcap">Η διαδρομή επικύρωσης. Κάθε στάδιο αφαιρεί υποψήφια· τα πλάτη των ράβδων απεικονίζουν ενδεικτικά τη φθορά και δεν αποτελούν μετρημένη απόδοση. Μια κατηγορία επίπτωσης προάγεται μόνο όταν ένας ντετερμινιστικός oracle ενεργοποιείται στο exploit και σιωπά σε ένα αντίστοιχο control, ώστε ο ισχυρισμός να στηρίζεται σε test και όχι σε γνώμη.</p>
     </div>

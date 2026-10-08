@@ -138,13 +138,15 @@ code{font-family:var(--mono);font-size:.86em;background:var(--bg2);border:1px so
 .loopback{font-size:13px;color:var(--ink2);margin-top:14px;border-left:2px solid var(--accent);padding-left:14px;max-width:52em}
 
 /* el-bigote: the validation gauntlet */
-.gauntlet{display:flex;flex-direction:column;gap:9px;margin-top:8px;max-width:760px}
-.gstage{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:6px 18px;align-items:center}
+.gauntlet{display:flex;flex-direction:column;gap:12px;margin-top:8px;max-width:840px}
+.gstage{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr) minmax(0,232px);gap:6px 16px;align-items:center}
 .gstage .lab b{color:var(--ink);font-family:var(--serif);font-weight:500;font-size:15.5px;display:block}
 .gstage .lab span{font-size:12px;color:var(--muted);line-height:1.4;display:block;margin-top:2px}
-.gstage .surv{height:30px;background:var(--accent);display:flex;align-items:center;padding:0 12px;color:var(--btn-ink);font-size:12px;letter-spacing:.02em;white-space:nowrap;min-width:0}
-.gstage.gate .surv{background:var(--good)}
-.gstage.human .surv{background:var(--ink2)}
+.gstage .track{height:26px;background:var(--bg2);border:1px solid var(--line);min-width:0;overflow:hidden}
+.gstage .fill{height:100%;background:var(--accent)}
+.gstage.gate .fill{background:var(--good)}
+.gstage.human .fill{background:var(--ink2)}
+.gstage .surv{font-size:12.5px;color:var(--ink2);line-height:1.45;min-width:0;overflow-wrap:break-word}
 
 /* dobby: the pipeline */
 .pipe{max-width:720px;margin-top:8px}
@@ -236,6 +238,7 @@ img,svg,pre,table{max-width:100%}
   .rail{grid-template-columns:repeat(2,minmax(0,1fr))}
   .road{grid-template-columns:repeat(3,minmax(0,1fr))}
   .loop{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .gstage{grid-template-columns:minmax(0,170px) minmax(0,1fr) minmax(0,180px)}
   .facts{grid-template-columns:1fr}
   .facts div{border-right:0;border-bottom:1px solid var(--line)}
   .facts div:last-child{border-bottom:0}
@@ -332,13 +335,13 @@ img,svg,pre,table{max-width:100%}
     <p class="col">Every candidate is attacked before it is believed. It passes only if it survives each stage in turn, and most do not. The cost per stage rises as the population falls, so cheap refutation runs first and expensive proof runs last.</p>
     <div class="fig">
       <div class="gauntlet">
-        <div class="gstage"><div class="lab"><b>Lead generation</b><span>diverse lenses, KB-routed</span></div><div class="surv" style="width:100%">candidates in, at low confidence</div></div>
-        <div class="gstage"><div class="lab"><b>Ensemble refutation</b><span>k independent reviewers try to kill it</span></div><div class="surv" style="width:62%">majority-vote survivors, fail-open</div></div>
-        <div class="gstage"><div class="lab"><b>Reachability</b><span>is the sink reachable from untrusted input</span></div><div class="surv" style="width:42%">reachable only</div></div>
-        <div class="gstage"><div class="lab"><b>Differential testing</b><span>behavior against a reference or a fork</span></div><div class="surv" style="width:28%">confirmed divergence</div></div>
-        <div class="gstage"><div class="lab"><b>Fuzzing</b><span>auto-generated harnesses per language</span></div><div class="surv" style="width:19%">reproducible trigger</div></div>
-        <div class="gstage gate"><div class="lab"><b>Oracle gate</b><span>fires on the exploit, silent on the control</span></div><div class="surv" style="width:12%">promoted impact class</div></div>
-        <div class="gstage human"><div class="lab"><b>Human file</b><span>senior researcher verifies and files</span></div><div class="surv" style="width:7%">disclosed finding</div></div>
+        <div class="gstage"><div class="lab"><b>Lead generation</b><span>diverse lenses, KB-routed</span></div><div class="track"><div class="fill" style="width:100%"></div></div><div class="surv">candidates in, at low confidence</div></div>
+        <div class="gstage"><div class="lab"><b>Ensemble refutation</b><span>k independent reviewers try to kill it</span></div><div class="track"><div class="fill" style="width:62%"></div></div><div class="surv">majority-vote survivors, fail-open</div></div>
+        <div class="gstage"><div class="lab"><b>Reachability</b><span>is the sink reachable from untrusted input</span></div><div class="track"><div class="fill" style="width:42%"></div></div><div class="surv">reachable only</div></div>
+        <div class="gstage"><div class="lab"><b>Differential testing</b><span>behavior against a reference or a fork</span></div><div class="track"><div class="fill" style="width:28%"></div></div><div class="surv">confirmed divergence</div></div>
+        <div class="gstage"><div class="lab"><b>Fuzzing</b><span>auto-generated harnesses per language</span></div><div class="track"><div class="fill" style="width:19%"></div></div><div class="surv">reproducible trigger</div></div>
+        <div class="gstage gate"><div class="lab"><b>Oracle gate</b><span>fires on the exploit, silent on the control</span></div><div class="track"><div class="fill" style="width:12%"></div></div><div class="surv">promoted impact class</div></div>
+        <div class="gstage human"><div class="lab"><b>Human file</b><span>senior researcher verifies and files</span></div><div class="track"><div class="fill" style="width:7%"></div></div><div class="surv">disclosed finding</div></div>
       </div>
       <p class="figcap">The gauntlet. Each stage removes candidates; the bar widths are illustrative of the attrition, not a measured yield. An impact class is promoted only when a deterministic oracle fires on the exploit and stays silent on a matched control, so a claim rests on a test, not an opinion.</p>
     </div>
