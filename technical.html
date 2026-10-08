@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<meta name="description" content="How Argus works, for engineers: the three-layer architecture, a deep look at el-bigote and dobby, the compute and isolation layer, the build roadmap, and the gate that earns every scale-up.">
+<meta name="description" content="How Argus works, in depth: the three-layer architecture, the el-bigote methodology and validation gauntlet, the dobby local-model pipeline, the compute and isolation layer, the build roadmap, and the gate that earns every scale-up.">
 <title>EthSec | Technology</title>
 <style>
 :root{
@@ -97,8 +97,10 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;color:var(--ink);line-heigh
 .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin:0 0 18px}
 h2{font-size:clamp(28px,4vw,40px);margin-bottom:22px}
 h3{font-size:21px;margin-bottom:10px}
+h4.sub{font-size:17px;letter-spacing:.02em;color:var(--ink);margin:34px 0 10px}
 p{margin:0 0 18px;color:var(--ink2)}
 .rule{width:48px;height:2px;background:var(--accent);margin:0 0 26px;border:0}
+.col{max-width:46em}
 
 /* tab sections */
 .tab{padding:46px 0 76px;border-top:0}
@@ -116,17 +118,49 @@ code{font-family:var(--mono);font-size:.86em;background:var(--bg2);border:1px so
 .card p{margin:0;font-size:15.5px}
 .card .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin-bottom:12px}
 
-/* result callout */
-.result{border-left:3px solid var(--accent);padding:6px 0 6px 26px;max-width:760px;margin-top:34px}
-.result .eyebrow{margin-bottom:10px}
-.result p{font-family:var(--serif);font-size:20px;line-height:1.6;color:var(--ink);margin:0}
-
 /* buttons */
 .btns{display:flex;gap:14px;flex-wrap:wrap}
 .btns.row{margin-top:34px}
 .btn{display:inline-block;padding:14px 28px;font-size:15px;font-weight:600;letter-spacing:.03em;text-decoration:none;border-radius:2px;border:1px solid var(--btn-bg)}
 .btn.s{background:transparent;color:var(--ink);border-color:var(--ink)}
 .btn.s:hover{background:var(--ink);color:var(--bg)}
+
+/* figures and diagrams */
+.fig{margin:38px 0 10px}
+.figcap{font-size:12.5px;color:var(--muted);margin-top:12px;letter-spacing:.01em;max-width:52em}
+
+/* overview: the closed loop */
+.loop{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.loop .node{border:1px solid var(--line);border-top:2px solid var(--accent);background:var(--card);padding:14px 13px;min-width:0}
+.loop .node .s{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:600}
+.loop .node h4{font-family:var(--serif);font-weight:500;font-size:15.5px;color:var(--ink);margin:7px 0 5px}
+.loop .node p{font-size:12.5px;margin:0;line-height:1.5;color:var(--ink2)}
+.loopback{font-size:13px;color:var(--ink2);margin-top:14px;border-left:2px solid var(--accent);padding-left:14px;max-width:52em}
+
+/* el-bigote: the validation gauntlet */
+.gauntlet{display:flex;flex-direction:column;gap:9px;margin-top:8px;max-width:760px}
+.gstage{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:6px 18px;align-items:center}
+.gstage .lab b{color:var(--ink);font-family:var(--serif);font-weight:500;font-size:15.5px;display:block}
+.gstage .lab span{font-size:12px;color:var(--muted);line-height:1.4;display:block;margin-top:2px}
+.gstage .surv{height:30px;background:var(--accent);display:flex;align-items:center;padding:0 12px;color:var(--btn-ink);font-size:12px;letter-spacing:.02em;white-space:nowrap;min-width:0}
+.gstage.gate .surv{background:var(--good)}
+.gstage.human .surv{background:var(--ink2)}
+
+/* dobby: the pipeline */
+.pipe{max-width:720px;margin-top:8px}
+.pstep{border:1px solid var(--line);background:var(--card);padding:15px 18px}
+.pstep.accent{border-left:2px solid var(--accent)}
+.pstep .cap{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin-bottom:5px}
+.pstep p{margin:0;font-size:14px;line-height:1.55}
+.pconn{height:16px;border-left:1px dashed var(--accent);margin-left:26px}
+.pback{border-left:2px solid var(--muted);padding-left:14px;font-size:13px;color:var(--ink2);margin-top:16px;max-width:52em}
+
+/* small data points */
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:34px 0 8px;border:1px solid var(--line);background:var(--card)}
+.facts div{padding:18px 20px;border-right:1px solid var(--line);min-width:0}
+.facts div:last-child{border-right:0}
+.facts b{display:block;font-family:var(--serif);font-weight:500;font-size:26px;color:var(--ink);line-height:1.1}
+.facts span{display:block;margin-top:6px;font-size:12.5px;color:var(--muted);line-height:1.45}
 
 /* architecture box */
 .archbox{margin-top:8px;background:var(--card);border:1px solid var(--line);padding:30px 28px}
@@ -201,16 +235,19 @@ img,svg,pre,table{max-width:100%}
   .units{grid-template-columns:1fr}
   .rail{grid-template-columns:repeat(2,minmax(0,1fr))}
   .road{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .loop{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .facts{grid-template-columns:1fr}
+  .facts div{border-right:0;border-bottom:1px solid var(--line)}
+  .facts div:last-child{border-bottom:0}
 }
 @media (max-width:480px){
   .wrap{padding:0 18px}
-  .lanes-row,.rail,.road,.units{grid-template-columns:1fr}
+  .lanes-row,.rail,.road,.units,.loop{grid-template-columns:1fr}
   .tab{padding:36px 0 56px}
   .archbox{padding:20px 16px}
   .steps li{grid-template-columns:40px minmax(0,1fr);gap:6px 12px}
   .steps li::before{font-size:26px}
-  .result{padding-left:18px}
-  .result p{font-size:18px}
+  .gstage{grid-template-columns:1fr;gap:4px}
   h2{margin-bottom:18px}
   .badge{white-space:normal}
   .btn{padding:12px 20px}
@@ -220,7 +257,7 @@ img,svg,pre,table{max-width:100%}
   [hidden]{display:block!important}
   body{background:#fff;color:#000;font-size:11.5pt}
   .tab{padding:24px 0;break-inside:avoid}
-  .card,.archbox,.steps li,.result{break-inside:avoid}
+  .card,.archbox,.steps li,.pstep,.gstage{break-inside:avoid}
   a{color:#000;text-decoration:none}
   :root{--bg:#fff;--bg2:#fff;--ink:#000;--ink2:#222;--muted:#444;--card:#fff;--line:#bbb}
 }
@@ -257,14 +294,26 @@ img,svg,pre,table{max-width:100%}
   <div class="wrap">
     <p class="wm">ETHSEC &middot; ARGUS</p>
     <h1 class="pagetitle">How Argus works</h1>
-    <p class="lede">Argus is EthSec's engine: a continuous-scanning, model-agnostic platform that finds and helps fix vulnerabilities in critical Ethereum code. This page explains how it is built, for engineers seeing it for the first time.</p>
-    <p class="sublede">It runs as three layers in one loop. el-bigote carries the methodology and knowledge. dobby runs open models on owned hardware for the high-volume reading. A dispatcher runs each unit of work in an isolated sandbox across many compute lanes at once.</p>
+    <p class="lede">Argus is EthSec's engine: a continuous-scanning, model-agnostic platform that finds and helps fix vulnerabilities in critical Ethereum code. This page is the engineering explanation, written for someone seeing the system for the first time.</p>
+    <p class="sublede">It runs as three layers in one loop. el-bigote carries the methodology, the knowledge base, and the find-to-file loop. dobby runs open models on owned hardware for the high-volume reading and keeps a frontier model for the hardest reasoning. A dispatcher runs each unit of work in an isolated sandbox across many compute lanes at once.</p>
     <div class="cols3">
-      <div class="card"><div class="k">Layer one</div><h3>el-bigote</h3><p>Orchestration, methodology, and knowledge: the find-to-file loop, a large library of analysis lenses, and about 131 tools that turn a target into ranked, validated findings.</p></div>
-      <div class="card"><div class="k">Layer two</div><h3>dobby</h3><p>The local-model workhorse. Open models on owned hardware do the high-volume reading; frontier models take the hardest reasoning. Breadth at near-zero marginal cost.</p></div>
+      <div class="card"><div class="k">Layer one</div><h3>el-bigote</h3><p>Orchestration, methodology, and knowledge: the find-to-file loop, a large library of analysis lenses, and 130+ tools that turn a target into ranked, validated findings.</p></div>
+      <div class="card"><div class="k">Layer two</div><h3>dobby</h3><p>The local-model workhorse. Open models on owned hardware do the high-volume reading and emit typed, checkable results; a frontier model orchestrates and verifies. Breadth at near-zero marginal cost.</p></div>
       <div class="card"><div class="k">Layer three</div><h3>Dispatcher</h3><p>The compute and isolation layer. It runs each unit of work in a hardened sandbox, across many compute lanes at once, and never holds a credential centrally.</p></div>
     </div>
-    <p style="max-width:46em;margin-top:28px">Together they form one continuous loop: inventory the code that matters, generate candidate issues at scale, validate them hard, disclose the real ones through the owner's channel, verify the fix, and begin again. Use the tabs above to go deeper on each layer.</p>
+
+    <div class="fig">
+      <div class="loop">
+        <div class="node"><div class="s">01</div><h4>Inventory</h4><p>Map the ecosystem and pin each target to an exact commit. Coverage is tracked per version.</p></div>
+        <div class="node"><div class="s">02</div><h4>Generate</h4><p>Run many diverse lenses over the code to surface candidate issues at low confidence, at scale.</p></div>
+        <div class="node"><div class="s">03</div><h4>Validate</h4><p>Put every candidate through the gauntlet: refute, prove reachable, differential-test, fuzz, oracle-gate.</p></div>
+        <div class="node"><div class="s">04</div><h4>Disclose</h4><p>A senior researcher confirms and files a survivor through the program owner's own channel.</p></div>
+        <div class="node"><div class="s">05</div><h4>Verify fix</h4><p>Track the remediation, confirm it closes the issue, and propagate the fix to forks and variants.</p></div>
+        <div class="node"><div class="s">06</div><h4>Learn</h4><p>Record every dead end and outcome so the next pass is cheaper, deeper, and does not repeat itself.</p></div>
+      </div>
+      <p class="loopback">The loop is continuous and it compounds: stage 06 feeds stage 02. Dead mechanisms are never re-derived, and coverage decays with each new release, so an audited target comes back around when its code moves.</p>
+      <p class="figcap">The find-to-file loop. Compute is spent where risk and unreviewed surface are highest, not uniformly.</p>
+    </div>
     <p class="meta">Reference implementation &middot; Step 1 built &middot; 31 tests passing</p>
   </div>
 </section>
@@ -274,14 +323,37 @@ img,svg,pre,table{max-width:100%}
     <p class="eyebrow">Layer one</p>
     <h2>el-bigote: orchestration, methodology, and knowledge</h2>
     <hr class="rule">
-    <p style="max-width:46em">el-bigote is the security-review framework at the center of Argus. It holds the methodology, the knowledge base, and about 131 tools, and runs a single loop from a first lead to a filed report. A few mechanisms do most of the work.</p>
-    <p style="max-width:46em"><b>Lead generation at scale.</b> Many diverse analysis lenses run over a target. A knowledge-base router loads only the vulnerability-class knowledge relevant to a given piece of code, so each pass is focused on what that code can actually get wrong rather than a generic checklist.</p>
-    <p style="max-width:46em"><b>A validation gauntlet.</b> Every candidate is attacked before it is believed: ensemble refutation, where k independent reviewers try to kill it; reachability analysis; differential testing; and fuzzing. An impact class is promoted only when a deterministic oracle fires on the exploit and stays silent on a matched control, so a claim rests on a test, not an opinion.</p>
-    <p style="max-width:46em"><b>Compounding memory.</b> A refuted-memory store records every dead end and is consulted before every hunt, so the system never re-derives a mechanism it has already ruled out. Each pass over the ecosystem gets cheaper and deeper than the last.</p>
-    <p style="max-width:46em"><b>Choosing the next move.</b> Work is ranked by a coverage-times-expected-value model, so effort follows risk and unreviewed surface instead of habit, and coverage is tracked against the exact version of each target.</p>
-    <div class="result">
-      <p class="eyebrow">The rule</p>
-      <p>A model's verdict is only a lead, never a confirmation. A senior researcher verifies and files. Nothing ships on a model's say-so.</p>
+    <p class="col">el-bigote is the security-review framework at the center of Argus. It holds the methodology, the knowledge base, and 130+ tools, and runs a single loop from a first lead to a filed report. It is model-agnostic: the same loop drives a frontier model, a local open model, or a deterministic analyzer, and routes each task to whichever is cheapest for the required reliability. A few mechanisms do most of the work.</p>
+
+    <h4 class="sub">Lead generation at scale</h4>
+    <p class="col">Many diverse analysis lenses run over a target, each looking for a different class of mistake. Before a lens reads a piece of code, a knowledge-base router loads only the vulnerability-class knowledge that code can actually trip (from text with <code>kb-pick</code>, from code structure with <code>kb-router</code>), inside a fixed token budget, so every pass is focused rather than a generic checklist. Architectural notes are consulted first, then the language-specific knowledge base. Leads are surfaced at low confidence on purpose (10 to 20 percent is enough), because recall at this stage matters more than precision: the gauntlet is what removes the noise.</p>
+
+    <h4 class="sub">The validation gauntlet</h4>
+    <p class="col">Every candidate is attacked before it is believed. It passes only if it survives each stage in turn, and most do not. The cost per stage rises as the population falls, so cheap refutation runs first and expensive proof runs last.</p>
+    <div class="fig">
+      <div class="gauntlet">
+        <div class="gstage"><div class="lab"><b>Lead generation</b><span>diverse lenses, KB-routed</span></div><div class="surv" style="width:100%">candidates in, at low confidence</div></div>
+        <div class="gstage"><div class="lab"><b>Ensemble refutation</b><span>k independent reviewers try to kill it</span></div><div class="surv" style="width:62%">majority-vote survivors, fail-open</div></div>
+        <div class="gstage"><div class="lab"><b>Reachability</b><span>is the sink reachable from untrusted input</span></div><div class="surv" style="width:42%">reachable only</div></div>
+        <div class="gstage"><div class="lab"><b>Differential testing</b><span>behavior against a reference or a fork</span></div><div class="surv" style="width:28%">confirmed divergence</div></div>
+        <div class="gstage"><div class="lab"><b>Fuzzing</b><span>auto-generated harnesses per language</span></div><div class="surv" style="width:19%">reproducible trigger</div></div>
+        <div class="gstage gate"><div class="lab"><b>Oracle gate</b><span>fires on the exploit, silent on the control</span></div><div class="surv" style="width:12%">promoted impact class</div></div>
+        <div class="gstage human"><div class="lab"><b>Human file</b><span>senior researcher verifies and files</span></div><div class="surv" style="width:7%">disclosed finding</div></div>
+      </div>
+      <p class="figcap">The gauntlet. Each stage removes candidates; the bar widths are illustrative of the attrition, not a measured yield. An impact class is promoted only when a deterministic oracle fires on the exploit and stays silent on a matched control, so a claim rests on a test, not an opinion.</p>
+    </div>
+
+    <h4 class="sub">Compounding memory</h4>
+    <p class="col">Three durable, machine-readable memories make each pass cheaper than the last. A refuted-memory store records every dead end and is consulted before any hunt, so a mechanism that has already been ruled out is never re-derived. A knowledge-triples store holds learned facts about targets. A lens-coverage store records which lenses and tools have run on which engagement, so the planner knows what is genuinely unreviewed rather than merely unread.</p>
+
+    <h4 class="sub">Choosing the next move</h4>
+    <p class="col">Work is ranked by one model: audit-work coverage multiplied by expected value, minus a dampening term from refuted memory. The planner reads a per-engagement coverage map (target repo plus exact code version, surfaces, a per-work-type coverage matrix) and picks the next action by expected dollars of avoided risk, with a small exploration bonus. Effort follows risk and unreviewed surface, not habit, and findings carry the exact tag or commit because coverage decays as code changes. Confirmed fixes are pushed down to forks (upstream-variant analysis) and leads are propagated sideways across variants.</p>
+
+    <h4 class="sub">Where the human sits</h4>
+    <p class="col">A model's verdict is a lead, never a confirmation. Only a senior researcher confirms a true positive and files it, and nothing ships on a model's say-so. That is a deliberate throughput choice as much as a safety one: the pipeline does the bulk read-and-triage so the scarce expert attention is spent only on what has already survived the gauntlet.</p>
+    <div class="btns row">
+      <a class="btn s" href="scope.html">Where Argus points</a>
+      <a class="btn s" href="index.html">EthSec overview</a>
     </div>
   </div>
 </section>
@@ -291,15 +363,32 @@ img,svg,pre,table{max-width:100%}
     <p class="eyebrow">Layer two &middot; the local tier</p>
     <h2>dobby: the local-model workhorse</h2>
     <hr class="rule">
-    <p style="max-width:46em">dobby runs the high-volume reading on open models on owned hardware, so breadth costs almost nothing at the margin. It uses a hybrid design: a frontier model orchestrates, planning the work and verifying the high-severity claims against real source, while a local open model does the bulk reading and triage.</p>
-    <p style="max-width:46em"><b>No authority, typed output.</b> The local model never executes tools. It reads text and returns structured, schema-validated JSON: a typed envelope carrying the result with a confidence score and its provenance. The orchestrator reviews that compact JSON and spot-checks only the top claims against the source.</p>
-    <p style="max-width:46em"><b>Precomputed context, cached.</b> The local model reads precomputed, deterministic context first, the call graphs, reachability, and taint flows produced by el-bigote's analysis tools, instead of raw code sprawl. That context is rendered deterministically so the inference engine reuses its KV cache and the expensive prefill is paid once across many calls.</p>
-    <p style="max-width:46em"><b>Measured, not assumed.</b> A model-comparison harness scores every model against deterministic gold labels and real confirmed findings, because standalone vulnerability-detection skill is close to random. Models are routed on measured recall and cost, not a public leaderboard.</p>
-    <p style="max-width:46em"><b>Specialized, in progress.</b> The open models are being fine-tuned with lightweight LoRA adapters on EthSec's own Ethereum-security corpus: past engagements and confirmed findings, the refuted-memory of dead ends, the lens and knowledge-base library, and the ecosystem's real Go, Solidity, and Rust code. Progress is measured on a two-sided benchmark that scores both recall (real bugs caught) and the false-affirm rate (confident wrong calls), because skill on C and C++ test sets does not read across to Cosmos-SDK Go or DeFi Solidity. The compute budget shifts toward owned hardware as the open models prove out.</p>
-    <div class="result">
-      <p class="eyebrow">The rule</p>
-      <p>A local model is a lead generator, not an oracle. Its output is untrusted data that the orchestrator and the deterministic tooling verify; it never has the authority to act, and a senior researcher verifies and files.</p>
+    <p class="col">dobby runs the high-volume reading on open models on owned hardware, so breadth costs almost nothing at the margin. It is a hybrid design (a frontier model orchestrates and verifies, a local open model does the bulk reading and triage) packaged two ways: a <code>local-analyst</code> service the orchestrator calls for each slice of work, and a model-comparison harness that measures every model before it is trusted. The local model is a lead generator, not an oracle: its output is untrusted, typed data that the orchestrator and the deterministic tooling check, and it has no authority to act.</p>
+
+    <div class="fig">
+      <div class="pipe">
+        <div class="pstep accent"><div class="cap">1 &middot; precomputed context</div><p>Call graphs, reachability, and taint flows are computed deterministically by el-bigote's slicer and context-pack tools, then rendered first in every prompt. Because that prefix is byte-stable, the inference engine reuses its KV cache and the expensive prefill is paid once across many questions on the same target.</p></div>
+        <div class="pconn"></div>
+        <div class="pstep"><div class="cap">2 &middot; local read and triage</div><p>An open model on owned hardware reads the rendered context and the ranked code slice, explains the taint, and triages candidates. It never executes a tool; it only reads and writes text.</p></div>
+        <div class="pconn"></div>
+        <div class="pstep accent"><div class="cap">3 &middot; typed envelope out</div><p>It returns schema-validated JSON: a typed envelope carrying the result, a confidence score, and provenance back to the lines it relied on. Malformed or unparseable output is rejected and retried, never guessed at.</p></div>
+        <div class="pconn"></div>
+        <div class="pstep"><div class="cap">4 &middot; orchestrator review</div><p>A frontier model plans the work and reads the compact JSON, spot-checking only the highest-severity claims against the real source. An adversarial refute pass then tries to disprove each survivor; majority vote, fail-open so a broken judge cannot silently drop a real bug.</p></div>
+        <div class="pconn"></div>
+        <div class="pstep accent"><div class="cap">5 &middot; deterministic verification</div><p>Survivors enter el-bigote's gauntlet (reachability, differential testing, the oracle gate) and a senior researcher verifies and files. Nothing reaches a report on the local model's word alone.</p></div>
+      </div>
+      <p class="pback">Every outcome feeds back: an online reward store updates which model to route a given slice to, and a model-comparison harness scores each model against deterministic gold labels and real confirmed findings. Routing follows measured skill, not a public leaderboard.</p>
+      <p class="figcap">The dobby pipeline. The local tier does the volume; the frontier tier and the deterministic tooling do the judging.</p>
     </div>
+
+    <h4 class="sub">Measured, not assumed</h4>
+    <p class="col">Standalone vulnerability-detection skill is close to random across every model, so dobby measures rather than assumes. The harness runs the same security-reading task through N models (local and frontier) and scores them on a two-sided benchmark: recall (real bugs caught) and the false-affirm rate (how often a model confidently calls safe code vulnerable). Both matter, because a model that flags everything has perfect recall and is useless. Models are routed on that measured recall-versus-cost curve, per task type, and re-scored as they change.</p>
+
+    <h4 class="sub">Specialized, in progress</h4>
+    <p class="col">The open models are being fine-tuned with lightweight LoRA adapters on EthSec's own Ethereum-security corpus: past engagements and confirmed findings, the refuted-memory of dead ends, the lens and knowledge-base library, and the ecosystem's real Go, Solidity, and Rust code. Progress is judged on the same two-sided benchmark, because skill on C and C++ test sets does not read across to Cosmos-SDK Go or DeFi Solidity. As the open models prove out on owned hardware, the compute budget shifts toward them and away from metered frontier tokens.</p>
+
+    <h4 class="sub">Why local at all</h4>
+    <p class="col">Three reasons. Cost: the bulk read-and-triage is the largest token line, and moving it onto owned rigs makes breadth nearly free at the margin. Custody: source and in-progress findings for the bulk tier stay on the machine. Control: an open model can be measured, fine-tuned, abliterated, and pinned to an exact weight, so its behavior is reproducible rather than changing underneath the work.</p>
   </div>
 </section>
 
@@ -340,6 +429,7 @@ img,svg,pre,table{max-width:100%}
         <div class="svc"><div class="n">Human funnel</div><div class="m">Decentralized filing, verifier queue, researcher console.</div><div class="st">step 6</div></div>
       </div>
     </div>
+    <p class="note" style="margin-top:28px">The design keeps one invariant at every scale: a credential is mounted read-only into exactly one sandbox, is confirmed to be the expected account before any work, and never appears in a command line or reaches the open network. Each unit runs <code>wf-run</code> against a single target pinned to a commit, behind an egress proxy that allows only an allowlist, so a prompt-injected target cannot exfiltrate or act. Many such units run at once, one per account.</p>
     <div class="btns row">
       <a class="btn s" href="index.html">EthSec overview</a>
       <a class="btn s" href="finance.html">Financials</a>
@@ -441,11 +531,13 @@ img,svg,pre,table{max-width:100%}
     <p class="eyebrow">The gate</p>
     <h2>Every scale-up is earned by a measured number</h2>
     <hr class="rule">
-    <div class="result">
-      <p class="eyebrow">Standing posture</p>
-      <p>EthSec is a non-profit lab working in partnership with major model providers, so the binding constraints are security and quality, not budget: protecting embargoed findings, deduplication, the false-positive bar, and bounded loss when the operator is offline. The goal is highs and criticals found and fixed across the whole Argus scope, filed where a bounty exists.</p>
+    <p class="col">EthSec is a non-profit lab working in partnership with major model providers, so the binding constraints are security and quality, not budget: protecting embargoed findings, deduplication across researchers, the false-positive rate reaching a human, and bounded loss when the operator is offline. The goal is highs and criticals found and fixed across the whole Argus scope, filed where a bounty exists. Scale follows evidence, so the pilot graduates only when the numbers below hold.</p>
+    <div class="facts">
+      <div><b>verified-TP / unit</b><span>Real confirmed findings per unit of work, the core yield signal.</span></div>
+      <div><b>dup-collision rate</b><span>How often two researchers file the same root cause. Must stay low to scale the fleet.</span></div>
+      <div><b>false-positive rate</b><span>Noise reaching a human verifier. The number that protects expert attention.</span></div>
     </div>
-    <p class="note" style="margin-top:30px">Gate to scale past the two-account pilot: the verified-TP rate per unit, the duplicate-collision rate across researchers, the false-positive rate reaching a human, the re-auth cadence per account, and the kill-drill time-to-silence. Steps 3 through 6 enter only as those numbers hold. Nothing scales on the plan alone.</p>
+    <p class="col" style="margin-top:30px">Two more gate the operational risk: the re-authentication cadence per account, and the kill-drill time-to-silence (how fast a layered kill-switch stops compute, filing, and spill when the operator is offline). Steps 3 through 6 on the Roadmap enter only as these hold. Nothing scales on the plan alone; the two-account liveness test in step 2 is the first hard gate, and the rest follow the same rule.</p>
     <div class="btns row">
       <a class="btn s" href="index.html">EthSec overview</a>
       <a class="btn s" href="finance.html">Financials</a>
